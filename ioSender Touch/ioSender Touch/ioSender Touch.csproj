@@ -171,6 +171,9 @@
     <Compile Include="Controls\AppConfigView.xaml.cs">
       <DependentUpon>AppConfigView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\IotDialog.xaml.cs">
+      <DependentUpon>IotDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppConfigViewModel.cs" />
     <Compile Include="Controls\AppUiSettings.xaml.cs">
       <DependentUpon>AppUiSettings.xaml</DependentUpon>
@@ -519,6 +522,10 @@
     <Page Include="Controls\GrblErrorList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\IotDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\JobControl.xaml">
       <Generator>MSBuild:Compile</Generator>

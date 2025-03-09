@@ -170,7 +170,7 @@ namespace ioSenderTouch.ViewModels
         }
         private void StopJob(object x)
         {
-            if (job.State == JobState.Running && StreamingState == StreamingState.FeedHold || job.State == JobState.Error)
+            if (job.State == JobState.Running || StreamingState == StreamingState.FeedHold || job.State == JobState.Error)
             {
                 ActiveJobStop();
             }

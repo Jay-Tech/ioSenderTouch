@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using ioSenderTouch.ViewModels;
+using ComboBox = System.Windows.Controls.ComboBox;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace ioSenderTouch.Views
 {
@@ -26,8 +29,18 @@ namespace ioSenderTouch.Views
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             DataContext = _viewModel;
             this.Closing += VirtualKeyBoard_Closing;
-            this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            //this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            this.WindowStartupLocation = WindowStartupLocation.Manual;
+            this.Loaded += VirtualKeyBoard_Loaded;
 
+        }
+
+        private void VirtualKeyBoard_Loaded(object sender, RoutedEventArgs e)
+        {
+            var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
+            this.Left = desktopWorkingArea.Right/2 - this.Width/2;
+            this.Top = 50+ desktopWorkingArea.Bottom - this.Height;
+            
         }
 
         public void Shutdown(bool shutdown)

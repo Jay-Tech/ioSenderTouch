@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using ioSenderTouch.Controls;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.ViewModels;
-using LibStrings = ioSenderTouch.GrblCore.Config.LibStrings;
+using LibStrings = ioSenderTouch.GrblCore.LibStrings;
 
 namespace ioSenderTouch.Utility
 {
@@ -91,17 +93,37 @@ namespace ioSenderTouch.Utility
 
             if (!_config.Load(Resources.IniFile))
             {
-                if (MessageBox.Show(LibStrings.FindResource("CreateConfig"), "IoSender", MessageBoxButton.YesNo,
-                        MessageBoxImage.Question) == MessageBoxResult.Yes)
+
+                var dialog = new IotDialog
+                {
+                    ResponseText = "Config file not found or invalid, create new one?"
+                };
+                if (dialog.ShowDialog() == true)
                 {
                     if (!_config.Save(Resources.IniFile))
                     {
-                        MessageBox.Show(LibStrings.FindResource("CreateConfigFail"), "IoSender");
+                        dialog.ResponseText = "Could not save config file";
+                        dialog.ShowDialog();
                         status = 1;
                     }
+                   
                 }
                 else
+                {
                     return 1;
+                }
+
+                //if (MessageBox.Show("Config file not found or invalid, create new?", "IoT", MessageBoxButton.YesNo,
+                //        MessageBoxImage.Question) == MessageBoxResult.Yes)
+                //{
+                //    if (!_config.Save(Resources.IniFile))
+                //    {
+                //        MessageBox.Show("Could not save config file", "IoT");
+                //        status = 1;
+                //    }
+                //}
+                //else
+                //    return 1;
             }
 
             if (jogMode != -1)
