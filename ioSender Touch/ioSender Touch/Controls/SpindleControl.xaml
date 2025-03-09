@@ -140,8 +140,8 @@
                 </Button>
             </Grid>
             <StackPanel Orientation="Horizontal" Grid.Row="5" Margin="10,7,0,0">
-                <RadioButton Height="38" Width="60" Name="OverRide1" Content="X1" Command="{Binding OverRidePercentCommand}" CommandParameter="1" GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True"/>
-                <RadioButton Height="38" Width="60" Name="OverRide10" Content="X10" Command="{Binding OverRidePercentCommand}" CommandParameter="10"  GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}"/>
+                <RadioButton Height="38" Width="60" Name="OverRide1" Content="1%" Command="{Binding OverRidePercentCommand}" CommandParameter="1" GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}" IsChecked="True"/>
+                <RadioButton Height="38" Width="60" Name="OverRide10" Content="10%" Command="{Binding OverRidePercentCommand}" CommandParameter="10"  GroupName="ToggleGroup" Style="{StaticResource {x:Type ToggleButton}}"/>
                 <Label x:Uid="lbl_rpm" x:Name="lblRPMOverridePrecent" Content="RPM %" HorizontalContentAlignment="Right" VerticalAlignment="Center" Height="28" />
                 <Label  x:Name="lblRPMOverride" Content="{Binding RPMOverride}" HorizontalContentAlignment="Left" VerticalAlignment="Center" Height="28" Width="40"/>
             </StackPanel>
