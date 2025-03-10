@@ -929,6 +929,12 @@
     <Resource Include="Resources\Render\XYZOn.png" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\icons\closeDark.png" />
+    <Resource Include="Resources\icons\editDark.png" />
+    <Resource Include="Resources\icons\openDark.png" />
+    <Resource Include="Resources\icons\reloadDark.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

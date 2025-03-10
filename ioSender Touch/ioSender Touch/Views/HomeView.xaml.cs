@@ -11,7 +11,8 @@ namespace ioSenderTouch.Views
     public partial class HomeView : UserControl
     {
         private readonly GrblViewModel _model;
-        
+        private bool _enableJogging;
+
         public UIElement Content { get; set; }
         public HomeView(GrblViewModel model)
         {
@@ -40,7 +41,17 @@ namespace ioSenderTouch.Views
 
         protected bool ProcessKeyPreview(KeyEventArgs e)
         {
-            return _model.Keyboard.ProcessKeypress(e, !(MdiControl.IsFocused || DRO.IsFocused || spindleControl.IsFocused || workParametersControl.IsFocused));
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (Keyboard.IsKeyDown(Key.K))
+                {
+                    _model.EnableKeyboard = !_model.EnableKeyboard;
+                }
+            }
+
+            return _model.EnableKeyboard && _model.Keyboard.ProcessKeypress(e, !(MdiControl.IsFocused || DRO.IsFocused || spindleControl.IsFocused || workParametersControl.IsFocused));
+          
         }
 
     }

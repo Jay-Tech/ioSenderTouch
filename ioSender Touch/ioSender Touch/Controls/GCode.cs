@@ -66,7 +66,7 @@ namespace ioSenderTouch.Controls
             public string Name;
         }
 
-        public const string FileTypes = "cnc,nc,ncc,ngc,gcode,tap";
+        public const string FileTypes = "cnc,nc,ncc,ngc,gcode,tap,macro";
 
         private GCodeJob Program { get; set; } = new GCodeJob();
         private List<GCodeConverter> Converters = new List<GCodeConverter>();

@@ -27,6 +27,7 @@
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
         <controls:BlocksToStringConverter x:Key="BlocksToStringConverter" />
         <controls:LogicalNotConverter x:Key="BooleanConverter" />
+        <controls:BoolToVisibleConverter x:Key="BooleanVisibleConverter" />
         <controls:GrblStateToColorConverter x:Key="StateColorConverter" />
     </Window.Resources>
     <Window.DataContext>
@@ -80,17 +81,28 @@
             </StatusBar>
         </Border>
 
-        <Grid Height="55"  DockPanel.Dock="Top">
+        <Grid Height="55"   DockPanel.Dock="Top">
             <ToolBarTray  IsLocked="True">
-                <ToolBar IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" Height="42" VerticalAlignment="Top" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" >
+                <ToolBar IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
+                         Height="55" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" >
                     <controls:FileActionControl IsEnabled="{Binding Path=IsToolChanging, Converter={StaticResource BooleanConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Separator Margin="4,0"></Separator>
+                    <ToggleButton HorizontalAlignment="Left" VerticalContentAlignment="Center"
+                                  Content="{materialDesign:PackIcon Kind=KeyboardVariant,Size=50}" 
+                                  HorizontalContentAlignment="Center" VerticalAlignment="Center" 
+                                  Height="50" Width="65" Margin="0,0,10,0"
+                                  IsChecked="{Binding EnableKeyboard}"
+                                  Style="{StaticResource MaterialDesignFlatToggleButton}"
+                                  ToolTip="MaterialDesignFlatPrimaryToggleButton" />
                     <Separator Margin="4,0"></Separator>
                     <controls:MacroToolbarControl x:Name="toolbarMacros"/>
                     <Separator Margin="4,0"></Separator>
                 </ToolBar>
             </ToolBarTray>
-            <Button  HorizontalAlignment="Right" Height="40" Width="110" Margin="0,0,5,0" Content="Reset" HorizontalContentAlignment="Center"
-                     VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetCommand}"></Button>
+
+                <Button  HorizontalAlignment="Right" Height="40" Width="110" Margin="0,0,5,0" Content="Reset" HorizontalContentAlignment="Center"
+                         VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetCommand}"></Button>
         </Grid>
         <Border  Name="BorderLeft" BorderThickness="1" DockPanel.Dock="Left">
         </Border>

@@ -149,6 +149,7 @@ namespace ioSenderTouch.ViewModels
         private RenderViewModel _renderVm;
         private string _setSpindleSpeed;
         private int _rxBufferSize;
+        private bool _enableKeyboard;
 
 
         public delegate void GrblResetHandler();
@@ -2375,6 +2376,17 @@ namespace ioSenderTouch.ViewModels
             {
                 if (value == _setSpindleSpeed) return;
                 _setSpindleSpeed = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool EnableKeyboard
+        {
+            get => _enableKeyboard;
+            set
+            {
+                if (value == _enableKeyboard) return;
+                _enableKeyboard = value;
                 OnPropertyChanged();
             }
         }

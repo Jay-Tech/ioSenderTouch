@@ -185,12 +185,14 @@ namespace ioSenderTouch.ViewModels
         {
             bool ok = false;
             string filename = string.Empty;
-            OpenFileDialog file = new OpenFileDialog();
-
-            file.Filter =
-                string.Format(
-                    "GCode files ({0})|{0}|GCode macros (*.macro)|*.macro|Text files (*.txt)|*.txt|All files (*.*)|*.*",
-                    FileUtils.ExtensionsToFilter(GCode.FileTypes));
+            OpenFileDialog file = new OpenFileDialog
+            {
+                  DefaultExt = "All files (*.*)|*.*",
+                Filter = string.Format(
+                    "GCode files ({0})|{0}|Text files (*.txt)|*.txt|All files (*.*)|*.*",
+                    FileUtils.ExtensionsToFilter(GCode.FileTypes)),
+              
+            };
 
             if (file.ShowDialog() == true)
             {

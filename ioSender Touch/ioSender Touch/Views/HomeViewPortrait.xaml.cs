@@ -32,9 +32,18 @@ namespace ioSenderTouch.Views
             if (!(e.Handled = ProcessKeyPreview(e)))
                 base.OnPreviewKeyDown(e);
         }
+       
         protected bool ProcessKeyPreview(KeyEventArgs e)
         {
-            return _model.Keyboard.ProcessKeypress(e, !(MdiControl.IsFocused || DRO.IsFocused || spindleControl.IsFocused || workParametersControl.IsFocused));
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
+            {
+                if (Keyboard.IsKeyDown(Key.K) && Keyboard.IsKeyDown(Key.C))
+                {
+                    _model.EnableKeyboard = !_model.EnableKeyboard;
+                }
+            }
+
+            return _model.EnableKeyboard && _model.Keyboard.ProcessKeypress(e, !(MdiControl.IsFocused || DRO.IsFocused || spindleControl.IsFocused || workParametersControl.IsFocused));
         }
 
 

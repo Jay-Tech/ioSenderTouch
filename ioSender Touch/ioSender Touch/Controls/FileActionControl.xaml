@@ -5,39 +5,47 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
              xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"  
              d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel,IsDesignTimeCreatable=True}"
-             d:DesignHeight="36" d:DesignWidth="145" >
+             d:DesignHeight="36" d:DesignWidth="155" >
     <UserControl.Resources>
         <controls:LogicalNotConverter x:Key="BooleanConverter" />
-        <Style x:Key="ActionButtonStyle" TargetType="Button">
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5"/>
-                </Trigger>
-            </Style.Triggers>
+        <Style x:Key="ActionButtonStyle" BasedOn="{StaticResource MaterialDesignIconForegroundButton}" TargetType="Button">
+            
             <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="36"/>
             <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Margin" Value="3,0"/>
+            <Setter Property="Margin" Value="1,0"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
+            <Setter Property="Background" Value="Transparent" ></Setter>
+            <!--<Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border BorderThickness="{TemplateBinding BorderThickness}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 Background="Transparent">
-                            <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
-            </Setter>
+            </Setter>-->
         </Style>
     </UserControl.Resources>
-    <StackPanel IsEnabled="{Binding Path=IsJobRunning, Mode=OneWay, Converter={StaticResource BooleanConverter}}" Orientation="Horizontal" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top">
-        <Button  ToolTip="Open file" Content="/Resources/open.png" Width="37" Style="{StaticResource ActionButtonStyle}" Click="btnOpen_Click"/>
-        <Button Content="/Resources/reload.png" ToolTip="Reload file" Width="26" IsEnabled="{Binding Path=IsPhysicalFileLoaded}"  Style="{StaticResource ActionButtonStyle}" Click="btnReload_Click"/>
-        <Button Content="/Resources/edit.png" ToolTip="Edit file" Width="31" IsEnabled="{Binding Path=IsPhysicalFileLoaded}" Style="{StaticResource ActionButtonStyle}" Click="btnEdit_Click"/>
-        <Button Content="/Resources/close.png" ToolTip="Close file" Width="26" IsEnabled="{Binding Path=IsFileLoaded}"  Style="{StaticResource ActionButtonStyle}" Click="btnClose_Click"/>
+    <StackPanel IsEnabled="{Binding Path=IsJobRunning, Mode=OneWay, Converter={StaticResource BooleanConverter}}"
+                Orientation="Horizontal" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+        <Button  ToolTip="Open file"  Content="{materialDesign:PackIcon Kind=FileOutline,Size=35}" 
+                 VerticalContentAlignment="Center"
+                 HorizontalContentAlignment="Center"
+                 Style="{StaticResource ActionButtonStyle}" Width="35" Height="35" Click="btnOpen_Click"/>
+        <Button Content="{materialDesign:PackIcon Kind=FileRefreshOutline,Size=35}"  ToolTip="Reload file" 
+                IsEnabled="{Binding Path=IsPhysicalFileLoaded}" 
+                Style="{StaticResource ActionButtonStyle}" Click="btnReload_Click"/>
+        <Button Content="{materialDesign:PackIcon Kind=FileEditOutline,Size=35}" ToolTip="Edit file" 
+                IsEnabled="{Binding Path=IsPhysicalFileLoaded}" 
+                Style="{StaticResource ActionButtonStyle}" Click="btnEdit_Click"/>
+        <Button  Content="{materialDesign:PackIcon Kind=FileCancelOutline,Size=35}" ToolTip="Close file" 
+                 IsEnabled="{Binding Path=IsFileLoaded}" 
+                 Style="{StaticResource ActionButtonStyle}" Click="btnClose_Click"/>
     </StackPanel>
 </UserControl>
