@@ -20,7 +20,7 @@ namespace ioSenderTouch.Views
             DataContext = _model;
             InitializeComponent();
             Grbl.GrblViewModel = _model;
-            _model.HomeViewModel = new HomeViewModel(_model);
+           model.HomeViewModel  = new HomeViewModel(_model);
            
         }
         protected override void OnPreviewKeyDown(KeyEventArgs e)

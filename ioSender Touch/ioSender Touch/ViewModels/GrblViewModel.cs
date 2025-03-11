@@ -147,13 +147,14 @@ namespace ioSenderTouch.ViewModels
         private bool _toolChangeInProgress;
         private HomeViewModel _homeViewModel;
         private RenderViewModel _renderVm;
-        private string _setSpindleSpeed;
+        private string _selectedSpindleSpeed = "0";
         private int _rxBufferSize;
         private bool _enableKeyboard;
 
 
         public delegate void GrblResetHandler();
-
+       
+        //Command Section
         public ICommand ShutDownCommand { get; }
         public ICommand WcsCommand { get; }
         public ICommand ClearAlarmCommand { get; }
@@ -166,6 +167,12 @@ namespace ioSenderTouch.ViewModels
         public ICommand FeedOverRideReset { get; }
         public ICommand ResetCommand { get; }
         public ICommand OverRidePercentCommand { get; }
+        public ICommand FloatToolCommand { get; set; }
+        public ICommand SpindleOnCwCommand { get; }
+        public ICommand SpindleOnCcwCommand { get; }
+        public ICommand SpindleOffCommand { get; }
+
+        public ICommand SpindleSpeedCommand {get; }
 
         public string AlarmConText
         {
@@ -277,7 +284,29 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
-        public ICommand FloatToolCommand { get; set; }
+        public HomeViewModel HomeViewModel
+        {
+            get => _homeViewModel;
+            set
+            {
+                if (Equals(value, _homeViewModel)) return;
+                _homeViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RenderViewModel RenderVM
+        {
+            get => _renderVm;
+            set
+            {
+                if (Equals(value, _renderVm)) return;
+                _renderVm = value;
+                OnPropertyChanged();
+            }
+        }
+
+      
         public GrblViewModel()
         {
             _a = _pn = _fs = _sc = _tool = string.Empty;
@@ -317,9 +346,33 @@ namespace ioSenderTouch.ViewModels
             WcsCommand = new Command(SetWcs);
             ResetCommand = new Command(SetResetCommand);
             OverRidePercentCommand = new Command(SpindleOverRidePrecent);
+            SpindleSpeedCommand = new Command(SetSpindleSpeed);
+            SpindleOffCommand = new Command(SetSpindleOff);
+            SpindleOnCcwCommand = new Command(SetSpindleCcw);
+            SpindleOnCwCommand = new Command(SetSpindleCw);
             SetDefaults();
             Connected = false;
             SetToolCommand();
+        }
+
+        private void SetSpindleCw(object obj)
+        {
+            ExecuteCommand($"M3S{SelectedSpindleSpeed}");
+        }
+
+        private void SetSpindleCcw(object obj)
+        {
+           ExecuteCommand($"M4S{SelectedSpindleSpeed}");
+        }
+
+        private void SetSpindleOff(object obj)
+        {
+            ExecuteCommand("M5");
+        }
+
+        private void SetSpindleSpeed(object obj)
+        {
+            ExecuteCommand($"S{SelectedSpindleSpeed}");
         }
 
         private void ToolFloat(object tool)
@@ -329,27 +382,7 @@ namespace ioSenderTouch.ViewModels
             ExecuteCommand(command);
         }
 
-        public HomeViewModel HomeViewModel
-        {
-            get => _homeViewModel;
-            set
-            {
-                if (Equals(value, _homeViewModel)) return;
-                _homeViewModel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public RenderViewModel RenderVM
-        {
-            get => _renderVm;
-            set
-            {
-                if (Equals(value, _renderVm)) return;
-                _renderVm = value;
-                OnPropertyChanged();
-            }
-        }
+       
 
         private void SpindleOverRidePrecent(object obj)
         {
@@ -947,10 +980,7 @@ namespace ioSenderTouch.ViewModels
 
         public ObservableCollection<Macro> UtilityMacros { get; set; } = new ObservableCollection<Macro>();
 
-        private void SetToolCommand()
-        {
-            GrblCommand.ToolChange = _isJobRunning ? "T{0}M6" : "M61Q{0}";
-        }
+       
 
         public bool IsProbing
         {
@@ -1014,6 +1044,11 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
+        public Double MaxDistanceZ { get; set; }
+
+        public Double MaxDistanceY { get; set; }
+
+        public Double MaxDistanceX { get; set; }
 
         public Position MachinePosition { get; private set; } = new Position();
         public Position WorkPosition { get; private set; } = new Position();
@@ -1246,7 +1281,40 @@ namespace ioSenderTouch.ViewModels
 
             }
         }
+    
 
+        public bool HasToolTable
+        {
+            get => _hasToolTable;
+            set
+            {
+                if (value == _hasToolTable) return;
+                _hasToolTable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SelectedSpindleSpeed
+        {
+            get => _selectedSpindleSpeed;
+            set
+            {
+                if (value == _selectedSpindleSpeed) return;
+                _selectedSpindleSpeed = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool EnableKeyboard
+        {
+            get => _enableKeyboard;
+            set
+            {
+                if (value == _enableKeyboard) return;
+                _enableKeyboard = value;
+                OnPropertyChanged();
+            }
+        }
         public int ScrollPosition
         {
             get { return _scrollpos; }
@@ -1530,7 +1598,10 @@ namespace ioSenderTouch.ViewModels
         }
 
         #endregion
-
+        private void SetToolCommand()
+        {
+            GrblCommand.ToolChange = _isJobRunning ? "T{0}M6" : "M61Q{0}";
+        }
         public bool SetGRBLState(string incoming, int substate, bool force)
         {
             GrblCurentState = incoming;
@@ -2352,44 +2423,7 @@ namespace ioSenderTouch.ViewModels
 
         }
 
-        public Double MaxDistanceZ { get; set; }
 
-        public Double MaxDistanceY { get; set; }
-
-        public Double MaxDistanceX { get; set; }
-
-        public bool HasToolTable
-        {
-            get => _hasToolTable;
-            set
-            {
-                if (value == _hasToolTable) return;
-                _hasToolTable = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string SetSpindleSpeed
-        {
-            get => _setSpindleSpeed;
-            set
-            {
-                if (value == _setSpindleSpeed) return;
-                _setSpindleSpeed = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public bool EnableKeyboard
-        {
-            get => _enableKeyboard;
-            set
-            {
-                if (value == _enableKeyboard) return;
-                _enableKeyboard = value;
-                OnPropertyChanged();
-            }
-        }
 
 
         public void LoadComplete()

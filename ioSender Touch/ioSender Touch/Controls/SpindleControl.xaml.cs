@@ -37,12 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-using System;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ioSenderTouch.GrblCore;
 using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls
@@ -52,85 +48,16 @@ namespace ioSenderTouch.Controls
         public SpindleControl()
         {
             InitializeComponent();
-
-            DataContextChanged += SpindleControl_DataContextChanged;
-
-            rbSpindleOff.Tag = "M5";
-            rbSpindleCW.Tag = "M3{0}";
-            rbSpindleCCW.Tag = "M4{0}";
-
-           var resetCommand = GrblConstants.CMD_SPINDLE_OVR_RESET;
-           var fineMinusCommand = GrblConstants.CMD_SPINDLE_OVR_FINE_MINUS;
-           var finePlusCommand = GrblConstants.CMD_SPINDLE_OVR_FINE_PLUS;
-            var coarseMinusCommand = GrblConstants.CMD_SPINDLE_OVR_COARSE_MINUS;
-            var coarsePlusCommand = GrblConstants.CMD_SPINDLE_OVR_COARSE_PLUS;
             cvRPM.PreviewKeyUp += txtPos_KeyPress;
         }
 
-        private void SpindleControl_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue != null && e.OldValue is INotifyPropertyChanged)
-                ((INotifyPropertyChanged)e.OldValue).PropertyChanged -= OnDataContextPropertyChanged;
-            if (e.NewValue != null && e.NewValue is INotifyPropertyChanged)
-                ((INotifyPropertyChanged)e.NewValue).PropertyChanged += OnDataContextPropertyChanged;
-        }
-
-        private void OnDataContextPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (sender is GrblViewModel)switch (e.PropertyName)
-            {
-                case nameof(GrblViewModel.GrblState):
-                case nameof(GrblViewModel.IsJobRunning):
-                    var p = sender as GrblViewModel;
-                    IsSpindleStateEnabled = !p.IsJobRunning || p.GrblState.State == GrblStates.Hold || p.GrblState.State == GrblStates.Door;
-                    break;
-            }
-        }
-
-        public static readonly DependencyProperty IsSpindleStateEnabledProperty = DependencyProperty.Register(nameof(IsSpindleStateEnabled), typeof(bool), typeof(SpindleControl), new PropertyMetadata(false));
-        public bool IsSpindleStateEnabled
-        {
-            get { return (bool)GetValue(IsSpindleStateEnabledProperty); }
-            set { SetValue(IsSpindleStateEnabledProperty, value); }
-        }
-
-        public string SpindleOffCommand { get { return (string)rbSpindleOff.Tag; } set { rbSpindleOff.Tag = value; } }
-        public string SpindleCWCommand { get { return (string)rbSpindleCW.Tag; } set { rbSpindleCW.Tag = value; } }
-        public string SpindleCCWCommand { get { return (string)rbSpindleCCW.Tag; } set { rbSpindleCCW.Tag = value; } }
-
-        public new bool IsFocused { get { return cvRPM.IsFocused; } }
-        public bool SPOr { get { return !(DataContext as GrblViewModel).IsJobRunning || (DataContext as GrblViewModel).GrblState.State == GrblStates.Hold; } }
-
         private void txtPos_KeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && !(DataContext as GrblViewModel).IsJobRunning)
+            if (e.Key == Key.Enter && !((GrblViewModel)DataContext).IsJobRunning)
             {
-                (DataContext as GrblViewModel).ExecuteCommand(string.Format("S{0}", (sender as NumericTextBox).Value));
+                ((GrblViewModel)DataContext)?.ExecuteCommand($"S{((NumericTextBox)sender).Value}");
             }
         }
 
-        private void rbSpindle_Click(object sender, RoutedEventArgs e)
-        {
-            var p = DataContext as GrblViewModel;
-
-            if (p.IsJobRunning && p.GrblState.State == GrblStates.Hold)
-            {
-                p.ExecuteCommand(((char)GrblConstants.CMD_SPINDLE_OVR_STOP).ToString());
-            }
-                
-            else
-            {
-                string rpm = p.ProgrammedRPM == 0d ? "S" + p.RPM.ToInvariantString() : "";
-                (DataContext as GrblViewModel).ExecuteCommand(string.Format((string)((Button)sender).Tag, rpm));
-            }
-        }
-
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (!(DataContext is GrblViewModel p)) return;
-            var command = FormattableString.Invariant( $"S{p.SetSpindleSpeed}");
-            p.ExecuteCommand(command);
-        }
     }
 }

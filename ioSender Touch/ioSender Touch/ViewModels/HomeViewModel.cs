@@ -39,6 +39,7 @@ namespace ioSenderTouch.ViewModels
         private string _consoleModeText;
         private bool _showGCodeConsole;
 
+         
         public ICommand SwitchConsoleCommand { get; }
         public ICommand ChangeView { get; }
         public object View
@@ -150,6 +151,8 @@ namespace ioSenderTouch.ViewModels
 
             }
         }
+
+
 
         private bool InitSystem()
         {
