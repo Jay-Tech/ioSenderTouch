@@ -738,8 +738,12 @@ namespace ioSenderTouch.ViewModels
 
                         if (line == "%")
                         {
-                            if (job.State != JobState.Competed)
-                                job.PgmEndLine = job.CurrLine;
+                            if (job.CurrLine > 1) // for files starting with % character
+                            {
+                                if (job.State != JobState.Competed)
+                                    job.PgmEndLine = job.CurrLine;
+                            }
+                            
                         }
                         else if ((bool)job.CurrentRow["ProgramEnd"])
                             job.PgmEndLine = job.CurrLine;

@@ -1995,7 +1995,18 @@ namespace ioSenderTouch.GrblCore
                 try
                 {
                     if (details.Length == 3)
-                        messages.Add(int.Parse(details[0]), details[2] == string.Empty ? details[1] : details[2]);
+                    {
+                        if (messages.ContainsKey(int.Parse(details[0])))
+                        {
+                            messages[int.Parse(details[0])] = details[2] == string.Empty ? details[1] : details[2];
+                        }
+                        else
+                        {
+                            messages.Add(int.Parse(details[0]), details[2] == string.Empty ? details[1] : details[2]);
+                        }
+                       
+                    }
+
                     else
                         messages.Add(int.Parse(details[0]), details[1]);
                 }
@@ -2937,7 +2948,7 @@ namespace ioSenderTouch.GrblCore
     {
         public static byte ConvertRTCommand(byte cmd)
         {
-            if (GrblInfo.UseLegacyRTCommands) 
+            if (GrblInfo.UseLegacyRTCommands)
                 switch (cmd)
                 {
                     case GrblConstants.CMD_STATUS_REPORT_ALL:
