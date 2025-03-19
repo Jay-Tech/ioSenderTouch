@@ -42,7 +42,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.ViewModels;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {

@@ -46,7 +46,7 @@ using System.Windows.Threading;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.ViewModels;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 using ioSenderTouch.Views;
 
 namespace ioSenderTouch.Controls.Probing
@@ -357,7 +357,7 @@ namespace ioSenderTouch.Controls.Probing
                     model.ReferenceToolOffset = false;
                 }
 
-                ViewModels.Probling.Probing.Command = GrblInfo.ReportProbeResult ? "G38.3" : "G38.2";
+                ViewModels.Probing.Probing.Command = GrblInfo.ReportProbeResult ? "G38.3" : "G38.2";
 
                 getView(tab.SelectedItem as TabItem)?.Activate(true);
 

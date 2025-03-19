@@ -44,7 +44,7 @@ using System.Windows;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.ViewModels;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {
@@ -80,15 +80,26 @@ namespace ioSenderTouch.Controls.Probing
         private CancellationToken cancellationToken = new CancellationToken();
 
         public bool Silent = false;
-
+        public Action<bool> OnCompleted;
         public Program(ProbingViewModel model)
         {
             Grbl = model.Grbl;
             probing = model;
+            OnCompleted = Completed;
         }
 
         public bool IsCancelled { get; set; }
 
+        private void Completed(bool success)
+        {
+            if (probing.ProbeMacroVm.MacroSelectedItem != null)
+            {
+                if (success && probing.ProbeMacroVm.PostJobCommands.Length > 0)
+                    Grbl.ExecuteMacro(probing.ProbeMacroVm.PostJobCommands);
+                if (probing.ProbeMacroVm.RunOnce)
+                    probing.ProbeMacroVm.Clear();
+            }
+        }
         private void Grbl_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -400,15 +411,20 @@ namespace ioSenderTouch.Controls.Probing
                     if(hasPause)
                         probing.PropertyChanged += Probing_PropertyChanged;
                 }
-
+                if (probing.ProbeMacroVm.PreJobCommands.Length > 0)
+                    _program.InsertRange(0, probing.ProbeMacroVm.PreJobCommands);
+                //cancelling = false;
                 Grbl.IsJobRunning = true;
-
+                
+                if (probing.ProbeMacroVm.PreJobCommands.Length > 0)
+                    _program.InsertRange(0, probing.ProbeMacroVm.PreJobCommands);
+              
                 if (probing.Message == string.Empty)
                     probing.Message = LibStrings.FindResource("Probing");
 
                 cmd_response = string.Empty;
-                Comms.com.WriteCommand(_program[step]);
-               // Grbl.ExecuteCommand(_program[step]);
+                //Comms.com.WriteCommand(_program[step]);
+                Grbl.ExecuteCommand(_program[step]);
 
                 while (!_isComplete)
                 {
@@ -453,8 +469,8 @@ namespace ioSenderTouch.Controls.Probing
                                     //if ((isProbing = _program[step].Contains("G38")) && !IsProbeReady())
                                     //    response = "probe!";
                                     //else
-                                    Comms.com.WriteCommand(_program[step]);
-                                        //Grbl.ExecuteCommand(_program[step]);
+                                    //Comms.com.WriteCommand(_program[step]);
+                                        Grbl.ExecuteCommand(_program[step]);
                                 }
                             }
                         }

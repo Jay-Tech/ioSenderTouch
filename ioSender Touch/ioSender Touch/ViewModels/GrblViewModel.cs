@@ -720,14 +720,11 @@ namespace ioSenderTouch.ViewModels
                 }
             }
         }
-
-        public void ExecuteMacro(string macro)
+        public void ExecuteMacro(string[] commands)
         {
-            if (macro != null && macro != string.Empty)
+            if (commands.Length > 0)
             {
                 bool ok = true;
-                var commands = macro.Split('\n');
-
                 var parser = new GCodeParser();
 
                 for (int i = 0; i < commands.Length; i++)
@@ -739,24 +736,65 @@ namespace ioSenderTouch.ViewModels
                     }
                     catch (Exception e)
                     {
-                        if (!(ok = System.Windows.MessageBox.Show(
-                                       string.Format(LibStrings.FindResource("LoadError").Replace("\\n", "\r"),
-                                           e.Message,
-                                           i + 1, commands[i]), "ioSender", System.Windows.MessageBoxButton.YesNo) ==
-                                   System.Windows.MessageBoxResult.Yes))
+                        if (!(ok = System.Windows.MessageBox.Show(string.Format(LibStrings.FindResource("LoadError").Replace("\\n", "\r"), e.Message, i + 1, commands[i]), "ioSender", System.Windows.MessageBoxButton.YesNo) == System.Windows.MessageBoxResult.Yes))
                             break;
                     }
                 }
 
-                if (!ok) return;
-                foreach (var command in commands)
+                if (ok) foreach (var command in commands)
                 {
-                    if (!ApplyCommand(command)) continue;
-                    if (ResponseLogVerbose && !string.IsNullOrEmpty(command))
-                        ResponseLog.Add(command);
+                    if (ApplyCommand(command))
+                    {
+                        if (ResponseLogVerbose && !string.IsNullOrEmpty(command))
+                            ResponseLog.Add(command);
+                    }
                 }
             }
         }
+
+        public void ExecuteMacro(string macro)
+        {
+            if (macro != null && macro != string.Empty)
+                ExecuteMacro(macro.Split('\n'));
+        }
+
+
+        //public void ExecuteMacro(string macro)
+        //{
+        //    if (macro != null && macro != string.Empty)
+        //    {
+        //        bool ok = true;
+        //        var commands = macro.Split('\n');
+
+        //        var parser = new GCodeParser();
+
+        //        for (int i = 0; i < commands.Length; i++)
+        //        {
+        //            try
+        //            {
+        //                commands[i] = commands[i].Replace("\r", "");
+        //                parser.ParseBlock(ref commands[i], false);
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                if (!(ok = System.Windows.MessageBox.Show(
+        //                               string.Format(LibStrings.FindResource("LoadError").Replace("\\n", "\r"),
+        //                                   e.Message,
+        //                                   i + 1, commands[i]), "ioSender", System.Windows.MessageBoxButton.YesNo) ==
+        //                           System.Windows.MessageBoxResult.Yes))
+        //                    break;
+        //            }
+        //        }
+
+        //        if (!ok) return;
+        //        foreach (var command in commands)
+        //        {
+        //            if (!ApplyCommand(command)) continue;
+        //            if (ResponseLogVerbose && !string.IsNullOrEmpty(command))
+        //                ResponseLog.Add(command);
+        //        }
+        //    }
+        //}
 
         public KeypressHandler Keyboard { get; private set; }
 

@@ -41,7 +41,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using ioSenderTouch.GrblCore;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {
@@ -410,7 +410,7 @@ namespace ioSenderTouch.Controls.Probing
                 if (!ok || pass == 1)
                     probing.Program.End(ok ? string.Format((string)FindResource("ProbingCompleted"), X_distance.ToInvariantString(), Y_distance.ToInvariantString()) : (string)FindResource("ProbingFailed"));
             }
-
+            probing.Program.OnCompleted?.Invoke(ok);
             return ok;
         }
 

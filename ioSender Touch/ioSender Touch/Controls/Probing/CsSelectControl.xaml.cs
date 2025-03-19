@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Windows;
 using System.Windows.Controls;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {

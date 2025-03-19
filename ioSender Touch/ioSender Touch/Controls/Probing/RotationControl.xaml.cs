@@ -42,7 +42,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Config;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {
@@ -325,6 +325,7 @@ namespace ioSenderTouch.Controls.Probing
                 probing.Grbl.ExecuteCommand(GrblConstants.CMD_GETPARSERSTATE);
 
             probing.Grbl.IsJobRunning = false;
+            probing.Program.OnCompleted?.Invoke(probing.CanApplyTransform);
         }
 
         private void PreviewOnCompleted()

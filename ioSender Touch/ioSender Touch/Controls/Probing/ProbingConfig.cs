@@ -43,7 +43,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using ioSenderTouch.GrblCore;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {

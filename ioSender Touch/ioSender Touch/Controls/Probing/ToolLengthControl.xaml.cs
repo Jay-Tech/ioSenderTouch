@@ -41,7 +41,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Config;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 
 namespace ioSenderTouch.Controls.Probing
 {
@@ -182,6 +182,7 @@ namespace ioSenderTouch.Controls.Probing
             }
 
             probing.Program.End((string)FindResource(ok ? "ProbingCompleted" : "ProbingFailed"));
+            probing.Program.OnCompleted?.Invoke(ok);
         }
 
         private void clearToolOffset_Click(object sender, RoutedEventArgs e)

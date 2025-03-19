@@ -42,7 +42,7 @@ using System.Windows;
 using System.Windows.Controls;
 using HelixToolkit.Wpf;
 using ioSenderTouch.GrblCore;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 using Microsoft.Win32;
 
 namespace ioSenderTouch.Controls.Probing
@@ -64,7 +64,7 @@ namespace ioSenderTouch.Controls.Probing
 
         public void Activate(bool activate)
         {
-            if(activate)
+            if (activate)
                 (DataContext as ProbingViewModel).Instructions = ((string)FindResource("Instructions")).Replace("\\n", "\n");
         }
 
@@ -75,9 +75,9 @@ namespace ioSenderTouch.Controls.Probing
 
             if (!probing.ValidateInput(true))
                 return;
-          
+
             origin = new Position(probing.Grbl.MachinePosition, probing.Grbl.UnitFactor);
-          
+
             if (!probing.WaitForIdle(string.Format("G90G0X{0}Y{1}", probing.HeightMap.MinX.ToInvariantString(), probing.HeightMap.MinY.ToInvariantString())))
                 return;
 
@@ -99,7 +99,7 @@ namespace ioSenderTouch.Controls.Probing
             {
                 probing.HeightMap.Map = new HeightMap(probing.HeightMap.GridSizeX, probing.HeightMap.GridSizeY, new Vector2(probing.HeightMap.MinX, probing.HeightMap.MinY), new Vector2(probing.HeightMap.MaxX, probing.HeightMap.MaxY));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 probing.Message = ex.Message;
                 return;
@@ -180,7 +180,7 @@ namespace ioSenderTouch.Controls.Probing
                 probing.HeightMap.MapPoints = mapPoints.Points;
                 probing.HeightMap.HasHeightMap = true;
 
-//                double z = probing.HeightMap.Map.InterpolateZ(0d, 0d);
+                //                double z = probing.HeightMap.Map.InterpolateZ(0d, 0d);
 
                 if (probing.HeightMap.SetToolOffset &&
                     (ok = (probing.Positions[0].X == origin.X && probing.Positions[0].Y == origin.Y) || probing.Program.ProbeZ(0d, 0d)))
@@ -204,11 +204,12 @@ namespace ioSenderTouch.Controls.Probing
                     probing.Program.End(string.Format((string)FindResource("ProbingCompleted"), z_min.ToInvariantString(probing.Grbl.Format), z_max.ToInvariantString(probing.Grbl.Format)));
             }
 
-            if(!ok)
+            if (!ok)
                 probing.Program.End((string)FindResource("ProbingFailed"));
+            probing.Program.OnCompleted?.Invoke(ok);
         }
 
-        public void Load (string fileName)
+        public void Load(string fileName)
         {
             var probing = DataContext as ProbingViewModel;
 

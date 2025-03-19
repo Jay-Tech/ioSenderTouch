@@ -50,30 +50,8 @@ using ioSenderTouch.GrblCore.Config;
 using LibStrings = ioSenderTouch.Controls.Probing.LibStrings;
 
 
-namespace ioSenderTouch.ViewModels.Probling
+namespace ioSenderTouch.ViewModels.Probing
 {
-
-    class Probing
-    {
-        public static string Command = "G38.3";
-    }
-
-    public class Measurement : ViewModelBase
-    {
-        public void Add(Position position, AxisFlags axisFlags, ProbingType probingType)
-        {
-            Position = position;
-            AxisFlags = axisFlags;
-            ProbingType = probingType;
-
-            OnPropertyChanged();
-        }
-
-        public Position Position { get; private set; } = new Position();
-        public ProbingType ProbingType { get; private set; } = ProbingType.None;
-        public AxisFlags AxisFlags { get; private set; } = AxisFlags.None;
-    }
-
     public class ProbingViewModel : ViewModelBase, IActiveViewModel
     {
         public enum CoordMode
@@ -420,7 +398,7 @@ namespace ioSenderTouch.ViewModels.Probling
         {
             _isComplete = _isSuccess = false;
         }
-
+        public ProbeMacroViewModel ProbeMacroVm { get; private set; } = new ProbeMacroViewModel();
         public GrblViewModel Grbl { get { return _grblmodel; } private set { _grblmodel = value; OnPropertyChanged(); } }
         public Position StartPosition { get; private set; } = new Position();
         public HeightMapViewModel HeightMap { get; private set; } = new HeightMapViewModel();

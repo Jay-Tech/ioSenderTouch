@@ -177,6 +177,14 @@
     <Compile Include="Controls\IotDialog.xaml.cs">
       <DependentUpon>IotDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Probing\ProbingMacroDialog.xaml.cs">
+      <DependentUpon>ProbingMacroDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Probing\Measurement.cs" />
+    <Compile Include="ViewModels\Probing\ProbeMacroViewModel.cs" />
+    <Compile Include="ViewModels\Probing\Probing.cs" />
+    <Compile Include="ViewModels\Probing\ProbingMacro.cs" />
+    <Compile Include="ViewModels\Probing\ProbingMacros.cs" />
     <Compile Include="ViewModels\AppConfigViewModel.cs" />
     <Compile Include="Controls\AppUiSettings.xaml.cs">
       <DependentUpon>AppUiSettings.xaml</DependentUpon>
@@ -372,7 +380,7 @@
     <Compile Include="GrblCore\WebsocketStream.cs" />
     <Compile Include="GrblCore\YModem.cs" />
     <Compile Include="ViewModels\OffsetViewModel.cs" />
-    <Compile Include="ViewModels\Probling\ProbingViewModel.cs" />
+    <Compile Include="ViewModels\Probing\ProbingViewModel.cs" />
     <Compile Include="Controls\Probing\Program.cs" />
     <Compile Include="Controls\Probing\RotationControl.xaml.cs">
       <DependentUpon>RotationControl.xaml</DependentUpon>
@@ -639,6 +647,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Probing\ProbeVerify.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\ProbingMacroDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

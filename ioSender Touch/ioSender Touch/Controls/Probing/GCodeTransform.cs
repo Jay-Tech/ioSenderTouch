@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Config;
-using ioSenderTouch.ViewModels.Probling;
+using ioSenderTouch.ViewModels.Probing;
 using RP.Math;
 using Action = ioSenderTouch.GrblCore.Action;
 
