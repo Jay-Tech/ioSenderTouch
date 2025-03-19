@@ -198,8 +198,10 @@ namespace ioSenderTouch.ViewModels
 
         private void RestoreOffsets(object x)
         {
+            if (!File.Exists(Path.Combine(Resources.Path, "OffsetSettings.json")))return;
             var setUnit = GrblViewModel.IsMetric ? "G21" : "G20";
             Comms.com.WriteCommand(setUnit);
+            
             using StreamReader file = File.OpenText(Path.Combine(Resources.Path, "OffsetSettings.json"));
             var json = file.ReadToEnd();
             var offsets = (List<Offset>)JsonConvert.DeserializeObject(json, typeof(List<Offset>));
