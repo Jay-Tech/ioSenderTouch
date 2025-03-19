@@ -9,7 +9,7 @@ namespace ioSenderTouch.Utility
 {
     public static class RequestExtension
     {
-        public static async Task SendSettings(GrblViewModel model, byte command, string key = null, Action process = null, int timeout = 500)
+        public static  async Task SendSettings(GrblViewModel model, byte command, string key = null, Action process = null, int timeout = 500)
         {
             try
             {
@@ -60,7 +60,59 @@ namespace ioSenderTouch.Utility
                 model.Poller.SetState(200);
             }
         }
+        public static async Task<bool> SendSettings(GrblViewModel model, string command, string key = null, Action process = null, int timeout = 500)
+        {
+            try
+            {
+                bool res = false;
+                using var cancellationToken = new CancellationTokenSource();
+                model.Poller.SetState(0);
 
+                void ProcessSettings(string response)
+                {
+                    key ??= "ok";
+                    if (!response.Contains(key, StringComparison.OrdinalIgnoreCase)) return;
+                    process?.Invoke();
+                    res = true;
+                }
+                void Send()
+                {
+                    Comms.com.DataReceived -= ProcessSettings;
+                    Comms.com.DataReceived += ProcessSettings;
+                    Comms.com.WriteCommand(command);
+                    while (!res)
+                    {
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            break;
+                        }
+                        Task.Delay(50, cancellationToken.Token);
+                    }
+                    Comms.com.DataReceived -= ProcessSettings;
+                    model.Poller.SetState(model.PollingInterval);
+                }
+
+                var task = Task.Factory.StartNew(Send, cancellationToken.Token);
+                if (await Task.WhenAny(task, Task.Delay(timeout, cancellationToken.Token)) == task)
+                {
+                    cancellationToken.Cancel();
+                    await task;
+                    return true;
+
+                }
+                else
+                {
+                    cancellationToken.Cancel();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                model.Poller.SetState(200);
+                return false;
+            }
+        }
 
     }
 }

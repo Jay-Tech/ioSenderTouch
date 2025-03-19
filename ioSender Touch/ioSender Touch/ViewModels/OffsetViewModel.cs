@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.Threading.Tasks;
-using ioSenderTouch.Controls;
-using System.Windows;
 using System.Windows.Input;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Comands;
 using ioSenderTouch.Utility;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
+
 
 namespace ioSenderTouch.ViewModels
 {
@@ -16,31 +18,18 @@ namespace ioSenderTouch.ViewModels
         private CoordinateSystem _selectedOffset;
         private bool _awaitCoord = false;
         private Action<string> GotPosition;
-        private GrblViewModel _grblViewModel;
         private bool _isPredefined;
         public bool Active { get; set; }
         public string Name { get; }
 
-        public GrblViewModel GrblViewModel
-        {
-            get => _grblViewModel;
-            set
-            {
-                if (Equals(value, _grblViewModel)) return;
-                _grblViewModel = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(AxisLetter));
-                OnPropertyChanged(nameof(Coordinates));
-            }
-        }
-        public AxisLetter AxisLetter => GrblViewModel.AxisLetter;
-
+        public GrblViewModel GrblViewModel { get; set; }
         public CoordinateSystem Offset { get; private set; } = new CoordinateSystem
         {
             X = 0.000,
             Y = 0.000,
             Z = 0.000
         };
+
         public ObservableCollection<CoordinateSystem> Coordinates => GrblViewModel.CoordinateSystems;
         public CoordinateSystem SelectedOffset
         {
@@ -68,6 +57,9 @@ namespace ioSenderTouch.ViewModels
         public ICommand SetOffsetCommand { get; }
         public ICommand SetAllCommand { get; }
         public ICommand ClearAllCommand { get; }
+        public ICommand SaveOffsetsCommand { get; }
+        public ICommand RestoreOffsetsCommand { get; }
+
         public OffsetViewModel(GrblViewModel grblViewModel)
         {
             GrblViewModel = grblViewModel;
@@ -76,11 +68,14 @@ namespace ioSenderTouch.ViewModels
             SetAllCommand = new Command(SetAll);
             ClearAllCommand = new Command(ClearAll);
             SetOffsetCommand = new Command(SetOffset);
+            SaveOffsetsCommand = new Command(SaveOffsets);
+            RestoreOffsetsCommand = new Command(RestoreOffsets);
         }
         public void Activated()
         {
             GrblViewModel.WorkPositionOffset.PropertyChanged += WorkPositionOffset_PropertyChanged;
         }
+
         public void Deactivated()
         {
             GrblViewModel.WorkPositionOffset.PropertyChanged -= WorkPositionOffset_PropertyChanged;
@@ -90,7 +85,7 @@ namespace ioSenderTouch.ViewModels
         {
             switch (e.PropertyName)
             {
-                case nameof(_grblViewModel.MachinePosition):
+                case nameof(GrblViewModel.MachinePosition):
                     _awaitCoord = !double.IsNaN(GrblViewModel.MachinePosition.Values[0]);
                     if (_awaitCoord)
                     {
@@ -103,6 +98,7 @@ namespace ioSenderTouch.ViewModels
 
         private void SelectionChanged()
         {
+            if (SelectedOffset == null) return;
             IsPredefined = SelectedOffset.Code == "G28" || SelectedOffset.Code == "G30";
             Offset.X = 0.000;
             Offset.Y = 0.000;
@@ -176,11 +172,10 @@ namespace ioSenderTouch.ViewModels
         void GetCurrPos(object e)
         {
             _awaitCoord = true;
-            _grblViewModel.Clear();
-            _grblViewModel.MachinePosition.Clear();
-            var t = RequestExtension.SendSettings(_grblViewModel, GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT), "Mpos", InfoReceived);
+            GrblViewModel.Clear();
+            GrblViewModel.MachinePosition.Clear();
+            var t = RequestExtension.SendSettings(GrblViewModel, GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT), "Mpos", InfoReceived);
         }
-
         public void InfoReceived()
         {
             if (!double.IsNaN(GrblViewModel.MachinePosition.Values[0]))
@@ -188,9 +183,49 @@ namespace ioSenderTouch.ViewModels
                 Offset.Set(GrblViewModel.MachinePosition);
             }
         }
+        private void SaveOffsets(object x)
+        {
+            List<Offset> settings = GrblViewModel.CoordinateSystems
+                .Select(offset => new Offset(offset.Code, offset.Id, offset.X.ToInvariantString(),
+                    offset.Y.ToInvariantString(), offset.Z.ToInvariantString())).ToList();
+            using StreamWriter file = File.CreateText(Path.Combine(Resources.Path, "OffsetSettings.json"));
+            JsonSerializer serializer = new JsonSerializer
+            {
+                Formatting = Formatting.Indented
+            };
+            serializer.Serialize(file, settings);
+        }
+
+        private void RestoreOffsets(object x)
+        {
+            var setUnit = GrblViewModel.IsMetric ? "G21" : "G20";
+            Comms.com.WriteCommand(setUnit);
+            using StreamReader file = File.OpenText(Path.Combine(Resources.Path, "OffsetSettings.json"));
+            var json = file.ReadToEnd();
+            var offsets = (List<Offset>)JsonConvert.DeserializeObject(json, typeof(List<Offset>));
+            if (offsets == null) return;
+            foreach (var offset in offsets)
+            {
+                if (offset.Id == 0) continue;
+                //G90G10L2P9X20Y20Z0
+                var command = offset.Id is >= 1 and <= 6
+                    ? $"G90G10L2P{offset.Id}X{offset.X}Y{offset.Y}"
+                    : $"G90G10L2P{offset.Id}X{offset.X}Y{offset.Y}Z{offset.Z}";
+                Comms.com.WriteCommand(command);
+            }
+
+            var t = RequestExtension.SendSettings(GrblViewModel, GrblConstants.CMD_GETNGCPARAMETERS, "G92");
+        }
 
     }
 }
 
 
-
+public class Offset(string offsetPosition, int id, string x, string y, string z)
+{
+    public string OffsetPosition { get; set; } = offsetPosition;
+    public int Id { get; set; } = id;
+    public string X { get; set; } = x;
+    public string Y { get; set; } = y;
+    public string Z { get; set; } = z;
+}

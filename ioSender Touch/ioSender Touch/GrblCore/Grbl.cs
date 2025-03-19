@@ -760,7 +760,7 @@ namespace ioSenderTouch.GrblCore
                 }
 
                 if (changed && !Values.SuspendNotifications)
-                    OnPropertyChanged("Position");
+                    OnPropertyChanged(nameof(Position));
 
                 ok = true;
             }
@@ -1824,7 +1824,7 @@ namespace ioSenderTouch.GrblCore
 
         private static CoordinateSystem AddOrUpdateCS(string gCode, string data)
         {
-            CoordinateSystem cs = CoordinateSystems.Where(x => x.Code == gCode).FirstOrDefault();
+            CoordinateSystem cs = CoordinateSystems.FirstOrDefault(x => x.Code == gCode);
             if (cs == null)
                 CoordinateSystems.Add(cs = new CoordinateSystem(gCode, data));
             else

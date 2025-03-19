@@ -48,6 +48,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Comands;
+using Newtonsoft.Json.Linq;
 using Color = System.Windows.Media.Color;
 
 namespace ioSenderTouch.ViewModels
@@ -814,10 +815,8 @@ namespace ioSenderTouch.ViewModels
             }
         }
 
-        public ObservableCollection<CoordinateSystem> CoordinateSystems
-        {
-            get { return GrblWorkParameters.CoordinateSystems; }
-        }
+        public ObservableCollection<CoordinateSystem> CoordinateSystems { get; set; } = new();
+        
 
         public ObservableCollection<Tool> Tools
         {
@@ -2137,6 +2136,20 @@ namespace ioSenderTouch.ViewModels
                         case "PRB":
                             ParseProbeStatus(data);
                             break;
+                        case "G28":
+                        case "G30":
+                        case "G54":
+                        case "G55":
+                        case "G56":
+                        case "G57":
+                        case "G58":
+                        case "G59":
+                        case "G59.1":
+                        case "G59.2":
+                        case "G59.3":
+                        case "G92":
+                            AddOrUpdateCoordinates(data);
+                            break;
                         case "NEWOPT":
                             string[] valuepair = data.Substring(1).TrimEnd(']').Split(':');
                             var options = valuepair[1];
@@ -2146,6 +2159,7 @@ namespace ioSenderTouch.ViewModels
 
                                 switch (value)
                                 {
+                                   
                                     //case "ENUMS":
                                     //    HasEnums = true;
                                     //    break;
@@ -2355,7 +2369,22 @@ namespace ioSenderTouch.ViewModels
             OnResponseReceived?.Invoke(data);
         }
 
+        private void  AddOrUpdateCoordinates( string data)
+        {
+            int sep = data.IndexOf(":", StringComparison.Ordinal);
+            if (sep > 0)
+            {
+                var gCode = data.Substring(1, sep - 1);
+                var coordinates = data.Substring(sep + 1).TrimEnd(']');
+                var cs = CoordinateSystems.FirstOrDefault(x => x.Code == gCode);
+                if (cs == null)
+                    CoordinateSystems.Add(cs = new CoordinateSystem(gCode, coordinates));
+                else
+                    cs.Parse(coordinates);
+            }
 
+           
+        }
 
         private void ResetSystem()
         {
@@ -2419,6 +2448,11 @@ namespace ioSenderTouch.ViewModels
             if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelZBase).Value, out var z))
             {
                 MaxDistanceZ = z;
+            }
+
+            foreach (var coordinate in GrblWorkParameters.CoordinateSystems)
+            {
+                CoordinateSystems.Add(new CoordinateSystem(coordinate.Code, coordinate.ToString(AxisFlags.XYZ,4)));
             }
 
         }
