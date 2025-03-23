@@ -25,11 +25,10 @@ namespace ioSenderTouch.ViewModels
 
         private GrblViewModel _model;
         private Controller _controller = null;
-        private ToolView _toolView;
+        private ToolsView _toolsView;
         private RenderView _renderView;
         private ProbingView _probeView;
         private SDCardView _sdView;
-        
         private GrblConfigView _grblSettingView;
         private AppConfigView _grblAppSettings;
         private OffsetView _offsetView;
@@ -38,8 +37,6 @@ namespace ioSenderTouch.ViewModels
         private object _view;
         private string _consoleModeText;
         private bool _showGCodeConsole;
-
-         
         public ICommand SwitchConsoleCommand { get; }
         public ICommand ChangeView { get; }
         public object View
@@ -52,7 +49,6 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
-
         public bool ShowGCodeConsole
         {
             get => _showGCodeConsole;
@@ -63,7 +59,6 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
-
         public string ConsoleModeText
         {
             get => _consoleModeText;
@@ -96,7 +91,6 @@ namespace ioSenderTouch.ViewModels
             View = _renderView;
             _contentManager.SetActiveUiElement(nameof(RenderView));
         }
-
         private void AppConfiguationLoaded(object sender, EventArgs e)
         {
             _model.PollingInterval = AppConfig.Settings.Base.PollInterval;
@@ -133,7 +127,6 @@ namespace ioSenderTouch.ViewModels
             ShowGCodeConsole = fileLoaded;
             ConsoleModeText = ShowGCodeConsole ? "Console" : "GCode Viewer";
         }
-
         private void BuildOptionalUi()
         {
             if (_model.HasSDCard)
@@ -142,18 +135,14 @@ namespace ioSenderTouch.ViewModels
             }
             if (_model.HasToolTable)
             {
-                _toolView = new ToolView(_model);
+                _toolsView = new ToolsView(_model,_contentManager);
             }
             if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model, _contentManager);
-
             }
         }
-
-
-
         private bool InitSystem()
         {
             int timeout = 5;
@@ -182,10 +171,8 @@ namespace ioSenderTouch.ViewModels
                     GrblParserState.Get(true);
                 _model.Poller.SetState(AppConfig.Settings.Base.PollInterval);
             }
-
             return true;
         }
-
         private void SetNewView(object x)
         {
             var newView = x.ToString();
@@ -209,11 +196,8 @@ namespace ioSenderTouch.ViewModels
                 case "utilityView":
                     View = _utilityView;
                     break;
-                case "toolView":
-                    View = _toolView;
-                    break;
-                case "renderView":
-                    View = _renderView;
+                case "toolsView":
+                    View = _toolsView;
                     break;
                 case nameof(RenderView):
                     View = _renderView;

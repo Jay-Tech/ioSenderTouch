@@ -409,8 +409,9 @@
     <Compile Include="Controls\THCMonitorControl.xaml.cs">
       <DependentUpon>THCMonitorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ToolView.xaml.cs">
-      <DependentUpon>ToolView.xaml</DependentUpon>
+    <Compile Include="ViewModels\ToolsViewModel.cs" />
+    <Compile Include="Views\ToolsView.xaml.cs">
+      <DependentUpon>ToolsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TrinamicView.xaml.cs">
       <DependentUpon>TrinamicView.xaml</DependentUpon>
@@ -718,7 +719,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\ToolView.xaml">
+    <Page Include="Views\ToolsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

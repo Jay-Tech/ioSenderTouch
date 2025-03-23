@@ -45,6 +45,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Comands;
@@ -152,9 +153,9 @@ namespace ioSenderTouch.ViewModels
         private int _rxBufferSize;
         private bool _enableKeyboard;
 
-
+        public bool ManualToolChange { get; set; }
         public delegate void GrblResetHandler();
-       
+
         //Command Section
         public ICommand ShutDownCommand { get; }
         public ICommand WcsCommand { get; }
@@ -173,7 +174,7 @@ namespace ioSenderTouch.ViewModels
         public ICommand SpindleOnCcwCommand { get; }
         public ICommand SpindleOffCommand { get; }
 
-        public ICommand SpindleSpeedCommand {get; }
+        public ICommand SpindleSpeedCommand { get; }
 
         public string AlarmConText
         {
@@ -307,7 +308,7 @@ namespace ioSenderTouch.ViewModels
             }
         }
 
-      
+
         public GrblViewModel()
         {
             _a = _pn = _fs = _sc = _tool = string.Empty;
@@ -363,7 +364,7 @@ namespace ioSenderTouch.ViewModels
 
         private void SetSpindleCcw(object obj)
         {
-           ExecuteCommand($"M4S{SelectedSpindleSpeed}");
+            ExecuteCommand($"M4S{SelectedSpindleSpeed}");
         }
 
         private void SetSpindleOff(object obj)
@@ -383,7 +384,7 @@ namespace ioSenderTouch.ViewModels
             ExecuteCommand(command);
         }
 
-       
+
 
         private void SpindleOverRidePrecent(object obj)
         {
@@ -742,13 +743,13 @@ namespace ioSenderTouch.ViewModels
                 }
 
                 if (ok) foreach (var command in commands)
-                {
-                    if (ApplyCommand(command))
                     {
-                        if (ResponseLogVerbose && !string.IsNullOrEmpty(command))
-                            ResponseLog.Add(command);
+                        if (ApplyCommand(command))
+                        {
+                            if (ResponseLogVerbose && !string.IsNullOrEmpty(command))
+                                ResponseLog.Add(command);
+                        }
                     }
-                }
             }
         }
 
@@ -854,12 +855,11 @@ namespace ioSenderTouch.ViewModels
         }
 
         public ObservableCollection<CoordinateSystem> CoordinateSystems { get; set; } = new();
-        
 
-        public ObservableCollection<Tool> Tools
-        {
-            get { return GrblWorkParameters.Tools; }
-        }
+
+        public ObservableCollection<Tool> Tools { get; set; } = [];
+
+
 
         public ObservableCollection<string> SystemInfo
         {
@@ -1017,7 +1017,7 @@ namespace ioSenderTouch.ViewModels
 
         public ObservableCollection<Macro> UtilityMacros { get; set; } = new ObservableCollection<Macro>();
 
-       
+
 
         public bool IsProbing
         {
@@ -1318,7 +1318,7 @@ namespace ioSenderTouch.ViewModels
 
             }
         }
-    
+
 
         public bool HasToolTable
         {
@@ -2042,7 +2042,11 @@ namespace ioSenderTouch.ViewModels
 
                 case "T":
                     if (_tool != value)
+                    {
                         Tool = value == "0" ? GrblConstants.NO_TOOL : value;
+                    }
+
+
                     break;
 
                 case "TLR":
@@ -2169,8 +2173,8 @@ namespace ioSenderTouch.ViewModels
             else if (data.First() == '[')
             {
                 int sep = data.IndexOf(':');
-                if (sep > 1) switch (data.Substring(1, sep - 1))
-                    {
+                if (sep > 1) switch (data.Substring(1, sep - 1)) 
+                {
                         case "PRB":
                             ParseProbeStatus(data);
                             break;
@@ -2188,6 +2192,9 @@ namespace ioSenderTouch.ViewModels
                         case "G92":
                             AddOrUpdateCoordinates(data);
                             break;
+                        case "T":
+                            UpDateToolTable(data);
+                            break;
                         case "NEWOPT":
                             string[] valuepair = data.Substring(1).TrimEnd(']').Split(':');
                             var options = valuepair[1];
@@ -2197,7 +2204,7 @@ namespace ioSenderTouch.ViewModels
 
                                 switch (value)
                                 {
-                                   
+
                                     //case "ENUMS":
                                     //    HasEnums = true;
                                     //    break;
@@ -2206,9 +2213,9 @@ namespace ioSenderTouch.ViewModels
                                     //    ExpressionsSupported = true;
                                     //    break;
 
-                                    //case "TC":
-                                    //    ManualToolChange = true;
-                                    //    break;
+                                    case "TC":
+                                        ManualToolChange = true;
+                                        break;
 
                                     case "ATC":
                                         HasATC = true;
@@ -2407,21 +2414,38 @@ namespace ioSenderTouch.ViewModels
             OnResponseReceived?.Invoke(data);
         }
 
-        private void  AddOrUpdateCoordinates( string data)
-        {
-            int sep = data.IndexOf(":", StringComparison.Ordinal);
-            if (sep > 0)
-            {
-                var gCode = data.Substring(1, sep - 1);
-                var coordinates = data.Substring(sep + 1).TrimEnd(']');
-                var cs = CoordinateSystems.FirstOrDefault(x => x.Code == gCode);
-                if (cs == null)
-                    CoordinateSystems.Add(cs = new CoordinateSystem(gCode, coordinates));
-                else
-                    cs.Parse(coordinates);
-            }
+       
 
-           
+        private readonly char[] _toolTrim = ['[', 'T', ':'];
+        private void UpDateToolTable(string data)
+        {
+            var s1 = data.Split('|');
+            var tIndex = s1[0].TrimStart(_toolTrim);
+            var tool = Tools.FirstOrDefault(x => x.Code == tIndex);
+            if (tool == null)
+            {
+                tool = new Tool(tIndex, s1[1]);
+                Tools.Add(tool);
+            }
+            else
+                tool.Parse(s1[1]);
+
+            if (s1.Length <= 2) return;
+            var s2 = s1[2].Split(',');
+            tool.R = dbl.Parse(s2[0]);
+        }
+
+        private void AddOrUpdateCoordinates(string data)
+        {
+            var sep = data.IndexOf(":", StringComparison.Ordinal);
+            if (sep <= 0) return;
+            var gCode = data.Substring(1, sep - 1);
+            var coordinates = data.Substring(sep + 1).TrimEnd(']');
+            var cs = CoordinateSystems.FirstOrDefault(x => x.Code == gCode);
+            if (cs == null)
+                CoordinateSystems.Add(cs = new CoordinateSystem(gCode, coordinates));
+            else
+                cs.Parse(coordinates);
         }
 
         private void ResetSystem()
@@ -2490,18 +2514,19 @@ namespace ioSenderTouch.ViewModels
 
             foreach (var coordinate in GrblWorkParameters.CoordinateSystems)
             {
-                CoordinateSystems.Add(new CoordinateSystem(coordinate.Code, coordinate.ToString(AxisFlags.XYZ,4)));
+                CoordinateSystems.Add(new CoordinateSystem(coordinate.Code, coordinate.ToString(AxisFlags.XYZ, 4)));
             }
 
         }
-
-
-
-
         public void LoadComplete()
         {
             Message = string.Empty;
             GrblInitialized?.Invoke(this, null);
+            if (Tools.Count != 1) return;
+            Tools.Add(new Tool("1"));
+            Tools.Add(new Tool("2"));
+            Tools.Add(new Tool("3"));
+            Tools.Add(new Tool("4"));
         }
     }
 }

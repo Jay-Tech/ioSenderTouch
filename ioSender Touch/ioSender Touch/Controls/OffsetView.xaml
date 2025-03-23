@@ -14,9 +14,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="SharedStyles.xaml"/>
-                <!--<ResourceDictionary>
-                    <FrameworkElement x:Key="ProxyElement" DataContext="{Binding .GrblViewModel}"/>
-                </ResourceDictionary>-->
             </ResourceDictionary.MergedDictionaries>
             <system:String x:Uid="lbl_axis" x:Key="AxisLabel">{0} axis:</system:String>
             <controls:LogicalNotConverter x:Key="IsNotPredefined" />
