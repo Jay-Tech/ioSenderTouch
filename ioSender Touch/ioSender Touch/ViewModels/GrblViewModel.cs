@@ -857,7 +857,7 @@ namespace ioSenderTouch.ViewModels
         public ObservableCollection<CoordinateSystem> CoordinateSystems { get; set; } = new();
 
 
-        public ObservableCollection<Tool> ToolsOffsets { get; set; } = [];
+        //public ObservableCollection<Tool> ToolsOffsets { get; set; } = [];
 
 
         public ObservableCollection<Tool> Tools => GrblWorkParameters.Tools;
@@ -2230,7 +2230,7 @@ namespace ioSenderTouch.ViewModels
                             AddOrUpdateCoordinates(data);
                             break;
                         case "T":
-                            UpDateToolTable(data);
+                            //UpDateToolTable(data);
                             break;
                         case "NEWOPT":
                             string[] valuepair = data.Substring(1).TrimEnd(']').Split(':');
@@ -2457,23 +2457,23 @@ namespace ioSenderTouch.ViewModels
         private readonly char[] _toolTrim = ['[', 'T', ':'];
         private double _activeToolOffset;
 
-        private void UpDateToolTable(string data)
-        {
-            var s1 = data.Split('|');
-            var tIndex = s1[0].TrimStart(_toolTrim);
-            var tool = Tools.FirstOrDefault(x => x.Code == tIndex);
-            if (tool == null)
-            {
-                tool = new Tool(tIndex, s1[1]);
-                ToolsOffsets.Add(tool);
-            }
-            else
-                tool.Parse(s1[1]);
+        //private void UpDateToolTable(string data)
+        //{
+        //    var s1 = data.Split('|');
+        //    var tIndex = s1[0].TrimStart(_toolTrim);
+        //    var tool = Tools.FirstOrDefault(x => x.Code == tIndex);
+        //    if (tool == null)
+        //    {
+        //        tool = new Tool(tIndex, s1[1]);
+        //        ToolsOffsets.Add(tool);
+        //    }
+        //    else
+        //        tool.Parse(s1[1]);
 
-            if (s1.Length <= 2) return;
-            var s2 = s1[2].Split(',');
-            tool.R = dbl.Parse(s2[0]);
-        }
+        //    if (s1.Length <= 2) return;
+        //    var s2 = s1[2].Split(',');
+        //    tool.R = dbl.Parse(s2[0]);
+        //}
 
         private void AddOrUpdateCoordinates(string data)
         {
@@ -2563,12 +2563,12 @@ namespace ioSenderTouch.ViewModels
             Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL);
             Message = string.Empty;
             GrblInitialized?.Invoke(this, null);
-            if (Tools.Count >1) return;
-            ToolsOffsets.Add(new Tool("None"));
-            ToolsOffsets.Add(new Tool("1"));
-            ToolsOffsets.Add(new Tool("2"));
-            ToolsOffsets.Add(new Tool("3"));
-            ToolsOffsets.Add(new Tool("4"));
+            //if (Tools.Count >1) return;
+            //ToolsOffsets.Add(new Tool("None"));
+            //ToolsOffsets.Add(new Tool("1"));
+            //ToolsOffsets.Add(new Tool("2"));
+            //ToolsOffsets.Add(new Tool("3"));
+            //ToolsOffsets.Add(new Tool("4"));
         }
     }
 }
