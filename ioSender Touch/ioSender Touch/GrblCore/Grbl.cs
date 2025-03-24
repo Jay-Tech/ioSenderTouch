@@ -2892,7 +2892,7 @@ namespace ioSenderTouch.GrblCore
     {
         System.Timers.Timer pollTimer = null;
 
-        private byte RTCommand = GrblConstants.CMD_STATUS_REPORT_ALL;
+        private byte _rtCommand = GrblConstants.CMD_STATUS_REPORT_ALL;
 
         internal static bool suspend = false;
 
@@ -2925,7 +2925,7 @@ namespace ioSenderTouch.GrblCore
                     pollTimer.Stop();
                 pollTimer.Interval = PollInterval;
                 pollTimer.Start();
-                RTCommand = GrblConstants.CMD_STATUS_REPORT_ALL;
+                _rtCommand = GrblConstants.CMD_STATUS_REPORT_ALL;
             }
             else
                 pollTimer.Stop();
@@ -2934,11 +2934,11 @@ namespace ioSenderTouch.GrblCore
         void pollTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (!suspend)
-                Comms.com.WriteByte(RTCommand);
+                Comms.com.WriteByte(_rtCommand);
 
-            if (RTCommand == GrblConstants.CMD_STATUS_REPORT_ALL)
+            if (_rtCommand == GrblConstants.CMD_STATUS_REPORT_ALL)
             {
-                RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
+                _rtCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
             }
 
         }

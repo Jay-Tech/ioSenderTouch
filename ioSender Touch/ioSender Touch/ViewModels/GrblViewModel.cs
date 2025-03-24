@@ -39,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -541,15 +542,14 @@ namespace ioSenderTouch.ViewModels
             pollThread.Abort();
         }
 
-        private void ToolOffset_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(GrblCore.Position))
-                OnPropertyChanged(nameof(ToolOffset));
-        }
 
         private void ProbePosition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GrblCore.Position))
+                if (TloReference != Double.NaN)
+                {
+                    
+                }
                 OnPropertyChanged(nameof(ProbePosition));
         }
 
@@ -857,7 +857,10 @@ namespace ioSenderTouch.ViewModels
         public ObservableCollection<CoordinateSystem> CoordinateSystems { get; set; } = new();
 
 
-        public ObservableCollection<Tool> Tools { get; set; } = [];
+        public ObservableCollection<Tool> ToolsOffsets { get; set; } = [];
+
+
+        public ObservableCollection<Tool> Tools => GrblWorkParameters.Tools;
 
 
 
@@ -1078,6 +1081,17 @@ namespace ioSenderTouch.ViewModels
             private set
             {
                 _toolNumber = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double ActiveToolOffset
+        {
+            get => _activeToolOffset;
+            set
+            {
+                if (value.Equals(_activeToolOffset)) return;
+                _activeToolOffset = value;
                 OnPropertyChanged();
             }
         }
@@ -1754,6 +1768,14 @@ namespace ioSenderTouch.ViewModels
                 ParserState = data.Substring(4).TrimEnd(']');
         }
 
+        private void ToolOffset_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GrblCore.Position))
+            {
+                OnPropertyChanged(nameof(ToolOffset));
+            }
+
+        }
         public bool ParseProbeStatus(string data)
         {
             string[] values = data.TrimEnd(']').Split(':');
@@ -1762,6 +1784,17 @@ namespace ioSenderTouch.ViewModels
                 IsProbeSuccess = values[2] == "1";
                 for (int i = 0; i < GrblInfo.NumAxes; i++)
                     GrblWorkParameters.ProbePosition.Values[i] = ProbePosition.Values[i];
+
+                if (values.Length > 2)
+                {
+                    if (!double.IsNaN(TloReference))
+                    {
+                        var tlr = Math.Abs(TloReference);
+                         ActiveToolOffset = Math.Round(tlr + ProbePosition.Z,4);
+                    }
+                    
+                }
+               
             }
             else
                 IsProbeSuccess = false;
@@ -2051,6 +2084,7 @@ namespace ioSenderTouch.ViewModels
 
                 case "TLR":
                     IsTloReferenceSet = value != "0";
+
                     break;
 
                 case "MPG":
@@ -2137,7 +2171,10 @@ namespace ioSenderTouch.ViewModels
             Connected = true;
             if (data.Length == 0)
                 return;
+            if (data.Contains("PRB"))
+            {
 
+            }
             if (SuspendProcessing)
             {
                 OnResponseReceived?.Invoke(data);
@@ -2290,6 +2327,7 @@ namespace ioSenderTouch.ViewModels
 
                         case "TLR":
                             TloReference = dbl.Parse(data.Substring(5).TrimEnd(']'));
+                                //IsTloReferenceSet  != "0";
                             break;
 
                         case "TLO":
@@ -2417,6 +2455,8 @@ namespace ioSenderTouch.ViewModels
        
 
         private readonly char[] _toolTrim = ['[', 'T', ':'];
+        private double _activeToolOffset;
+
         private void UpDateToolTable(string data)
         {
             var s1 = data.Split('|');
@@ -2425,7 +2465,7 @@ namespace ioSenderTouch.ViewModels
             if (tool == null)
             {
                 tool = new Tool(tIndex, s1[1]);
-                Tools.Add(tool);
+                ToolsOffsets.Add(tool);
             }
             else
                 tool.Parse(s1[1]);
@@ -2520,13 +2560,15 @@ namespace ioSenderTouch.ViewModels
         }
         public void LoadComplete()
         {
+            Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL);
             Message = string.Empty;
             GrblInitialized?.Invoke(this, null);
-            if (Tools.Count != 1) return;
-            Tools.Add(new Tool("1"));
-            Tools.Add(new Tool("2"));
-            Tools.Add(new Tool("3"));
-            Tools.Add(new Tool("4"));
+            if (Tools.Count >1) return;
+            ToolsOffsets.Add(new Tool("None"));
+            ToolsOffsets.Add(new Tool("1"));
+            ToolsOffsets.Add(new Tool("2"));
+            ToolsOffsets.Add(new Tool("3"));
+            ToolsOffsets.Add(new Tool("4"));
         }
     }
 }

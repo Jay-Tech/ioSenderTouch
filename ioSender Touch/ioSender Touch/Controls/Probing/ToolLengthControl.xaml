@@ -25,7 +25,9 @@
             <StackPanel Orientation="Horizontal" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <CheckBox x:Uid="lbl_probeFixture" Content="Probe fixture @ G59.3" IsEnabled="{Binding Path=HasCoordinateSystem9}" IsChecked="{Binding Path=ProbeFixture, Mode=TwoWay}" VerticalAlignment="Center"/>
                 <Label x:Uid="lbl_withTool" Content="with tool:"></Label>
-                <controls:NumericComboBox Margin="2,2" DisplayMemberPath="Code" SelectedValuePath="Code" ItemsSource="{Binding Path=Grbl.Tools}" SelectedValue="{Binding Path=Grbl.Tool, Mode=TwoWay}" IsEnabled="{Binding Path=HasToolTable}" Format="##0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="56" Height="22"/>
+                <controls:NumericComboBox Margin="2,2" DisplayMemberPath="Code" SelectedValuePath="Code" ItemsSource="{Binding Path=Grbl.Tools}" 
+                                          SelectedValue="{Binding Path=Grbl.Tool, Mode=TwoWay}" IsEnabled="{Binding Path=HasToolTable}" Format="##0"
+                                          HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Height="22"/>
             </StackPanel>
             <CheckBox x:Uid="lbl_setRefernecOffset" Content="Establish reference offset" IsChecked="{Binding Path=ReferenceToolOffset, Mode=TwoWay}" IsEnabled="{Binding Path=CanReferenceToolOffset}" Margin="10,0,0,0" VerticalAlignment="Center"/>
             <Border Margin="5,10,0,0" Visibility="{Binding Path=Grbl.IsToolOffsetActive, Converter={StaticResource IsVisibleConverter}}" Background="Salmon" HorizontalAlignment="Left" VerticalAlignment="Center" CornerRadius="2" Width="186" Height="28">

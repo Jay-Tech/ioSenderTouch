@@ -124,7 +124,7 @@
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource ToolWithOffsetStringConverter}">
                         <Binding Path="Tool" StringFormat="Tool:{0}" Mode="OneWay"/>
-                        <Binding Path="ToolOffset.Z"  StringFormat="Offset:{0}"  Mode="OneWay"/>
+                        <Binding Path="ActiveToolOffset"  StringFormat="Offset:{0}"  Mode="OneWay"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

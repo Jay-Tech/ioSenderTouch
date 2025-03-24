@@ -98,6 +98,7 @@ namespace ioSenderTouch.Controls.Probing
                     Grbl.ExecuteMacro(probing.ProbeMacroVm.PostJobCommands);
                 if (probing.ProbeMacroVm.RunOnce)
                     probing.ProbeMacroVm.Clear();
+                Comms.com.WriteCommand(GrblConstants.CMD_GETNGCPARAMETERS);
             }
         }
         private void Grbl_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -422,7 +423,7 @@ namespace ioSenderTouch.Controls.Probing
                     probing.Message = LibStrings.FindResource("Probing");
 
                 cmd_response = string.Empty;
-                //Comms.com.WriteCommand(_program[step]);
+                Comms.com.WriteCommand(_program[step]);
                 Grbl.ExecuteCommand(_program[step]);
 
                 while (!_isComplete)
@@ -468,8 +469,8 @@ namespace ioSenderTouch.Controls.Probing
                                     //if ((isProbing = _program[step].Contains("G38")) && !IsProbeReady())
                                     //    response = "probe!";
                                     //else
-                                    //Comms.com.WriteCommand(_program[step]);
-                                        Grbl.ExecuteCommand(_program[step]);
+                                       Comms.com.WriteCommand(_program[step]);
+                                       // Grbl.ExecuteCommand(_program[step]);
                                 }
                             }
                         }
