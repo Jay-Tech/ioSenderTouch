@@ -108,7 +108,7 @@ namespace ioSenderTouch.ViewModels.Probing
             Name = nameof(ProbingViewModel);
             Grbl = grblmodel;
             _grblmodel = grblmodel;
-            _grblmodel.GrblUnitChanged += _grblmodel_GrblUnitChnaged1; ;
+            _grblmodel.GrblUnitChanged += _grblmodel_GrblUnitChanged;
             Program = new Program(this);
             Profiles = profile.Profiles;
             Profile = Profiles[0];
@@ -117,7 +117,7 @@ namespace ioSenderTouch.ViewModels.Probing
             Measurement.PropertyChanged += Measurement_PropertyChanged;
         }
 
-        private void _grblmodel_GrblUnitChnaged1(object sender, GrblCore.Measurement e)
+        private void _grblmodel_GrblUnitChanged(object sender, GrblCore.Measurement e)
         {
             Unit = e == GrblCore.Measurement.Metric ? "mm" : "in";
         }

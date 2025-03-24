@@ -411,8 +411,7 @@ namespace ioSenderTouch.Controls.Probing
                     if(hasPause)
                         probing.PropertyChanged += Probing_PropertyChanged;
                 }
-                if (probing.ProbeMacroVm.PreJobCommands.Length > 0)
-                    _program.InsertRange(0, probing.ProbeMacroVm.PreJobCommands);
+                
                 //cancelling = false;
                 Grbl.IsJobRunning = true;
                 
