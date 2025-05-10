@@ -1,39 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Controls;
-using CNC.Controls.Probing;
-using CNC.Controls.Viewer;
-using CNC.Core;
-using CNC.Core.Comands;
+using ioSenderTouch.Controls;
+using ioSenderTouch.Controls.Probing;
+using ioSenderTouch.Controls.Render;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Comands;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.Utility;
 using ioSenderTouch.Views;
+
+
 
 namespace ioSenderTouch.ViewModels
 {
     public class HomeViewModel : INotifyPropertyChanged
     {
 
-        private bool? initOK = null;
-        private bool isBooted = false;
-        private GrblViewModel _grblViewModel;
+        private GrblViewModel _model;
         private Controller _controller = null;
-        private ToolView _toolView;
-        private RenderControl _renderView;
+        private ToolsView _toolsView;
+        private RenderView _renderView;
         private ProbingView _probeView;
         private SDCardView _sdView;
-        private UserControl _view;
         private GrblConfigView _grblSettingView;
         private AppConfigView _grblAppSettings;
         private OffsetView _offsetView;
         private UtilityView _utilityView;
-
+        private readonly ContentManager _contentManager;
+        private object _view;
+        private string _consoleModeText;
+        private bool _showGCodeConsole;
+        public ICommand SwitchConsoleCommand { get; }
         public ICommand ChangeView { get; }
-        public UserControl View
+        public object View
         {
             get => _view;
             set
@@ -43,36 +49,112 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        public bool ShowGCodeConsole
+        {
+            get => _showGCodeConsole;
+            set
+            {
+                if (value == _showGCodeConsole) return;
+                _showGCodeConsole = value;
+                OnPropertyChanged();
+            }
+        }
+        public string ConsoleModeText
+        {
+            get => _consoleModeText;
+            set
+            {
+                if (value == _consoleModeText) return;
+                _consoleModeText = value;
+                OnPropertyChanged();
+            }
+        }
         public HomeViewModel(GrblViewModel grblViewModel)
         {
-            _grblViewModel = grblViewModel;
-            Grbl.GrblViewModel = _grblViewModel;
-            _renderView = new RenderControl(_grblViewModel);
-            _grblSettingView = new GrblConfigView(_grblViewModel);
-            _grblAppSettings = new AppConfigView(_grblViewModel);
-            _offsetView = new OffsetView(_grblViewModel);
-            _utilityView = new UtilityView(_grblViewModel);
-            AppConfig.Settings.SetupAndOpen(_grblViewModel, Application.Current.Dispatcher);
-            InitSystem();
             ChangeView = new Command(SetNewView);
-           
-
+            SwitchConsoleCommand = new Command(SwitchConsole);
+            _model = grblViewModel;
+            _contentManager = _model.ContentManager;
+            _renderView = new RenderView(_model, _contentManager);
+            _grblSettingView = new GrblConfigView(_model, _contentManager);
+            _grblAppSettings = new AppConfigView(_model, _contentManager);
+            _offsetView = new OffsetView(_model, _contentManager);
+            _utilityView = new UtilityView(_model, _contentManager);
+            AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
+            _controller = new Controller(_model, AppConfig.Settings);
+            _controller.SetupAndOpen(Application.Current.Dispatcher);
+            InitSystem();
+            BuildOptionalUi();
+            GCode.File.FileLoaded += File_FileLoaded;
+            var gamepad = new HandController(_model);
+            ConsoleModeText = "Console";
+            View = _renderView;
+            _contentManager.SetActiveUiElement(nameof(RenderView));
         }
+        private void AppConfiguationLoaded(object sender, EventArgs e)
+        {
+            _model.PollingInterval = AppConfig.Settings.Base.PollInterval;
+            var controls = new ObservableCollection<UserControl>
+            {
+                new BasicConfigControl(),
+                new ProbingConfigControl()
+            };
 
-        
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
+            {
+                controls.Add(new JogUiConfigControl(_model));
+            }
+            controls.Add(new AppUiSettings());
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.UI)
+            {
+                controls.Add(new JogConfigControl(_model));
+            }
+            controls.Add(new StripGCodeConfigControl());
+
+            if (AppConfig.Settings.GCodeViewer.IsEnabled)
+            {
+                controls.Add(new RenderConfigControl());
+            }
+            _grblAppSettings.Setup(controls);
+        }
+        private void SwitchConsole(object obj)
+        {
+            ShowGCodeConsole = !ShowGCodeConsole;
+            ConsoleModeText = ShowGCodeConsole ? "Console" : "GCode Viewer";
+        }
+        private void File_FileLoaded(object sender, bool fileLoaded)
+        {
+            ShowGCodeConsole = fileLoaded;
+            ConsoleModeText = ShowGCodeConsole ? "Console" : "GCode Viewer";
+        }
+        private void BuildOptionalUi()
+        {
+            if (_model.HasSDCard)
+            {
+                _sdView = new SDCardView(_model, _contentManager);
+            }
+            if (_model.HasToolTable)
+            {
+                _toolsView = new ToolsView(_model,_contentManager);
+            }
+            if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
+            {
+                _model.HasProbing = true;
+                _probeView = new ProbingView(_model, _contentManager);
+            }
+        }
         private bool InitSystem()
         {
-            initOK = true;
             int timeout = 5;
-            _grblViewModel.Poller.SetState(0);
+
             using (new UIUtils.WaitCursor())
             {
+                _model.Poller.SetState(0);
                 while (!GrblInfo.Get())
                 {
                     if (--timeout == 0)
                     {
-                        _grblViewModel.Message = ("MsgNoResponse");
+                        _model.Message = "Controller is not responding!";
                         return false;
                     }
                     Thread.Sleep(500);
@@ -87,99 +169,43 @@ namespace ioSenderTouch.ViewModels
                 }
                 else
                     GrblParserState.Get(true);
-                _grblViewModel.Poller.SetState(AppConfig.Settings.Base.PollInterval);
-
-            }
-
-            GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
-
-
-            if (_grblViewModel.HasSDCard)
-            {
-                _sdView = new SDCardView(_grblViewModel);
-            }
-
-            if (_grblViewModel.HasATC)
-            {
-                _toolView = new ToolView(_grblViewModel);
-            }
-
-            if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
-            {
-                _grblViewModel.HasProbing = true;
-                _probeView = new ProbingView(_grblViewModel);
-                _probeView.Activate(true);
-
+                _model.Poller.SetState(AppConfig.Settings.Base.PollInterval);
             }
             return true;
         }
-
-
-        private void Button_ClickSDView(object sender, RoutedEventArgs e)
+        private void SetNewView(object x)
         {
-            //  FillBorder.Child = _sdView;
-        }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //FillBorder.Child = _grblSettingView;
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            // FillBorder.Child = _probeView;
-
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            //FillBorder.Child = _renderView;
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            // FillBorder.Child = _grblAppSettings;
-
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            // FillBorder.Child = _offsetView;
-        }
-
-        private void Button_Click_Utility(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void Button_Click_Tools(object sender, RoutedEventArgs e)
-        {
-            // FillBorder.Child = _toolView;
-        }
-
-
-
-        public void SetNewView(object x)
-        {
-
-            switch (x.ToString())
+            var newView = x.ToString();
+            switch (newView)
             {
-
+                case "offsetView":
+                    View = _offsetView;
+                    break;
+                case nameof(SDCardView):
+                    View = _sdView;
+                    break;
+                case "grblSettingsView":
+                    View = _grblSettingView;
+                    break;
+                case "appSettingsView":
+                    View  = _grblAppSettings;
+                    break;
+                case nameof(ProbingView):
+                    View = _probeView;
+                    break;
+                case "utilityView":
+                    View = _utilityView;
+                    break;
+                case "toolsView":
+                    View = _toolsView;
+                    break;
+                case nameof(RenderView):
+                    View = _renderView;
+                    break;
+                default:  View = _renderView;
+                    break;
             }
-        }
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            //if (CodeListControl.Visibility == Visibility.Visible)
-            //{
-            //    CodeListControl.Visibility = Visibility.Hidden;
-            //    ConsoleControl.Visibility = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    CodeListControl.Visibility = Visibility.Visible;
-            //    ConsoleControl.Visibility = Visibility.Hidden;
-            //}
-
-
-            //btnShowConsole.Content = ConsoleControl.Visibility == Visibility.Hidden ? "Console" : "GCode Viewer";
+            _contentManager.SetActiveUiElement(newView);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

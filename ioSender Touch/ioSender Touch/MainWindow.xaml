@@ -4,38 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        xmlns:cnccore="clr-namespace:CNC.Core;assembly=CNC.Core"
-        xmlns:cnccontrols="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+        xmlns:grblCore="clr-namespace:ioSenderTouch.GrblCore"
+        xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="1080"
         d:DesignWidth="1920"
-        WindowStyle="None"
         WindowStartupLocation="Manual" 
         ResizeMode="NoResize"
         Loaded="Window_Load"
         Icon="App.ico" 
         Name ="AppMainWindow"
+        WindowStyle="None"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
+        Style="{StaticResource MaterialDesignWindow}"
         FontFamily="{materialDesign:MaterialDesignFont}">
     <Window.Resources>
-        <system:String x:Uid="str_mnuRotate" x:Key="MenuRotate">Rotate</system:String>
-        <system:String x:Uid="str_mnuArcsToLines" x:Key="MenuArcsToLines">Arcs to lines</system:String>
-        <system:String x:Uid="str_mnuCompress" x:Key="MenuCompress">Compress (experimental)</system:String>
-        <system:String x:Uid="str_mnuDragKnife" x:Key="MenuDragKnife">Add drag knife moves</system:String>
-        <system:String x:Uid="str_jogStep" x:Key="JogStep">JogMetric step: {0}</system:String>
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
-        <cnccontrols:BlocksToStringConverter x:Key="BlocksToStringConverter" />
-        <cnccontrols:LogicalNotConverter x:Key="BooleanConverter" />
-        <cnccontrols:GrblStateToColorConverter x:Key="StateColorConverter" />
+        <controls:BlocksToStringConverter x:Key="BlocksToStringConverter" />
+        <controls:LogicalNotConverter x:Key="BooleanConverter" />
+        <controls:BoolToVisibleConverter x:Key="BooleanVisibleConverter" />
+        <controls:GrblStateToColorConverter x:Key="StateColorConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <cnccore:GrblViewModel />
+        <viewModels:GrblViewModel />
     </Window.DataContext>
-    <DockPanel LastChildFill="True" Name="DockPanel" SizeChanged="MainGrid_SizeChanged">
+    <DockPanel  LastChildFill="True" Name="DockPanel" SizeChanged="MainGrid_SizeChanged">
         <DockPanel.LayoutTransform>
             <ScaleTransform x:Name="ApplicationScaleTransform"
                 CenterX="0"
@@ -83,17 +81,28 @@
             </StatusBar>
         </Border>
 
-        <Grid Height="55"  DockPanel.Dock="Top">
+        <Grid Height="55"   DockPanel.Dock="Top">
             <ToolBarTray  IsLocked="True">
-                <ToolBar IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" Height="42" VerticalAlignment="Top" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" >
-                    <cnccontrols:FileActionControl IsEnabled="{Binding Path=IsToolChanging, Converter={StaticResource BooleanConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <ToolBar IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
+                         Height="55" VerticalAlignment="Top" 
+                         Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" >
+                    <controls:FileActionControl IsEnabled="{Binding Path=IsToolChanging, Converter={StaticResource BooleanConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     <Separator Margin="4,0"></Separator>
-                    <cnccontrols:MacroToolbarControl x:Name="toolbarMacros"/>
+                    <ToggleButton HorizontalAlignment="Left" VerticalContentAlignment="Center"
+                                  Content="{materialDesign:PackIcon Kind=KeyboardVariant,Size=50}" 
+                                  HorizontalContentAlignment="Center" VerticalAlignment="Center" 
+                                  Height="50" Width="65" Margin="0,0,10,0"
+                                  IsChecked="{Binding EnableKeyboard}"
+                                  Style="{StaticResource MaterialDesignFlatToggleButton}"
+                                  ToolTip="MaterialDesignFlatPrimaryToggleButton" />
+                    <Separator Margin="4,0"></Separator>
+                    <controls:MacroToolbarControl x:Name="toolbarMacros"/>
                     <Separator Margin="4,0"></Separator>
                 </ToolBar>
             </ToolBarTray>
-            <Button  HorizontalAlignment="Right" Height="40" Width="110" Margin="0,0,5,0" Content="Reset" HorizontalContentAlignment="Center"
-                     VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetCommand}"></Button>
+
+                <Button  HorizontalAlignment="Right" Height="40" Width="110" Margin="0,0,5,0" Content="Reset" HorizontalContentAlignment="Center"
+                         VerticalAlignment="Center" VerticalContentAlignment="Center" Command="{Binding ResetCommand}"></Button>
         </Grid>
         <Border  Name="BorderLeft" BorderThickness="1" DockPanel.Dock="Left">
         </Border>
