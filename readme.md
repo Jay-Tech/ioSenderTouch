@@ -1,5 +1,3 @@
-# **New in progress Project** 
-https://github.com/Jay-Tech/GrblHAL-Sender/tree/grblHALSender
 
 
 ## ioSender Touch - a gcode sender based on Terjeio  [ioSender](https://github.com/terjeio/ioSender) for grblHAL
