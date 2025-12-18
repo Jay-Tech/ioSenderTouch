@@ -4,12 +4,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
-using CNC.Controls;
-using CNC.Core;
 using ioSenderTouch.Controls;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.Utility;
+using ioSenderTouch.ViewModels;
+using ioSenderTouch.Views;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
-using Color = System.Windows.Media.Color;
 
 
 
@@ -17,7 +21,7 @@ namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.0.1.6";
+        private const string Version = "B2.0.3";
         private const string App_Name = "IO Sender Touch";
 
         private readonly GrblViewModel _viewModel;
@@ -30,12 +34,15 @@ namespace ioSenderTouch
         public MainWindow()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
-            CNC.Core.Resources.Path = path;
+            GrblCore.Resources.Path = path;
             InitializeComponent();
+            
             Title = string.Format(Title, Version);
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
+            _viewModel.ContentManager = new ContentManager();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
             {
@@ -60,8 +67,11 @@ namespace ioSenderTouch
                 MenuBorder.Child = menu;
                 MenuBorder.DataContext = _viewModel;
             }
+            
             this.Closing += MainWindow_Closing;
         }
+
+      
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -83,20 +93,7 @@ namespace ioSenderTouch
             _viewModel.LoadComplete();
         }
 
-        private void SetPrimaryColor(Color color)
-        {
-            try
-            {
-                PaletteHelper paletteHelper = new PaletteHelper();
-                var theme = paletteHelper.GetTheme();
-                theme.SetPrimaryColor(color);
-                paletteHelper.SetTheme(theme);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
+        
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _viewModel.DisplayMenuBar = AppConfig.Settings.AppUiSettings.EnableToolBar;
@@ -106,10 +103,42 @@ namespace ioSenderTouch
             Left = 0;
             Top = 0;
             SetUpKeyBoard();
+            AppConfig.Settings.Base.AppUISettings.PropertyChanged += AppUISettings_PropertyChanged;
+        }
+        private void AppUISettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AppUiSettingsConfig.UIColor))
+            {
+                SetPrimaryColor(AppConfig.Settings.Base.AppUISettings.UIColor);
+            }
+            if (e.PropertyName == nameof(AppUiSettingsConfig.EnableLightTheme))
+            {
+                SetTheme(AppConfig.Settings.Base.AppUISettings.EnableLightTheme);
+            }
         }
 
+        private void SetTheme(bool lightTheme)
+        {
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+            theme.SetBaseTheme(lightTheme ? BaseTheme.Light : BaseTheme.Dark);
+            paletteHelper.SetTheme(theme);
+        }
+        private void SetPrimaryColor(Color primaryColor)
+        {
+            try
+            {
+                PaletteHelper paletteHelper = new PaletteHelper();
+                var theme = paletteHelper.GetTheme();
+                theme.SetPrimaryColor(primaryColor);
+                theme.SetBaseTheme(AppConfig.Settings.Base.AppUISettings.EnableLightTheme ? BaseTheme.Light : BaseTheme.Dark);
+                paletteHelper.SetTheme(theme);
+            }
+            catch (Exception)
+            {
 
-
+            }
+        }
         private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GrblViewModel.IsMetric))
@@ -165,11 +194,8 @@ namespace ioSenderTouch
            
         }
 
-      
-
         private void Window_Load(object sender, EventArgs e)
         {
-
             System.Threading.Thread.Sleep(50);
             Comms.com.PurgeQueue();
             if (!string.IsNullOrEmpty(AppConfig.Settings.FileName))
@@ -181,7 +207,6 @@ namespace ioSenderTouch
                 }));
             }
         }
-
         private void MenuBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_windowStyle) return;
@@ -198,8 +223,6 @@ namespace ioSenderTouch
 
         public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register(nameof(ScaleValue), typeof(double),
             typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
-
-
 
         private static object OnCoerceScaleValue(DependencyObject o, object value)
         {
@@ -222,8 +245,6 @@ namespace ioSenderTouch
             value = Math.Max(0.1, value);
             return value;
         }
-
-        
 
         public double ScaleValue
         {

@@ -1,0 +1,51 @@
+using System.Windows.Controls;
+using System.Windows.Input;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
+
+namespace ioSenderTouch.Views
+{
+    public partial class HomeViewPortrait : UserControl
+    {
+        private readonly GrblViewModel _model;
+        
+        public HomeViewPortrait(GrblViewModel model)
+        {
+            _model = model;
+            DataContext = _model;
+            InitializeComponent();
+            Grbl.GrblViewModel = _model;
+            model.HomeViewModel = new HomeViewModel(_model);
+
+        }
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            if (!(e.Handled = ProcessKeyPreview(e)))
+            {
+                if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
+                    Focus();
+                base.OnPreviewKeyDown(e);
+            }
+        }
+        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        {
+            if (!(e.Handled = ProcessKeyPreview(e)))
+                base.OnPreviewKeyDown(e);
+        }
+       
+        protected bool ProcessKeyPreview(KeyEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
+            {
+                if (Keyboard.IsKeyDown(Key.K) && Keyboard.IsKeyDown(Key.C))
+                {
+                    _model.EnableKeyboard = !_model.EnableKeyboard;
+                }
+            }
+
+            return _model.EnableKeyboard && _model.Keyboard.ProcessKeypress(e, !(MdiControl.IsFocused || DRO.IsFocused || spindleControl.IsFocused || workParametersControl.IsFocused));
+        }
+
+
+    }
+}
