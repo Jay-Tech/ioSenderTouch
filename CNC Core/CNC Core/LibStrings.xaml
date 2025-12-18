@@ -45,4 +45,5 @@
     <system:String x:Uid="str_contClearResetUnlock" x:Key="ContClearResetUnlock">clear then &lt;Reset&gt; then &lt;Unlock&gt; to continue</system:String>
     <system:String x:Uid="str_contHome" x:Key="ContHome">&lt;Home&gt; to continue</system:String>
     <system:String x:Uid="str_contResetUnlock" x:Key="ContResetUnlock">&lt;Reset&gt; then &lt;Unlock&gt; to continue</system:String>
+    <system:String x:Uid="str_confNoConnect" x:Key="ConnectFailed">Unable to open connection ({0})</system:String>
 </ResourceDictionary>

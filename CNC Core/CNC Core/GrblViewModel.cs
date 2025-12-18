@@ -2014,6 +2014,11 @@ namespace CNC.Core
                 string[] alarm = data.Split(':');
 
                 SetGRBLState("Alarm", alarm.Length == 2 ? int.Parse(alarm[1]) : -1, false);
+                var alarmIndex = int.TryParse(alarm[1], out var idx);
+                if (GrblAlarms.List.TryGetValue(idx, out var message))
+                {
+                    Message = message;
+                }
             }
             else if (data.First() == '[')
             {
