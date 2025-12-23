@@ -6,7 +6,6 @@ using System.Windows.Input;
 using ioSenderTouch.Controls.Probing;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.GrblCore.Comands;
-using Microsoft.CSharp.RuntimeBinder;
 
 namespace ioSenderTouch.ViewModels.Probing;
 

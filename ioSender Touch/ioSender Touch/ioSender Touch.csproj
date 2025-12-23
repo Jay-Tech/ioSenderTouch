@@ -97,9 +97,6 @@
     <LangVersion>12</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HelixToolkit, Version=2.26.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <HintPath>..\packages\HelixToolkit.2.26.0\lib\netstandard2.0\HelixToolkit.dll</HintPath>
-    </Reference>
     <Reference Include="HelixToolkit.Wpf, Version=2.26.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
       <HintPath>..\packages\HelixToolkit.Wpf.2.26.0\lib\net462\HelixToolkit.Wpf.dll</HintPath>
     </Reference>
@@ -108,9 +105,6 @@
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=5.2.1.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.5.2.1\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
@@ -124,35 +118,17 @@
       <HintPath>..\Lib\RP.Math.Vector3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -956,11 +932,9 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
     <Error Condition="!Exists('..\packages\MaterialDesignThemes.5.2.1\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.5.2.1\build\MaterialDesignThemes.targets'))" />
   </Target>
-  <Import Project="..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets" Condition="Exists('..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets')" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <Import Project="..\packages\MaterialDesignThemes.5.2.1\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.5.2.1\build\MaterialDesignThemes.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
