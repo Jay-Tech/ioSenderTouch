@@ -18,71 +18,71 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.SplitButton.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/stlye/IOTStyles.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-        <controls:PositionToStringConverter x:Key="PositionConverter" />
-        <controls:FeedSpeedToStringConverter x:Key="FeedSpeedConverter" />
-        <controls:HomedStateToBooleanConverter x:Key="IsHomed" />
-        <controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
-        <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
-        <controls:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter" />
-        <controls:ToolWithOffsetStringConverter x:Key="ToolWithOffsetStringConverter" />
-        <controls:LogicalNotConverter x:Key="IsNotVisibleConverter">
-            <controls:LogicalNotConverter.FinalConverter>
-                <controls:BoolToVisibleConverter />
-            </controls:LogicalNotConverter.FinalConverter>
-        </controls:LogicalNotConverter>
-        <Style x:Key="JobButton" TargetType="Button">
-            <Setter Property="Width" Value="125"/>
-            <Setter Property="Height" Value="22"/>
-        </Style>
-        <Style x:Key="Flag" TargetType="ToggleButton">
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ToggleButton">
-                                <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-                <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ToggleButton">
-                                <Image Source="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="22"/>
-            <Setter Property="Height" Value="22"/>
-            <Setter Property="Margin" Value="3,0,0,0"/>
-        </Style>
-        <Style x:Key="BtnImage" TargetType="Button">
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property="Opacity" Value="1"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5"/>
-                </Trigger>
-            </Style.Triggers>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="22"/>
-            <Setter Property="Height" Value="22"/>
-            <Setter Property="Margin" Value="3,0,0,0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <controls:PositionToStringConverter x:Key="PositionConverter" />
+            <controls:FeedSpeedToStringConverter x:Key="FeedSpeedConverter" />
+            <controls:HomedStateToBooleanConverter x:Key="IsHomed" />
+            <controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
+            <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+            <controls:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter" />
+            <controls:ToolWithOffsetStringConverter x:Key="ToolWithOffsetStringConverter" />
+            <controls:LogicalNotConverter x:Key="IsNotVisibleConverter">
+                <controls:LogicalNotConverter.FinalConverter>
+                    <controls:BoolToVisibleConverter />
+                </controls:LogicalNotConverter.FinalConverter>
+            </controls:LogicalNotConverter>
+            <Style x:Key="JobButton" TargetType="Button">
+                <Setter Property="Width" Value="125"/>
+                <Setter Property="Height" Value="22"/>
+            </Style>
+            <Style x:Key="Flag" TargetType="ToggleButton">
+                <Style.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="False">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Image Source="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Width" Value="22"/>
+                <Setter Property="Height" Value="22"/>
+                <Setter Property="Margin" Value="3,0,0,0"/>
+            </Style>
+            <Style x:Key="BtnImage" TargetType="Button">
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="True">
+                        <Setter Property="Opacity" Value="1"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.5"/>
+                    </Trigger>
+                </Style.Triggers>
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Width" Value="22"/>
+                <Setter Property="Height" Value="22"/>
+                <Setter Property="Margin" Value="3,0,0,0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -103,21 +103,24 @@
             <StackPanel Visibility="{Binding RenderVM.ShowOverlay, Converter={StaticResource IsVisibleConverter}}" 
                         Orientation="Vertical"  HorizontalAlignment="left" VerticalAlignment="Top" Margin="5,5">
                 <TextBlock Foreground="{Binding RenderVM.ForegroundColor}"  HorizontalAlignment="Left" FontSize="20" Margin="3,0,0,0">
-                <TextBlock.Text>
+               <TextBlock Text="{Binding .Position.X, StringFormat=X:{0:###0.000}}"/>
+               <TextBlock Text="{Binding .Position.Y, StringFormat=Y:{0:###0.000}}"/>
+               <TextBlock Text="{Binding .Position.Z, StringFormat=Z:{0:###0.000}}"/>
+                    <!--<TextBlock.Text>
                     <MultiBinding Converter="{StaticResource PositionConverter}">
                         <Binding Path="Position" Mode="OneWay"/>
                         <Binding Path="Format" Mode="OneWay"/>
                     </MultiBinding>
-                </TextBlock.Text>
+                </TextBlock.Text>-->
             </TextBlock>
-            <TextBlock Foreground="{Binding RenderVM.ForegroundColor}" HorizontalAlignment="Left" FontSize="18" Margin="3,0,3,0">
-                <TextBlock.Text>
-                    <MultiBinding Converter="{StaticResource FeedSpeedConverter}">
-                        <Binding Path="FeedRate" Mode="OneWay"/>
+                <TextBlock Foreground="{Binding RenderVM.ForegroundColor}" HorizontalAlignment="Left" FontSize="18" Margin="3,0,3,0">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource FeedSpeedConverter}">
+                            <Binding Path="FeedRate" Mode="OneWay"/>
                             <Binding Path="ProgrammedRPM" Mode="OneWay"/>
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </StackPanel>
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="3,50,0,0" Foreground="Red" Opacity=".9"  
                        Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource IsVisibleConverter}}">
@@ -160,22 +163,22 @@
                     </materialDesign:PopupBox.ToggleContent>
                     <StackPanel>
                         <ItemsControl x:Name="MyItems" ItemsSource="{Binding Tools}">
-                           <ItemsControl.ItemsPanel>
-                               <ItemsPanelTemplate>
-                                   <StackPanel  Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                               </ItemsPanelTemplate>
-                           </ItemsControl.ItemsPanel>
-                           <ItemsControl.ItemTemplate>
-                               <DataTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel  Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
                                     <Button  Style="{StaticResource PaperRaisedButton}" Margin="0,0,0,5" Width="90" Height="50"
                                              Focusable="False" Command="{Binding ElementName=MyItems, Path=DataContext.FloatToolCommand}" 
                                              CommandParameter="{Binding Content ,RelativeSource={RelativeSource Self}}" >
-                                       <Button.Content>
-                                           <Binding Path="Code"></Binding>
-                                       </Button.Content>
-                                   </Button>
-                               </DataTemplate>
-                           </ItemsControl.ItemTemplate>
+                                        <Button.Content>
+                                            <Binding Path="Code"></Binding>
+                                        </Button.Content>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
                 </materialDesign:PopupBox>

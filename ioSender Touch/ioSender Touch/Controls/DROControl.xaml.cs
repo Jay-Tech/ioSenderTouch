@@ -82,13 +82,13 @@ public partial class DROControl : UserControl
             keyboard.AddHandler(Key.X, ModifierKeys.Control | ModifierKeys.Shift, ZeroX);
             keyboard.AddHandler(Key.Y, ModifierKeys.Control | ModifierKeys.Shift, ZeroY);
             keyboard.AddHandler(Key.Z, ModifierKeys.Control | ModifierKeys.Shift, ZeroZ);
-            if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
-                keyboard.AddHandler(Key.A, ModifierKeys.Control | ModifierKeys.Shift, ZeroA);
-            if (GrblInfo.AxisFlags.HasFlag(AxisFlags.B))
-                keyboard.AddHandler(Key.B, ModifierKeys.Control | ModifierKeys.Shift, ZeroB);
-            if (GrblInfo.AxisFlags.HasFlag(AxisFlags.C))
-                keyboard.AddHandler(Key.C, ModifierKeys.Control | ModifierKeys.Shift, ZeroC);
-            keyboard.AddHandler(Key.D0, ModifierKeys.Control | ModifierKeys.Shift, ZeroAxes);
+            //if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
+            //    keyboard.AddHandler(Key.A, ModifierKeys.Control | ModifierKeys.Shift, ZeroA);
+            //if (GrblInfo.AxisFlags.HasFlag(AxisFlags.B))
+            //    keyboard.AddHandler(Key.B, ModifierKeys.Control | ModifierKeys.Shift, ZeroB);
+            //if (GrblInfo.AxisFlags.HasFlag(AxisFlags.C))
+            //    keyboard.AddHandler(Key.C, ModifierKeys.Control | ModifierKeys.Shift, ZeroC);
+            //keyboard.AddHandler(Key.D0, ModifierKeys.Control | ModifierKeys.Shift, ZeroAxes);
         }
 
 
@@ -111,7 +111,7 @@ public partial class DROControl : UserControl
     {
         return AxisLetters.IndexOf(letter, StringComparison.Ordinal);
     }
-    public  string AxisLetters { get; private set; } = "XYZAB";
+    public  string AxisLetters { get; private set; } = "XYZ";
 
     private void txtReadout_GotFocus(object sender, RoutedEventArgs e)
     {
@@ -205,24 +205,24 @@ public partial class DROControl : UserControl
 
         return true;
     }
-    private bool ZeroA(Key key)
-    {
-        AxisPositionChanged(GrblInfo.AxisIndexToLetter(3), 0d);
+    //private bool ZeroA(Key key)
+    //{
+    //    AxisPositionChanged(GrblInfo.AxisIndexToLetter(3), 0d);
 
-        return true;
-    }
-    private bool ZeroB(Key key)
-    {
-        AxisPositionChanged(GrblInfo.AxisIndexToLetter(4), 0d);
+    //    return true;
+    //}
+    //private bool ZeroB(Key key)
+    //{
+    //    AxisPositionChanged(GrblInfo.AxisIndexToLetter(4), 0d);
 
-        return true;
-    }
-    private bool ZeroC(Key key)
-    {
-        AxisPositionChanged(GrblInfo.AxisIndexToLetter(5), 0d);
+    //    return true;
+    //}
+    //private bool ZeroC(Key key)
+    //{
+    //    AxisPositionChanged(GrblInfo.AxisIndexToLetter(5), 0d);
 
-        return true;
-    }
+    //    return true;
+    //}
     private void BtnHome_Click(object sender, RoutedEventArgs e)
     {
         if (sender is Button button)
