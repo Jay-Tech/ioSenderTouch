@@ -27,19 +27,6 @@ namespace ioSenderTouch.Controls
             InitializeComponent();
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is GrblViewModel model)
-            {
-                model.SetShutDown(this);
-            }
-            else
-            {
-                if (Application.Current.MainWindow != null)
-                    Application.Current.MainWindow.Close();
-            }
-        }
-
         private void MaximizeClick(object sender, RoutedEventArgs e)
         {
             if (Application.Current.MainWindow != null)

@@ -106,12 +106,6 @@
                <TextBlock Text="{Binding .Position.X, StringFormat=X:{0:###0.000}}"/>
                <TextBlock Text="{Binding .Position.Y, StringFormat=Y:{0:###0.000}}"/>
                <TextBlock Text="{Binding .Position.Z, StringFormat=Z:{0:###0.000}}"/>
-                    <!--<TextBlock.Text>
-                    <MultiBinding Converter="{StaticResource PositionConverter}">
-                        <Binding Path="Position" Mode="OneWay"/>
-                        <Binding Path="Format" Mode="OneWay"/>
-                    </MultiBinding>
-                </TextBlock.Text>-->
             </TextBlock>
                 <TextBlock Foreground="{Binding RenderVM.ForegroundColor}" HorizontalAlignment="Left" FontSize="18" Margin="3,0,3,0">
                     <TextBlock.Text>

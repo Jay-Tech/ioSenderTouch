@@ -398,6 +398,7 @@ namespace ioSenderTouch.ViewModels
 
         public void SetShutDown(object obj)
         {
+
             try
             {
                 Application.Current.MainWindow?.Close();
@@ -408,6 +409,7 @@ namespace ioSenderTouch.ViewModels
             }
         }
 
+        
         private void SetResetCommand(object obj)
         {
             Grbl.Reset();

@@ -59,7 +59,7 @@
                       Visibility="{Binding DisplayMenuBar, Converter = {StaticResource BoolVisibleConverter}}" Orientation="Horizontal" HorizontalAlignment="Stretch">
             <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" Click="MinimizeWindow" KeyboardNavigation.IsTabStop="False" />
             <Button x:Name="MaximizeButton" Style="{StaticResource RestoreButtonStyle}" Click="MaximizeClick" KeyboardNavigation.IsTabStop="False" />
-            <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}"  Click="CloseButton_Click" KeyboardNavigation.IsTabStop="False" />
+            <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}"  Command="{Binding ShutDownCommand }"  KeyboardNavigation.IsTabStop="False" />
         </StackPanel>
         <Button  Visibility="{Binding Path=DisplayMenuBar, Converter= {StaticResource BoolNotVisibleConverter }}" Grid.Column="3" Content="Shut Down" 
                  VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Center" 
