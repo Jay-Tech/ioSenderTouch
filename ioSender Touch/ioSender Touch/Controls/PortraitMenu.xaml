@@ -8,7 +8,7 @@
              xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="45" d:DesignWidth="Auto">
+             d:DesignHeight="45" d:DesignWidth="1920">
 
     <UserControl.Resources>
 
