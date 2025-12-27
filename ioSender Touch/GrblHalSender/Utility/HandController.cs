@@ -124,10 +124,10 @@ namespace GrblHalSender.Utility
                     var zCurrent = Math.Abs(_grblViewModel.MachinePosition.Z);
                     var xCurrent = _grblViewModel.MachinePosition.X;
                     var yCurrent = Math.Abs(_grblViewModel.MachinePosition.Y);
-                    _jogProcessed = false;
-                    if (_stepMode && _previousDown == state.Buttons)
+                    //_jogProcessed = false;
+                    if (_stepMode && _previousDown != state.Buttons)
                     {
-                        _jogProcessed = true;
+                        _jogProcessed = false;
                         Debug.WriteLine($"Job Processed State {_jogProcessed}");
                     }
 
