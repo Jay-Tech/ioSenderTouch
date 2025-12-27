@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="GrblHalSender.Controls.AppUiSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:render="clr-namespace:GrblHalSender.Controls.Render"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="220">
+    <Grid>
+        <GroupBox Header="Ui settings"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="300" >
+            <StackPanel>
+                <CheckBox Name="StopLight" IsChecked="{Binding AppUISettings.EnableStopLightTheme}" materialDesign:CheckBoxAssist.CheckBoxSize="30" Content="StopLight Theme"  ></CheckBox>
+                <CheckBox Name="ToolBar" IsChecked="{Binding AppUISettings.EnableToolBar}" materialDesign:CheckBoxAssist.CheckBoxSize="30" Content="Window Tool Bar" ></CheckBox>
+                <CheckBox Name="LightTheme" IsChecked="{Binding AppUISettings.EnableLightTheme}" materialDesign:CheckBoxAssist.CheckBoxSize="30" Content="Light Theme" ></CheckBox>
+                <Label Name="ColorPicker" Content="UI Color Selection"></Label>
+                <render:ColorPicker HorizontalAlignment="Left" SelectedColor="{Binding AppUISettings.UIColor, Mode=TwoWay}"></render:ColorPicker>
+            </StackPanel>
+
+        </GroupBox>
+    </Grid>
+</UserControl>

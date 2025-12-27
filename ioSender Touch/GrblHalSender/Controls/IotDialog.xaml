@@ -1,0 +1,36 @@
+﻿<Window x:Class="GrblHalSender.Controls.IotDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="IotDialog" Height="350" Width="500"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="20"
+        Style="{StaticResource MaterialDesignWindow}"
+        FontFamily="{materialDesign:MaterialDesignFont}">
+    <Window.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Grey" SecondaryColor="LightBlue" ColorAdjustment="{materialDesign:ColorAdjustment}" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesign2.defaults.xaml"  />
+                <ResourceDictionary Source="pack://application:,,,/stlye/IOTStyles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <TextBlock Margin="0,35,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" x:Name="ResponseTextBox" />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,75,0,0" Orientation="Horizontal">
+            <Button x:Name="OkButton" Height="45" Content="OK" Click="OKButton_Click" Width="150" Margin="0,0,5,0" />
+            <Button x:Name="CancelBox" Height="45" Content="Cancel" Click="CancelButton_Click" Margin="5,0,0,0" Width="150" />
+        </StackPanel>
+    </Grid>
+</Window>
