@@ -182,10 +182,11 @@ namespace GrblHalSender.Utility
                         case GameInputGamepadButtons.DPadUp:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
-                            var yMax = useImperial ? _grblViewModel.MaxDistanceY / 25.4 :
-                                _grblViewModel.MaxDistanceY;
-                            step = yMax - yCurrent;
-                            command = FormattableString.Invariant($"$J = G91{mode}Y{step}F{_grblViewModel.JogRate}");
+                            //var yMax = useImperial ? _grblViewModel.MaxDistanceY / 25.4 :
+                            //    _grblViewModel.MaxDistanceY;
+                            //step = yMax - yCurrent;
+                            step = yCurrent;
+                            command = FormattableString.Invariant($"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
                        
@@ -193,7 +194,12 @@ namespace GrblHalSender.Utility
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
                             step = yCurrent;
-                            command = FormattableString.Invariant($"$J = G91{mode}Y-{Math.Abs(step)}F{_grblViewModel.JogRate}");
+
+                            var yMax = useImperial ? _grblViewModel.MaxDistanceY / 25.4 :
+                                _grblViewModel.MaxDistanceY;
+                            step = yMax - yCurrent;
+
+                            command = FormattableString.Invariant($"$J = G91{mode}Y{Math.Abs(step)}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
 
