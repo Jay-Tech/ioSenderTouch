@@ -8,9 +8,9 @@ Goal was to create a application that will run on a cheap mini PC with a UI desi
 
 Changes in UI 
 ![Home Screen](media/HomeScreen.png)
-Optional StopLight Style
-![Home Screen](media/HomeScreenOptional.png)
-![Home Screen](media/Tool.png)
+
+Light Theme
+![Home Screen](media/HomeScreenDay.png)
 
 Probing carried over from ioSender 
 ![Probe Screen](media/Probe.png)
