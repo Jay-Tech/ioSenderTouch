@@ -186,7 +186,7 @@ namespace GrblHalSender.Controls.Probing
 
             probing.Program.AddProbingAction(axisflags, negative);
 
-            rapidto.Values[axis] = probing.StartPosition.Values[axis] - probing.Offset * af[axis];
+            rapidto.Values[axis] = probing.StartPosition.Values[axis] - XYClearance* af[axis];
             probing.Program.AddRapidToMPos(rapidto, axisflags);
             probing.Program.AddRapidToMPos(probing.StartPosition, AxisFlags.Z);
         }
