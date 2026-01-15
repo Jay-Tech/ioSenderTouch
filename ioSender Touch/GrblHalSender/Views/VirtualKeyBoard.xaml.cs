@@ -36,7 +36,7 @@ namespace GrblHalSender.Views
         {
             var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
             this.Left = desktopWorkingArea.Right/2 - this.Width/2;
-            this.Top = 50+ desktopWorkingArea.Bottom - this.Height;
+            this.Top = desktopWorkingArea.Bottom - this.Height;
             
         }
 
