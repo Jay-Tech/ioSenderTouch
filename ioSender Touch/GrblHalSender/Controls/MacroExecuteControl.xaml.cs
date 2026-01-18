@@ -62,7 +62,7 @@ namespace GrblHalSender.Controls
 
         private void macroExecuteControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Macros = AppConfig.Settings.Macros;
+            Macros = GHalSenderConfig.Settings.Macros;
         }
 
         private void View_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -128,7 +128,7 @@ namespace GrblHalSender.Controls
         {
             //MacroEditor editor = new MacroEditor(Macros) {Owner = Application.Current.MainWindow};
             //editor.ShowDialog();
-            //AppConfig.Settings.Save();
+            //GHalSenderConfig.Settings.Save();
         }
     }
 }

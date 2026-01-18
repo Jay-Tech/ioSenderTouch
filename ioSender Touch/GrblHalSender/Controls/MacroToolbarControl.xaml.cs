@@ -58,7 +58,7 @@ namespace GrblHalSender.Controls
 
         private void macroToolbarControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Macros = AppConfig.Settings.Macros;
+            Macros = GHalSenderConfig.Settings.Macros;
         }
 
         public static readonly DependencyProperty MacrosProperty = DependencyProperty.Register(nameof(MacroToolbarControl.Macros), typeof(ObservableCollection<Macro>), typeof(MacroToolbarControl));

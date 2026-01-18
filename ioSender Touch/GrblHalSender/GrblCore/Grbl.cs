@@ -363,7 +363,7 @@ namespace GrblHalSender.GrblCore
         {
             Path = @"./";
             Locale = "en-US";
-            IniName = "App.config";
+            IniName = "GHallSenderConfig.config";
         }
     }
 

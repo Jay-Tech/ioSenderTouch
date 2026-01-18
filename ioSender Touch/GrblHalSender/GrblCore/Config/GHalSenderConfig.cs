@@ -66,30 +66,6 @@ namespace GrblHalSender.GrblCore.Config
     }
 
     [Serializable]
-    public class LatheConfig : ViewModelBase
-    {
-        private bool _isEnabled = false;
-        private LatheMode _latheMode = LatheMode.Disabled;
-
-        [XmlIgnore]
-        public double ZDirFactor { get { return ZDirection == Direction.Negative ? -1d : 1d; } }
-
-        [XmlIgnore]
-        public LatheMode[] LatheModes { get { return (LatheMode[])Enum.GetValues(typeof(LatheMode)); } }
-
-        [XmlIgnore]
-        public Direction[] ZDirections { get { return (Direction[])Enum.GetValues(typeof(Direction)); } }
-
-        [XmlIgnore]
-        public bool IsEnabled { get { return _isEnabled; } set { _isEnabled = value; OnPropertyChanged(); } }
-
-        public LatheMode XMode { get { return _latheMode; } set { _latheMode = value; IsEnabled = value != LatheMode.Disabled; } }
-        public Direction ZDirection { get; set; } = Direction.Negative;
-        public double PassDepthLast { get; set; } = 0.02d;
-        public double FeedRate { get; set; } = 300d;
-    }
-
-    [Serializable]
     public class ProbeConfig : ViewModelBase
     {
         private bool _CheckProbeStatus = true;
@@ -99,29 +75,6 @@ namespace GrblHalSender.GrblCore.Config
         public bool ValidateProbeConnected { get { return _ValidateProbeConnected; } set { _ValidateProbeConnected = value; OnPropertyChanged(); } }
     }
 
-    [Serializable]
-    public class CameraConfig : ViewModelBase
-    {
-        private string _camera = string.Empty;
-        private double _xoffset = 0d, _yoffset = 0d;
-        private int _guideScale = 10;
-        private bool _moveToSpindle = false, _confirmMove = false;
-        private CameraMoveMode _moveMode = CameraMoveMode.BothAxes;
-
-        [XmlIgnore]
-        internal bool IsDirty { get; set; } = false;
-
-        [XmlIgnore]
-        public CameraMoveMode[] MoveModes { get { return (CameraMoveMode[])Enum.GetValues(typeof(CameraMoveMode)); } }
-
-        public string SelectedCamera { get { return _camera; } set { _camera = value; IsDirty = true; OnPropertyChanged(); } }
-        public double XOffset { get { return _xoffset; } set { _xoffset = value; OnPropertyChanged(); } }
-        public double YOffset { get { return _yoffset; } set { _yoffset = value; OnPropertyChanged(); } }
-        public int GuideScale { get { return _guideScale; } set { _guideScale = value; IsDirty = true; OnPropertyChanged(); } }
-        public bool InitialMoveToSpindle { get { return _moveToSpindle; } set { _moveToSpindle = value; IsDirty = true; OnPropertyChanged(); } }
-        public bool ConfirmMove { get { return _confirmMove; } set { _confirmMove = value; IsDirty = true; OnPropertyChanged(); } }
-        public CameraMoveMode MoveMode { get { return _moveMode; } set { _moveMode = value; OnPropertyChanged(); } }
-    }
     [Serializable]
     public class SurfaceConfig : ViewModelBase
     {
@@ -387,8 +340,6 @@ namespace GrblHalSender.GrblCore.Config
         public JogUIConfig JogUiMetric { get; set; } = new JogUIConfig(new int[4] { 5, 100, 500, 1000 }, new double[4] { .01d, .1d, 1d, 10d });
         public JogUIConfig JogUiImperial { get; set; } = new JogUIConfig(new int[4] { 5, 10, 50, 100 }, new double[4] { .001d, .01d, .1d, 1d });
 
-        public LatheConfig Lathe { get; set; } = new LatheConfig();
-        public CameraConfig Camera { get; set; } = new CameraConfig();
         public GCodeViewerConfig GCodeViewer { get; set; } = new GCodeViewerConfig();
         public ProbeConfig Probing { get; set; } = new ProbeConfig();
         public SurfaceConfig Surface { get; set; } = new SurfaceConfig();
@@ -396,7 +347,7 @@ namespace GrblHalSender.GrblCore.Config
         public AppUiSettingsConfig AppUISettings { get; set; } = new AppUiSettingsConfig();
     }
 
-    public class AppConfig : ViewModelBase
+    public class GHalSenderConfig : ViewModelBase
     {
         public event EventHandler OnConfigFileLoaded;
         private string configfile = null;
@@ -404,15 +355,15 @@ namespace GrblHalSender.GrblCore.Config
 
         public string FileName { get;  set; }
 
-        private static readonly Lazy<AppConfig> settings = new Lazy<AppConfig>(() => new AppConfig());
+        private static readonly Lazy<GHalSenderConfig> settings = new Lazy<GHalSenderConfig>(() => new GHalSenderConfig());
         private Config _base;
 
-        private AppConfig()
+        private GHalSenderConfig()
         {
 
         }
 
-        public static AppConfig Settings
+        public static GHalSenderConfig Settings
         {
             get { return settings.Value; }
         }
@@ -447,16 +398,6 @@ namespace GrblHalSender.GrblCore.Config
         public JogUIConfig JogUiImperial
         {
             get { return Base == null ? null : Base.JogUiImperial; }
-        }
-
-        public CameraConfig Camera
-        {
-            get { return Base == null ? null : Base.Camera; }
-        }
-
-        public LatheConfig Lathe
-        {
-            get { return Base == null ? null : Base.Lathe; }
         }
 
         public GCodeViewerConfig GCodeViewer
@@ -507,7 +448,6 @@ namespace GrblHalSender.GrblCore.Config
 
         public bool Save()
         {
-            Camera.IsDirty = false;
             return configfile != null && Save(configfile);
         }
 
@@ -547,7 +487,6 @@ namespace GrblHalSender.GrblCore.Config
         // Move me to separate File
         public void Shutdown()
         {
-            if (Camera.IsDirty)
                 Save();
         }
 

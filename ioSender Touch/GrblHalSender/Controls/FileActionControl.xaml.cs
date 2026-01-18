@@ -89,7 +89,7 @@ namespace GrblHalSender.Controls
                 {
                     //FileName = @"D:\Notepad++\notepad++.exe",
                     //Arguments = '"' + fileName + '"'+ " -multiInst"
-                    FileName = AppConfig.Settings.Base.Editor,
+                    FileName = GHalSenderConfig.Settings.Base.Editor,
                     Arguments = '"' + fileName + '"'
                 }
             };

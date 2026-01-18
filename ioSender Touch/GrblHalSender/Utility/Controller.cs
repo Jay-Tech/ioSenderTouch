@@ -11,7 +11,7 @@ namespace GrblHalSender.Utility
     public class Controller
     {
         GrblViewModel model;
-        private readonly AppConfig _config;
+        private readonly GHalSenderConfig _config;
 
         public enum RestartResult
         {
@@ -21,7 +21,7 @@ namespace GrblHalSender.Utility
             Exit
         }
 
-        public Controller(GrblViewModel model, AppConfig config)
+        public Controller(GrblViewModel model, GHalSenderConfig config)
         {
             this.model = model;
             _config = config;

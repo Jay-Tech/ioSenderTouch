@@ -294,7 +294,7 @@ namespace GrblHalSender.ViewModels
             Passes = 1;
             OverLap = 50;
             BuildProbeMacro();
-            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
             _calibrationTriangle = new CalibrationTriangle();
             _triangleGcode = new GCodeTriangle();
             CalibrationMeasurement = Metric;
@@ -327,7 +327,7 @@ namespace GrblHalSender.ViewModels
 
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
-            var surface = AppConfig.Settings.Base.Surface;
+            var surface = GHalSenderConfig.Settings.Base.Surface;
             if (surface == null) return;
             PopulateUI(surface);
         }
@@ -442,7 +442,7 @@ namespace GrblHalSender.ViewModels
 
         private void SaveMacro()
         {
-            AppConfig.Settings.Base.Surface = new SurfaceConfig
+            GHalSenderConfig.Settings.Base.Surface = new SurfaceConfig
             {
                 SpindleRPM = SpindleRpm,
                 Passes = Passes,
@@ -457,7 +457,7 @@ namespace GrblHalSender.ViewModels
                 Flood = Flood,
                 Mist = Mist
             };
-            AppConfig.Settings.Save();
+            GHalSenderConfig.Settings.Save();
         }
 
         public UIElement Control

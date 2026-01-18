@@ -421,7 +421,7 @@ namespace GrblHalSender.Controls.Probing
                             break;
                     }
 
-                    new GCodeRotate().ApplyRotation(probedAngle, offset, AppConfig.Settings.Base.AutoCompress);
+                    new GCodeRotate().ApplyRotation(probedAngle, offset, GHalSenderConfig.Settings.Base.AutoCompress);
                 }
                 catch (Exception ex)
                 {

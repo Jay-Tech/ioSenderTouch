@@ -49,7 +49,7 @@ namespace GrblHalSender.ViewModels
             _grblViewModel = grblViewModel;
             _grblViewModel.PropertyChanged += _grblViewModel_PropertyChanged;
             UseImperial = !_grblViewModel.IsMetric;
-            Measurement = _grblViewModel.IsMetric ? AppConfig.Settings.Base.JogUiMetric : AppConfig.Settings.Base.JogUiImperial;
+            Measurement = _grblViewModel.IsMetric ? GHalSenderConfig.Settings.Base.JogUiMetric : GHalSenderConfig.Settings.Base.JogUiImperial;
             Distance = _grblViewModel.IsMetric ? "mm" : "in";
 
         }
@@ -59,7 +59,7 @@ namespace GrblHalSender.ViewModels
             if (e.PropertyName.Equals("Unit"))
             {
                 UseImperial = !_grblViewModel.IsMetric;
-                Measurement = _grblViewModel.IsMetric ? AppConfig.Settings.Base.JogUiMetric : AppConfig.Settings.Base.JogUiImperial;
+                Measurement = _grblViewModel.IsMetric ? GHalSenderConfig.Settings.Base.JogUiMetric : GHalSenderConfig.Settings.Base.JogUiImperial;
                 Distance = _grblViewModel.IsMetric ? "mm" : "in";
             }
         }

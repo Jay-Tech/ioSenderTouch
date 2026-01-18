@@ -222,7 +222,7 @@ namespace GrblHalSender.Controls.Probing
             if (!model.Grbl.IsJobRunning)
             {
                 int id = int.Parse(key.ToString().Substring(1));
-                var macro = AppConfig.Settings.Macros.FirstOrDefault(o => o.Id == id);
+                var macro = GHalSenderConfig.Settings.Macros.FirstOrDefault(o => o.Id == id);
                 if (macro != null && MessageBox.Show(string.Format((string)FindResource("RunMacro"), macro.Name), "Run macro", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     model.Grbl.ExecuteMacro(macro.Code);
@@ -326,7 +326,7 @@ namespace GrblHalSender.Controls.Probing
                 if (GrblInfo.IsGrblHAL)
                     Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL);
 
-                if (!model.Grbl.IsGrblHAL && !AppConfig.Settings.JogMetric.KeyboardEnable)
+                if (!model.Grbl.IsGrblHAL && !GHalSenderConfig.Settings.JogMetric.KeyboardEnable)
                     Jog.Visibility = Visibility.Collapsed;
 
                 if (GrblInfo.IsGrblHAL)
@@ -340,7 +340,7 @@ namespace GrblHalSender.Controls.Probing
                 if (!(wasMetric = GrblParserState.IsMetric))
                     model.WaitForResponse("G21");
 
-                model.ProbeVerified = !AppConfig.Settings.Probing.ValidateProbeConnected;
+                model.ProbeVerified = !GHalSenderConfig.Settings.Probing.ValidateProbeConnected;
                 model.DistanceMode = GrblParserState.DistanceMode;
                 model.Tool = model.Grbl.Tool == GrblConstants.NO_TOOL ? "0" : model.Grbl.Tool;
                 model.CanProbe = !model.Grbl.Signals.Value.HasFlag(Signals.Probe);
@@ -389,7 +389,7 @@ namespace GrblHalSender.Controls.Probing
             }
 
             model.Message = string.Empty;
-            //model.Grbl.Poller.SetState(activate ? AppConfig.Settings.Base.PollInterval : 0);
+            //model.Grbl.Poller.SetState(activate ? GHalSenderConfig.Settings.Base.PollInterval : 0);
         }
 
         public void CloseFile()

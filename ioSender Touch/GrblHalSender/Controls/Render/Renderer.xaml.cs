@@ -314,7 +314,7 @@ namespace GrblHalSender.Controls.Render
             if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this) && model == null)
             {
                 model = DataContext as GrblViewModel;
-                AppConfig.Settings.GCodeViewer.PropertyChanged += GCodeViewer_PropertyChanged;
+                GHalSenderConfig.Settings.GCodeViewer.PropertyChanged += GCodeViewer_PropertyChanged;
                 Configure();
             }
         }
@@ -493,7 +493,7 @@ namespace GrblHalSender.Controls.Render
 
         private void Configure()
         {
-            toolAutoScale = AppConfig.Settings.GCodeViewer.ToolAutoScale;
+            toolAutoScale = GHalSenderConfig.Settings.GCodeViewer.ToolAutoScale;
 
             if (tool == null)
             {
@@ -501,7 +501,7 @@ namespace GrblHalSender.Controls.Render
                 {
                     Height = 3d,
                     BaseRadius = 0,
-                    TopRadius = AppConfig.Settings.GCodeViewer.ToolDiameter / 2d,
+                    TopRadius = GHalSenderConfig.Settings.GCodeViewer.ToolDiameter / 2d,
                     TopCap = true,
                     Normal = new Vector3D(0d, 0d, 1d),
                     Fill = ToolBrush
@@ -509,7 +509,7 @@ namespace GrblHalSender.Controls.Render
             }
             else
             {
-                tool.TopRadius = AppConfig.Settings.GCodeViewer.ToolDiameter / 2d;
+                tool.TopRadius = GHalSenderConfig.Settings.GCodeViewer.ToolDiameter / 2d;
                 if (!toolAutoScale)
                 {
                     tool.Height = 3d;
@@ -526,50 +526,50 @@ namespace GrblHalSender.Controls.Render
                 }
             }
 
-            ArcResolution = AppConfig.Settings.GCodeViewer.ArcResolution;
-            MinDistance = AppConfig.Settings.GCodeViewer.MinDistance;
-            Machine.ShowGrid = AppConfig.Settings.GCodeViewer.ShowGrid;
-            Machine.ShowAxes = AppConfig.Settings.GCodeViewer.ShowAxes;
-            Machine.ShowJobEnvelope = AppConfig.Settings.GCodeViewer.ShowBoundingBox;
-            Machine.ShowWorkEnvelope = AppConfig.Settings.GCodeViewer.ShowWorkEnvelope;
-            RenderExecuted = AppConfig.Settings.GCodeViewer.RenderExecuted;
-            Machine.ShowViewCube = AppConfig.Settings.GCodeViewer.ShowViewCube;
-            Machine.ShowCoordinateSystem = AppConfig.Settings.GCodeViewer.ShowCoordinateSystem;
-            Machine.CutMotionColor = AppConfig.Settings.GCodeViewer.CutMotionColor;
-            Machine.RapidMotionColor = AppConfig.Settings.GCodeViewer.RapidMotionColor;
-            Machine.RetractMotionColor = AppConfig.Settings.GCodeViewer.RetractMotionColor;
-            Machine.HighlightColor = AppConfig.Settings.GCodeViewer.HighlightColor;
-       //     Machine.ToolOriginColor = AppConfig.Settings.GCodeViewer.ToolOriginColor;
-            Machine.GridColor = AppConfig.Settings.GCodeViewer.GridColor;
-            Machine.CanvasColor = AppConfig.Settings.GCodeViewer.BlackBackground ? System.Windows.Media.Brushes.Black : System.Windows.Media.Brushes.White;
-            Machine.CanRestoreView = AppConfig.Settings.GCodeViewer.ViewMode >= 0;
-            if(Machine.ToolMode != (ToolVisualizerType)AppConfig.Settings.GCodeViewer.ToolVisualizer)
-                Machine.ToolMode = (ToolVisualizerType)AppConfig.Settings.GCodeViewer.ToolVisualizer;
+            ArcResolution = GHalSenderConfig.Settings.GCodeViewer.ArcResolution;
+            MinDistance = GHalSenderConfig.Settings.GCodeViewer.MinDistance;
+            Machine.ShowGrid = GHalSenderConfig.Settings.GCodeViewer.ShowGrid;
+            Machine.ShowAxes = GHalSenderConfig.Settings.GCodeViewer.ShowAxes;
+            Machine.ShowJobEnvelope = GHalSenderConfig.Settings.GCodeViewer.ShowBoundingBox;
+            Machine.ShowWorkEnvelope = GHalSenderConfig.Settings.GCodeViewer.ShowWorkEnvelope;
+            RenderExecuted = GHalSenderConfig.Settings.GCodeViewer.RenderExecuted;
+            Machine.ShowViewCube = GHalSenderConfig.Settings.GCodeViewer.ShowViewCube;
+            Machine.ShowCoordinateSystem = GHalSenderConfig.Settings.GCodeViewer.ShowCoordinateSystem;
+            Machine.CutMotionColor = GHalSenderConfig.Settings.GCodeViewer.CutMotionColor;
+            Machine.RapidMotionColor = GHalSenderConfig.Settings.GCodeViewer.RapidMotionColor;
+            Machine.RetractMotionColor = GHalSenderConfig.Settings.GCodeViewer.RetractMotionColor;
+            Machine.HighlightColor = GHalSenderConfig.Settings.GCodeViewer.HighlightColor;
+       //     Machine.ToolOriginColor = GHalSenderConfig.Settings.GCodeViewer.ToolOriginColor;
+            Machine.GridColor = GHalSenderConfig.Settings.GCodeViewer.GridColor;
+            Machine.CanvasColor = GHalSenderConfig.Settings.GCodeViewer.BlackBackground ? System.Windows.Media.Brushes.Black : System.Windows.Media.Brushes.White;
+            Machine.CanRestoreView = GHalSenderConfig.Settings.GCodeViewer.ViewMode >= 0;
+            if(Machine.ToolMode != (ToolVisualizerType)GHalSenderConfig.Settings.GCodeViewer.ToolVisualizer)
+                Machine.ToolMode = (ToolVisualizerType)GHalSenderConfig.Settings.GCodeViewer.ToolVisualizer;
         }
 
         public void SaveView ()
         {
-            AppConfig.Settings.GCodeViewer.ViewMode = (int)Machine.RenderMode;
-            AppConfig.Settings.GCodeViewer.ToolVisualizer = (int)Machine.ToolMode;
-            AppConfig.Settings.GCodeViewer.CameraPosition = new Point3D(viewport.Camera.Position.X, viewport.Camera.Position.Y, viewport.Camera.Position.Z);
-            AppConfig.Settings.GCodeViewer.CameraLookDirection = new Vector3D(viewport.Camera.LookDirection.X, viewport.Camera.LookDirection.Y, viewport.Camera.LookDirection.Z);
-            AppConfig.Settings.GCodeViewer.CameraUpDirection = new Vector3D(viewport.Camera.UpDirection.X, viewport.Camera.UpDirection.Y, viewport.Camera.UpDirection.Z);
-            AppConfig.Settings.Save();
+            GHalSenderConfig.Settings.GCodeViewer.ViewMode = (int)Machine.RenderMode;
+            GHalSenderConfig.Settings.GCodeViewer.ToolVisualizer = (int)Machine.ToolMode;
+            GHalSenderConfig.Settings.GCodeViewer.CameraPosition = new Point3D(viewport.Camera.Position.X, viewport.Camera.Position.Y, viewport.Camera.Position.Z);
+            GHalSenderConfig.Settings.GCodeViewer.CameraLookDirection = new Vector3D(viewport.Camera.LookDirection.X, viewport.Camera.LookDirection.Y, viewport.Camera.LookDirection.Z);
+            GHalSenderConfig.Settings.GCodeViewer.CameraUpDirection = new Vector3D(viewport.Camera.UpDirection.X, viewport.Camera.UpDirection.Y, viewport.Camera.UpDirection.Z);
+            GHalSenderConfig.Settings.Save();
             Machine.CanRestoreView = true;
         }
 
         public void RestoreView()
         {
-            if(AppConfig.Settings.GCodeViewer.ViewMode != -1)
+            if(GHalSenderConfig.Settings.GCodeViewer.ViewMode != -1)
             {
-                viewport.Camera.Position = AppConfig.Settings.GCodeViewer.CameraPosition;
-                viewport.Camera.LookDirection = AppConfig.Settings.GCodeViewer.CameraLookDirection;
-                viewport.Camera.UpDirection = AppConfig.Settings.GCodeViewer.CameraUpDirection;
+                viewport.Camera.Position = GHalSenderConfig.Settings.GCodeViewer.CameraPosition;
+                viewport.Camera.LookDirection = GHalSenderConfig.Settings.GCodeViewer.CameraLookDirection;
+                viewport.Camera.UpDirection = GHalSenderConfig.Settings.GCodeViewer.CameraUpDirection;
                 if (IsJobLoaded)
                 {
-                    Machine.RenderMode = (RenderMode)AppConfig.Settings.GCodeViewer.ViewMode;
-                    if (Machine.ToolMode != (ToolVisualizerType)AppConfig.Settings.GCodeViewer.ToolVisualizer)
-                        Machine.ToolMode = (ToolVisualizerType)AppConfig.Settings.GCodeViewer.ToolVisualizer;
+                    Machine.RenderMode = (RenderMode)GHalSenderConfig.Settings.GCodeViewer.ViewMode;
+                    if (Machine.ToolMode != (ToolVisualizerType)GHalSenderConfig.Settings.GCodeViewer.ToolVisualizer)
+                        Machine.ToolMode = (ToolVisualizerType)GHalSenderConfig.Settings.GCodeViewer.ToolVisualizer;
                     AnimateTool();
                 }
             }

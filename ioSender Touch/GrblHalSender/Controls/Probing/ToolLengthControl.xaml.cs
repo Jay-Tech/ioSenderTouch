@@ -85,7 +85,7 @@ namespace GrblHalSender.Controls.Probing
             if (!probing.VerifyProbe())
                 return;
 
-            if (!probing.Program.Init(AppConfig.Settings.Probing.CheckProbeStatus || !probing.ProbeFixture))
+            if (!probing.Program.Init(GHalSenderConfig.Settings.Probing.CheckProbeStatus || !probing.ProbeFixture))
                 return;
             probing.Program.Add($"G91F{probing.ProbeFeedRate.ToInvariantString()}");
 

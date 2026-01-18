@@ -10,7 +10,7 @@ public class AppConfigViewModel : ViewModelBase, IActiveViewModel
     public bool Active { get; set; }
     public string Name { get; }
 
-    public Config ConfigBase => AppConfig.Settings.Base;
+    public Config ConfigBase => GHalSenderConfig.Settings.Base;
 
     public ICommand SaveCommand { get; }
 
@@ -24,13 +24,13 @@ public class AppConfigViewModel : ViewModelBase, IActiveViewModel
 
     private void SaveKeyMap(object obj)
     {
-        if (AppConfig.Settings.Save())
+        if (GHalSenderConfig.Settings.Save())
             Grbl.GrblViewModel.Message = "SettingsSaved";
     }
 
     private void Save(object obj)
     {
-        string filename = Resources.Path + $"KeyMap{(int)AppConfig.Settings.JogMetric.Mode}.xml";
+        string filename = Resources.Path + $"KeyMap{(int)GHalSenderConfig.Settings.JogMetric.Mode}.xml";
         if (Grbl.GrblViewModel.Keyboard.SaveMappings(filename))
             Grbl.GrblViewModel.Message = $"Keymappings saved to {filename}";
     }

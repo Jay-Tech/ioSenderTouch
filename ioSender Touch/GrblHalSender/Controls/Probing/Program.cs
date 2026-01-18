@@ -191,7 +191,7 @@ namespace GrblHalSender.Controls.Probing
                     null,
                     a => Grbl.OnGrblReset += a,
                     a => Grbl.OnGrblReset -= a,
-                    AppConfig.Settings.Base.PollInterval * 2 + 50);
+                    GHalSenderConfig.Settings.Base.PollInterval * 2 + 50);
                 }).Start();
 
                 while (res == null)
@@ -206,7 +206,7 @@ namespace GrblHalSender.Controls.Probing
                     probeCheck,
                     a => Grbl.OnResponseReceived += a,
                     a => Grbl.OnResponseReceived -= a,
-                    AppConfig.Settings.Base.PollInterval * 5);
+                    GHalSenderConfig.Settings.Base.PollInterval * 5);
                 }).Start();
 
                 while (res == null)
@@ -269,13 +269,13 @@ namespace GrblHalSender.Controls.Probing
                 null,
                 a => Grbl.OnResponseReceived += a,
                 a => Grbl.OnResponseReceived -= a,
-                AppConfig.Settings.Base.PollInterval * 5, () => Comms.com.WriteByte(GrblInfo.IsGrblHAL ? GrblConstants.CMD_STATUS_REPORT_ALL : GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT)));
+                GHalSenderConfig.Settings.Base.PollInterval * 5, () => Comms.com.WriteByte(GrblInfo.IsGrblHAL ? GrblConstants.CMD_STATUS_REPORT_ALL : GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT)));
             }).Start();
 
             while (res == null)
                 EventUtils.DoEvents();
 
-            Grbl.Poller.SetState(AppConfig.Settings.Base.PollInterval);
+            Grbl.Poller.SetState(GHalSenderConfig.Settings.Base.PollInterval);
 
             if (Grbl.GrblState.State == GrblStates.Alarm)
             {

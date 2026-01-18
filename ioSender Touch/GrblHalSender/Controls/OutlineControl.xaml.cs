@@ -63,10 +63,10 @@ namespace GrblHalSender.Controls
         {
             GrblViewModel model = DataContext as GrblViewModel;
 
-            if (AppConfig.Settings.Base.OutlineFeedRate != FeedRate)
+            if (GHalSenderConfig.Settings.Base.OutlineFeedRate != FeedRate)
             {
-                AppConfig.Settings.Base.OutlineFeedRate = FeedRate;
-                AppConfig.Settings.Save();
+                GHalSenderConfig.Settings.Base.OutlineFeedRate = FeedRate;
+                GHalSenderConfig.Settings.Save();
             }
 
             if (model == null || !model.IsFileLoaded) return;
@@ -89,7 +89,7 @@ namespace GrblHalSender.Controls
 
         private void OutlineControl_Loaded(object sender, RoutedEventArgs e)
         {
-            FeedRate = AppConfig.Settings.Base.OutlineFeedRate;
+            FeedRate = GHalSenderConfig.Settings.Base.OutlineFeedRate;
         }
     }
 }

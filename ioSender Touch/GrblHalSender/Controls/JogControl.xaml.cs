@@ -189,7 +189,7 @@ namespace GrblHalSender.Controls
         public JogControl()
         {
             InitializeComponent();
-            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
         }
 
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
@@ -218,8 +218,8 @@ namespace GrblHalSender.Controls
         private void SetUpControl()
         {
             mode = _grblViewModel.IsMetric ? "G21" : "G20";
-            _feedRate = _grblViewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Feedrate : AppConfig.Settings.JogUiImperial.Feedrate;
-            _distance = _grblViewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Distance : AppConfig.Settings.JogUiImperial.Distance;
+            _feedRate = _grblViewModel.IsMetric ? GHalSenderConfig.Settings.JogUiMetric.Feedrate : GHalSenderConfig.Settings.JogUiImperial.Feedrate;
+            _distance = _grblViewModel.IsMetric ? GHalSenderConfig.Settings.JogUiMetric.Distance : GHalSenderConfig.Settings.JogUiImperial.Distance;
             Feedrate3 = _feedRate[3];
             Feedrate2 = _feedRate[2];
             Feedrate1 = _feedRate[1];
@@ -232,13 +232,13 @@ namespace GrblHalSender.Controls
             _grblViewModel.JogStep = Distance;
             if (!keyboardMappingsOk)
             {
-                if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.JogMetric.LinkStepJogToUI)
+                if (!GrblInfo.HasFirmwareJog || GHalSenderConfig.Settings.JogMetric.LinkStepJogToUI)
                     keyboard = _grblViewModel.Keyboard;
                 if (keyboard == null) return;
 
                 keyboardMappingsOk = true;
 
-                if (AppConfig.Settings.JogMetric.Mode == JogConfig.JogMode.UI)
+                if (GHalSenderConfig.Settings.JogMetric.Mode == JogConfig.JogMode.UI)
                 {
                     keyboard.AddHandler(Key.PageUp, ModifierKeys.None, CursorJogZplus, false);
                     keyboard.AddHandler(Key.PageDown, ModifierKeys.None, CursorJogZminus, false);
@@ -260,7 +260,7 @@ namespace GrblHalSender.Controls
                     keyboard.AddHandler(aminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAminus, false);
                 }
 
-                if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
+                if (GHalSenderConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
                 {
                     keyboard.AddHandler(Key.End, ModifierKeys.None, EndJog, false);
 

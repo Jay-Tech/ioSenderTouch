@@ -46,7 +46,7 @@ namespace GrblHalSender.ViewModels
         {
             _grblViewModel = grblViewModel;
             _grblViewModel.PropertyChanged += _grblViewModel_PropertyChanged;
-            Measurement = _grblViewModel.IsMetric ? AppConfig.Settings.Base.JogMetric : AppConfig.Settings.Base.JogImperial;
+            Measurement = _grblViewModel.IsMetric ? GHalSenderConfig.Settings.Base.JogMetric : GHalSenderConfig.Settings.Base.JogImperial;
             Unit = _grblViewModel.IsMetric ? "mm" : "in";
         }
 
@@ -57,7 +57,7 @@ namespace GrblHalSender.ViewModels
         {
             if (e.PropertyName.Equals("Unit"))
             {
-                Measurement = _grblViewModel.IsMetric ? AppConfig.Settings.Base.JogMetric : AppConfig.Settings.Base.JogImperial;
+                Measurement = _grblViewModel.IsMetric ? GHalSenderConfig.Settings.Base.JogMetric : GHalSenderConfig.Settings.Base.JogImperial;
                 Unit = _grblViewModel.IsMetric ? "mm" : "in";
                 IsGrbl = !_grblViewModel.IsGrblHAL;
             }

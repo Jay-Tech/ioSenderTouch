@@ -60,15 +60,7 @@ namespace GrblHalSender.Controls.Render
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            //if (DataContext is GrblViewModel)
-            //{
-            //    model = DataContext as GrblViewModel;
-             Foreground =  AppConfig.Settings.GCodeViewer.BlackBackground? 
-                   Brushes.White : Brushes.Black;
-            //}
-            
-            //if (Visibility != Visibility.Visible)
-            //    DataContext = null;
+             Foreground =  GHalSenderConfig.Settings.GCodeViewer.BlackBackground? Brushes.White : Brushes.Black;
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

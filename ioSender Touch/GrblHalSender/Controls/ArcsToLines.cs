@@ -125,7 +125,7 @@ namespace GrblHalSender.Controls
                     }
                 }
 
-                List<string> gc = GCodeParser.TokensToGCode(toolPath, AppConfig.Settings.Base.AutoCompress);
+                List<string> gc = GCodeParser.TokensToGCode(toolPath, GHalSenderConfig.Settings.Base.AutoCompress);
 
                 GCode.File.AddBlock(string.Format("Arcs to lines transform applied: {0}", GCode.File.Model.FileName), Action.New);
 

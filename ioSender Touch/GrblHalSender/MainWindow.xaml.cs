@@ -38,7 +38,7 @@ namespace GrblHalSender
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             _viewModel.ContentManager = new ContentManager();
             BaseWindowTitle = Title;
-            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
 
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             _screenOrientation = clsDisplaySettings.GetScreenOrientation(1);
@@ -75,7 +75,7 @@ namespace GrblHalSender
             using (new UIUtils.WaitCursor())
             {
                 Comms.com.Close();
-                AppConfig.Settings.Shutdown();
+                GHalSenderConfig.Settings.Shutdown();
             }
         }
 
@@ -91,24 +91,24 @@ namespace GrblHalSender
 
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
-            _viewModel.DisplayMenuBar = AppConfig.Settings.AppUiSettings.EnableToolBar;
+            _viewModel.DisplayMenuBar = GHalSenderConfig.Settings.AppUiSettings.EnableToolBar;
             CheckAndSetScale();
-            var color = AppConfig.Settings.AppUiSettings.UIColor;
+            var color = GHalSenderConfig.Settings.AppUiSettings.UIColor;
             SetPrimaryColor(color);
             Left = 0;
             Top = 0;
             SetUpKeyBoard();
-            AppConfig.Settings.Base.AppUISettings.PropertyChanged += AppUISettings_PropertyChanged;
+            GHalSenderConfig.Settings.Base.AppUISettings.PropertyChanged += AppUISettings_PropertyChanged;
         }
         private void AppUISettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(AppUiSettingsConfig.UIColor))
             {
-                SetPrimaryColor(AppConfig.Settings.Base.AppUISettings.UIColor);
+                SetPrimaryColor(GHalSenderConfig.Settings.Base.AppUISettings.UIColor);
             }
             if (e.PropertyName == nameof(AppUiSettingsConfig.EnableLightTheme))
             {
-                SetTheme(AppConfig.Settings.Base.AppUISettings.EnableLightTheme);
+                SetTheme(GHalSenderConfig.Settings.Base.AppUISettings.EnableLightTheme);
             }
         }
 
@@ -126,7 +126,7 @@ namespace GrblHalSender
                 PaletteHelper paletteHelper = new PaletteHelper();
                 var theme = paletteHelper.GetTheme();
                 theme.SetPrimaryColor(primaryColor);
-                theme.SetBaseTheme(AppConfig.Settings.Base.AppUISettings.EnableLightTheme ? BaseTheme.Light : BaseTheme.Dark);
+                theme.SetBaseTheme(GHalSenderConfig.Settings.Base.AppUISettings.EnableLightTheme ? BaseTheme.Light : BaseTheme.Dark);
                 paletteHelper.SetTheme(theme);
             }
             catch (Exception)
@@ -147,13 +147,13 @@ namespace GrblHalSender
             {
                 _jogConfig.PropertyChanged -= JogConfig_PropertyChanged;
             }
-            _jogConfig = _viewModel.IsMetric ? AppConfig.Settings.JogMetric : AppConfig.Settings.JogImperial;
+            _jogConfig = _viewModel.IsMetric ? GHalSenderConfig.Settings.JogMetric : GHalSenderConfig.Settings.JogImperial;
             _jogConfig.PropertyChanged += JogConfig_PropertyChanged;
             ApplyKeyboardJogging();
         }
         private void ApplyKeyboardJogging()
         {
-            _viewModel.Keyboard.JogStepDistance = AppConfig.Settings.JogMetric.LinkStepJogToUI ? AppConfig.Settings.JogUiMetric.Distance0 : _jogConfig.StepDistance;
+            _viewModel.Keyboard.JogStepDistance = GHalSenderConfig.Settings.JogMetric.LinkStepJogToUI ? GHalSenderConfig.Settings.JogUiMetric.Distance0 : _jogConfig.StepDistance;
             _viewModel.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Slow] = _jogConfig.SlowDistance;
             _viewModel.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Fast] = _jogConfig.FastDistance;
             _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Step] = _jogConfig.StepFeedrate;
@@ -170,9 +170,9 @@ namespace GrblHalSender
         private void CheckAndSetScale()
         {
 
-            _windowStyle = !AppConfig.Settings.AppUiSettings.EnableToolBar;
-            var width = AppConfig.Settings.AppUiSettings.Width;
-            var height = AppConfig.Settings.AppUiSettings.Height;
+            _windowStyle = !GHalSenderConfig.Settings.AppUiSettings.EnableToolBar;
+            var width = GHalSenderConfig.Settings.AppUiSettings.Width;
+            var height = GHalSenderConfig.Settings.AppUiSettings.Height;
             var  dpiScale = VisualTreeHelper.GetDpi(this); 
             var h = height / dpiScale.DpiScaleX;
             var w = width / dpiScale.DpiScaleY;
@@ -193,12 +193,12 @@ namespace GrblHalSender
         {
             System.Threading.Thread.Sleep(50);
             Comms.com.PurgeQueue();
-            if (!string.IsNullOrEmpty(AppConfig.Settings.FileName))
+            if (!string.IsNullOrEmpty(GHalSenderConfig.Settings.FileName))
             {
                 // Delay loading until app is ready
                 Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new System.Action(() =>
                 {
-                    GCode.File.Load(AppConfig.Settings.FileName);
+                    GCode.File.Load(GHalSenderConfig.Settings.FileName);
                 }));
             }
         }

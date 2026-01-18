@@ -149,7 +149,7 @@ namespace GrblHalSender.Controls
                             break;
                     }
 
-                    new GCodeRotate().ApplyRotation(Angle * Math.PI / 180d, offset, AppConfig.Settings.Base.AutoCompress);
+                    new GCodeRotate().ApplyRotation(Angle * Math.PI / 180d, offset, GHalSenderConfig.Settings.Base.AutoCompress);
                 }
                 catch (Exception e)
                 {

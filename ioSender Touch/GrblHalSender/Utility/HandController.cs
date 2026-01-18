@@ -50,11 +50,11 @@ namespace GrblHalSender.Utility
             {
                 var isMetric = GrblSettings.GetInteger(GrblSetting.ReportInches) == 0;
                 _distanceRate = isMetric
-                    ? AppConfig.Settings.JogUiMetric.Distance
-                    : AppConfig.Settings.JogUiImperial.Distance;
+                    ? GHalSenderConfig.Settings.JogUiMetric.Distance
+                    : GHalSenderConfig.Settings.JogUiImperial.Distance;
                 _feedRate = isMetric
-                    ? AppConfig.Settings.JogUiMetric.Feedrate
-                    : AppConfig.Settings.JogUiImperial.Feedrate;
+                    ? GHalSenderConfig.Settings.JogUiMetric.Feedrate
+                    : GHalSenderConfig.Settings.JogUiImperial.Feedrate;
                 JogStepRate = (JogStep)Array.FindIndex(_distanceRate, row => row.Equals(_grblViewModel.JogStep));
                 JogFeedRate = (JogFeed)Array.FindIndex(_feedRate, row => row.Equals((int)_grblViewModel.JogRate));
 

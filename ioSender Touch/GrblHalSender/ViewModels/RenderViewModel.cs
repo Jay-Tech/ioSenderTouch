@@ -126,7 +126,7 @@ namespace GrblHalSender.ViewModels
         public RenderViewModel(GrblViewModel grblViewmodel)
         {
             Name = nameof(RenderViewModel);
-            AppConfig.Settings.OnConfigFileLoaded += AppConfigurationLoaded;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += AppConfigurationLoaded;
             StartJobCommand = new Command(StartJob);
             HoldJobCommand = new Command(PauseJob);
             StopJobCommand = new Command(StopJob);
@@ -142,7 +142,7 @@ namespace GrblHalSender.ViewModels
 
         private void Model_GrblInitialized(object sender, EventArgs e)
         {
-            serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, GrblInfo.SerialBufferSize);
+            serialSize = Math.Min(GHalSenderConfig.Settings.Base.MaxBufferSize, GrblInfo.SerialBufferSize);
             model.PropertyChanged += ViewModelPropertyChange;
         }
 
@@ -189,18 +189,18 @@ namespace GrblHalSender.ViewModels
 
         private void AppConfigurationLoaded(object sender, EventArgs e)
         {
-            ShowOverlay = AppConfig.Settings.GCodeViewer.ShowTextOverlay;
-            ForegroundColor = AppConfig.Settings.GCodeViewer.BlackBackground ?
+            ShowOverlay = GHalSenderConfig.Settings.GCodeViewer.ShowTextOverlay;
+            ForegroundColor = GHalSenderConfig.Settings.GCodeViewer.BlackBackground ?
                 Brushes.White : Brushes.Black;
-            var uiSettings = AppConfig.Settings.AppUiSettings;
+            var uiSettings = GHalSenderConfig.Settings.AppUiSettings;
             if (uiSettings.EnableStopLightTheme)
             {
                 //btnStart.Background = Brushes.Green;
                 //btnHold.Background = Brushes.Yellow;
                 //btnStop.Background = Brushes.DarkRed;
             }
-            _useBuffering = AppConfig.Settings.Base.UseBuffering;
-            AppConfig.Settings.GCodeViewer.PropertyChanged += AppUISettings_PropertyChanged;
+            _useBuffering = GHalSenderConfig.Settings.Base.UseBuffering;
+            GHalSenderConfig.Settings.GCodeViewer.PropertyChanged += AppUISettings_PropertyChanged;
             ProcessKeyMappings();
         }
 
@@ -208,7 +208,12 @@ namespace GrblHalSender.ViewModels
         {
             if (e.PropertyName == nameof(GCodeViewerConfig.ShowTextOverlay))
             {
-                ShowOverlay = AppConfig.Settings.GCodeViewer.ShowTextOverlay;
+                ShowOverlay = GHalSenderConfig.Settings.GCodeViewer.ShowTextOverlay;
+            }
+            if (e.PropertyName == nameof(GCodeViewerConfig.BlackBackground))
+            {
+                ForegroundColor = GHalSenderConfig.Settings.GCodeViewer.BlackBackground ?
+                    Brushes.White : Brushes.Black;
             }
         }
 
@@ -230,17 +235,17 @@ namespace GrblHalSender.ViewModels
 
         private void ProcessKeyMappings()
         {
-            AppConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
-            GCodeParser.IgnoreM6 = AppConfig.Settings.Base.IgnoreM6;
-            GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
-            GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
+            GHalSenderConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
+            GCodeParser.IgnoreM6 = GHalSenderConfig.Settings.Base.IgnoreM6;
+            GCodeParser.IgnoreM7 = GHalSenderConfig.Settings.Base.IgnoreM7;
+            GCodeParser.IgnoreM8 = GHalSenderConfig.Settings.Base.IgnoreM8;
         }
         private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GCodeParser.IgnoreM6 = AppConfig.Settings.Base.IgnoreM6;
-            GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
-            GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
-            GCodeParser.IgnoreG61G64 = AppConfig.Settings.Base.IgnoreG61G64;
+            GCodeParser.IgnoreM6 = GHalSenderConfig.Settings.Base.IgnoreM6;
+            GCodeParser.IgnoreM7 = GHalSenderConfig.Settings.Base.IgnoreM7;
+            GCodeParser.IgnoreM8 = GHalSenderConfig.Settings.Base.IgnoreM8;
+            GCodeParser.IgnoreG61G64 = GHalSenderConfig.Settings.Base.IgnoreG61G64;
         }
         private void RealtimeStatusProcessed(string response)
         {
@@ -263,7 +268,7 @@ namespace GrblHalSender.ViewModels
 
                     case nameof(GrblViewModel.IsMPGActive):
                         grblState.MPG = vm.IsMPGActive == true;
-                        vm.Poller.SetState(grblState.MPG ? 0 : AppConfig.Settings.Base.PollInterval);
+                        vm.Poller.SetState(grblState.MPG ? 0 : GHalSenderConfig.Settings.Base.PollInterval);
                         StreamingState = grblState.MPG ? StreamingState.Disabled : StreamingState.Idle;
                         break;
 

@@ -58,7 +58,7 @@ namespace GrblHalSender.Controls
         public MacroEditor()
         {
             InitializeComponent();
-            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
             this.Loaded += MacroEditor_Loaded;
             IsVisibleChanged += VisibleChanged;
             this.LostFocus += MacroEditor_LostFocus;
@@ -70,7 +70,7 @@ namespace GrblHalSender.Controls
             {
                 _macroData = new MacroData
                 {
-                    Macros = AppConfig.Settings.Base.Macros
+                    Macros = GHalSenderConfig.Settings.Base.Macros
                 };
                 DataContext = _macroData;
             }
@@ -189,8 +189,8 @@ namespace GrblHalSender.Controls
                 _macroData.LastMacro.Name = cbxMacro.Text;
                 _macroData.LastMacro.ConfirmOnExecute = _macroData.ConfirmOnExecute;
             }
-            AppConfig.Settings.Base.Macros = _macroData?.Macros;
-            AppConfig.Settings.Save();
+            GHalSenderConfig.Settings.Base.Macros = _macroData?.Macros;
+            GHalSenderConfig.Settings.Save();
             cbxMacro.Text = string.Empty;
             textBox.Text = string.Empty;
             addMacro = null;
@@ -223,7 +223,7 @@ namespace GrblHalSender.Controls
         {
             _macroData = new MacroData
             {
-                Macros = AppConfig.Settings.Base.Macros,
+                Macros = GHalSenderConfig.Settings.Base.Macros,
 
             };
             DataContext = _macroData;

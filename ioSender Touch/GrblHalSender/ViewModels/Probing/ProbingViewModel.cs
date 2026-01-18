@@ -119,19 +119,11 @@ namespace GrblHalSender.ViewModels.Probing
             Unit = e == GrblHalSender.GrblCore.Measurement.Metric ? "mm" : "in";
         }
 
-      
-
         private void Measurement_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var m = sender as Measurement;
             Grbl.ResponseLog.Add("Measured: " + (m.Position - Grbl.WorkPositionOffset).ToString(m.AxisFlags, Grbl.Precision) + " " + m.ProbingType.ToString());
         }
-
-        //private void HeightMap_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    if (e.PropertyName == nameof(HeightMapViewModel.HasHeightMap))
-        //        HeightMap.CanApply = HeightMap.HasHeightMap && !HeightMapApplied && Grbl.IsFileLoaded;
-        //}
 
         public bool RemoveLastPosition()
         {
@@ -286,7 +278,7 @@ namespace GrblHalSender.ViewModels.Probing
                     null,
                     a => Grbl.OnWCOUpdated += a,
                     a => Grbl.OnWCOUpdated -= a,
-                    AppConfig.Settings.Base.PollInterval * 35);
+                    GHalSenderConfig.Settings.Base.PollInterval * 35);
                 }).Start();
             }
 
@@ -363,11 +355,11 @@ namespace GrblHalSender.ViewModels.Probing
                     }
 
                     if (wait)
-                        Thread.Sleep(AppConfig.Settings.Base.PollInterval); // needed?
+                        Thread.Sleep(GHalSenderConfig.Settings.Base.PollInterval); // needed?
                 }
             }
 
-            Grbl.Poller.SetState(AppConfig.Settings.Base.PollInterval);
+            Grbl.Poller.SetState(GHalSenderConfig.Settings.Base.PollInterval);
 
             return isCancelled ? false : !wait;
         }
@@ -487,19 +479,6 @@ namespace GrblHalSender.ViewModels.Probing
         public bool CanReferenceToolOffset { get { return GrblInfo.Build >= 20200805 && GrblInfo.IsGrblHAL; } }
         public double TloReference { get { return Grbl.IsTloReferenceSet ? _tloReferenceOffset : double.NaN; } set { _tloReferenceOffset = value; OnPropertyChanged(); } }
         public bool AddAction { get { return _addAction; } set { _addAction = value; OnPropertyChanged(); } }
-  
-        //public bool HeightMapApplied
-        //{
-        //    get { return GCode.File.HeightMapApplied; }
-        //    set {
-        //        if (GCode.File.HeightMapApplied != value) {
-        //            GCode.File.HeightMapApplied = value;
-        //            OnPropertyChanged();
-        //        }
-        //        HeightMap.CanApply = !GCode.File.HeightMapApplied;
-        //    }
-        //}
-//        public List<string> Program { get { return _program;  } }
         public List<Position> Positions { get { return _positions; } }
         public List<Position> Machine { get { return _machine; } }
         public double XYClearance { get { return _xyClearance; } set { _xyClearance = value; OnPropertyChanged(); } }

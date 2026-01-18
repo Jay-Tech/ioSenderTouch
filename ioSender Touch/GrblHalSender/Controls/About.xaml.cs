@@ -64,7 +64,7 @@ namespace GrblHalSender.Controls
             txtGrblVersion.Content = GrblInfo.Version;
             txtGrblOptions.Content = GrblInfo.Options;
             txtGrblNewOpts.Content = GrblInfo.NewOptions;
-            txtGrblConnection.Content = AppConfig.Settings.Base.PortParams;
+            txtGrblConnection.Content = GHalSenderConfig.Settings.Base.PortParams;
             grpGrbl.Header = GrblInfo.Firmware;
 
             if (GrblInfo.Identity != "")

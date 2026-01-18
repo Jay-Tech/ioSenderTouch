@@ -75,8 +75,8 @@ namespace GrblHalSender.ViewModels
             _grblAppSettings = new AppConfigView(_model, _contentManager);
             _offsetView = new OffsetView(_model, _contentManager);
             _utilityView = new UtilityView(_model, _contentManager);
-            AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
-            _controller = new Controller(_model, AppConfig.Settings);
+            GHalSenderConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
+            _controller = new Controller(_model, GHalSenderConfig.Settings);
             _controller.SetupAndOpen(Application.Current.Dispatcher);
             InitSystem();
             BuildOptionalUi();
@@ -88,25 +88,25 @@ namespace GrblHalSender.ViewModels
         }
         private void AppConfiguationLoaded(object sender, EventArgs e)
         {
-            _model.PollingInterval = AppConfig.Settings.Base.PollInterval;
+            _model.PollingInterval = GHalSenderConfig.Settings.Base.PollInterval;
             var controls = new ObservableCollection<UserControl>
             {
                 new BasicConfigControl(),
                 new ProbingConfigControl()
             };
 
-            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
+            if (GHalSenderConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
             {
                 controls.Add(new JogUiConfigControl(_model));
             }
             controls.Add(new AppUiSettings());
-            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.UI)
+            if (GHalSenderConfig.Settings.JogMetric.Mode != JogConfig.JogMode.UI)
             {
                 controls.Add(new JogConfigControl(_model));
             }
             controls.Add(new StripGCodeConfigControl());
 
-            if (AppConfig.Settings.GCodeViewer.IsEnabled)
+            if (GHalSenderConfig.Settings.GCodeViewer.IsEnabled)
             {
                 controls.Add(new RenderConfigControl());
             }
@@ -164,7 +164,7 @@ namespace GrblHalSender.ViewModels
                 }
                 else
                     GrblParserState.Get(true);
-                _model.Poller.SetState(AppConfig.Settings.Base.PollInterval);
+                _model.Poller.SetState(GHalSenderConfig.Settings.Base.PollInterval);
             }
             return true;
         }

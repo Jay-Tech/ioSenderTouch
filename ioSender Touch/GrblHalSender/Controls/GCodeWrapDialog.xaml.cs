@@ -132,7 +132,7 @@ namespace GrblHalSender.Controls
                 {
                     var limits = GCode.File.Model.ProgramLimits;
 
-                    new GCodeWrap().ApplyWrap(this, AppConfig.Settings.Base.AutoCompress);
+                    new GCodeWrap().ApplyWrap(this, GHalSenderConfig.Settings.Base.AutoCompress);
                 }
                 catch (Exception e)
                 {

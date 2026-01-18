@@ -144,7 +144,7 @@ namespace GrblHalSender.Controls.Probing
 //                }
 //            }
 
-//            List<string> gc = GCodeParser.TokensToGCode(newToolPath, AppConfig.Settings.Base.AutoCompress);
+//            List<string> gc = GCodeParser.TokensToGCode(newToolPath, GHalSenderConfig.Settings.Base.AutoCompress);
 
 
 //            GCode.File.AddBlock(string.Format("Heightmap applied: {0}", model.Grbl.FileName), Action.New);

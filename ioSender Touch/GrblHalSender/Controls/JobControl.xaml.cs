@@ -109,19 +109,19 @@ namespace GrblHalSender.Controls
             grblState.Substate = 0;
             grblState.MPG = false;
             job.PgmEndLine = -1;
-            //AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            //GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
             //this.Loaded += JobControl_Loaded;
             Name = nameof(JobControl);
         }
 
         private void JobControl_Loaded(object sender, RoutedEventArgs e)
         {
-            serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, (int)(GrblInfo.SerialBufferSize * 0.9f));
+            serialSize = Math.Min(GHalSenderConfig.Settings.Base.MaxBufferSize, (int)(GrblInfo.SerialBufferSize * 0.9f));
         }
 
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
-            var uiSettings = AppConfig.Settings.AppUiSettings;
+            var uiSettings = GHalSenderConfig.Settings.AppUiSettings;
             if (uiSettings.EnableStopLightTheme)
             {
                 btnStart.Background = Brushes.Green;
@@ -129,7 +129,7 @@ namespace GrblHalSender.Controls
                 btnStop.Background = Brushes.DarkRed;
             }
 
-            useBuffering = AppConfig.Settings.Base.UseBuffering;
+            useBuffering = GHalSenderConfig.Settings.Base.UseBuffering;
             ProcessKeyMappings();
         }
 
@@ -139,7 +139,7 @@ namespace GrblHalSender.Controls
             GCode.File.Parser.Dialect = GrblInfo.IsGrblHAL ? Dialect.GrblHAL : Dialect.Grbl;
             GCode.File.Parser.ExpressionsSupported = GrblInfo.ExpressionsSupported;
             model = Grbl.GrblViewModel;
-            AppConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
+            GHalSenderConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
 
             if (!keyboardMappingsOk && DataContext is GrblViewModel)
             {
@@ -169,16 +169,16 @@ namespace GrblHalSender.Controls
                 keyboard.AddHandler(Key.OemMinus, ModifierKeys.Shift | ModifierKeys.Control, FeedRateDownFine);
                 keyboard.AddHandler(Key.OemPlus, ModifierKeys.Shift | ModifierKeys.Control, FeedRateUpFine);
             }
-            GCodeParser.IgnoreM6 = AppConfig.Settings.Base.IgnoreM6;
-            GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
-            GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
+            GCodeParser.IgnoreM6 = GHalSenderConfig.Settings.Base.IgnoreM6;
+            GCodeParser.IgnoreM7 = GHalSenderConfig.Settings.Base.IgnoreM7;
+            GCodeParser.IgnoreM8 = GHalSenderConfig.Settings.Base.IgnoreM8;
         }
         private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GCodeParser.IgnoreM6 = AppConfig.Settings.Base.IgnoreM6;
-            GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
-            GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
-            GCodeParser.IgnoreG61G64 = AppConfig.Settings.Base.IgnoreG61G64;
+            GCodeParser.IgnoreM6 = GHalSenderConfig.Settings.Base.IgnoreM6;
+            GCodeParser.IgnoreM7 = GHalSenderConfig.Settings.Base.IgnoreM7;
+            GCodeParser.IgnoreM8 = GHalSenderConfig.Settings.Base.IgnoreM8;
+            GCodeParser.IgnoreG61G64 = GHalSenderConfig.Settings.Base.IgnoreG61G64;
         }
         private void JobControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -215,7 +215,7 @@ namespace GrblHalSender.Controls
 
                     case nameof(GrblViewModel.IsMPGActive):
                         grblState.MPG = vm.IsMPGActive == true;
-                        vm.Poller.SetState(grblState.MPG ? 0 : AppConfig.Settings.Base.PollInterval);
+                        vm.Poller.SetState(grblState.MPG ? 0 : GHalSenderConfig.Settings.Base.PollInterval);
                         StreamingState = grblState.MPG ? StreamingState.Disabled : StreamingState.Idle;
                         break;
 
@@ -397,7 +397,7 @@ namespace GrblHalSender.Controls
         public void EnablePolling(bool enable)
         {
             if (enable)
-                model.Poller.SetState(AppConfig.Settings.Base.PollInterval);
+                model.Poller.SetState(GHalSenderConfig.Settings.Base.PollInterval);
             else if (model.Poller.IsEnabled)
                 model.Poller.SetState(0);
         }
@@ -468,7 +468,7 @@ namespace GrblHalSender.Controls
             if (!model.IsJobRunning)
             {
                 int id = int.Parse(key.ToString().Substring(1));
-                var macro = AppConfig.Settings.Macros.FirstOrDefault(o => o.Id == id);
+                var macro = GHalSenderConfig.Settings.Macros.FirstOrDefault(o => o.Id == id);
                 if (macro != null && (!macro.ConfirmOnExecute ||
                                       MessageBox.Show(string.Format("Run {0} macro?", macro.Name), "Run macro",
                                           MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
