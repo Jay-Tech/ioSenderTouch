@@ -1,0 +1,38 @@
+﻿namespace GrblHalSender.GrblCore;
+
+public enum GrblSetting
+{
+    PulseMicroseconds = 0,
+    StepperIdleLockTime = 1,
+    StepInvertMask = 2,
+    DirInvertMask = 3,
+    InvertStepperEnable = 4,
+    LimitPinsInvertMask = 5,
+    InvertProbePin = 6,
+    StatusReportMask = 10,
+    JunctionDeviation = 11,
+    ArcTolerance = 12,
+    ReportInches = 13,
+    SoftLimitsEnable = 20,
+    HardLimitsEnable = 21,
+    HomingEnable = 22,
+    HomingDirMask = 23,
+    HomingFeedRate = 24,
+    HomingSeekRate = 25,
+    HomingDebounceDelay = 26,
+    HomingPulloff = 27,
+    G73Retract = 28,
+    PulseDelayMicroseconds = 29,
+    RpmMax = 30,
+    RpmMin = 31,
+    Mode = 32, // enum GrblMode
+    PWMFreq = 33,
+    PWMOffValue = 34,
+    PWMMinValue = 35,
+    PWMMaxValue = 36,
+    TravelResolutionBase = 100,
+    MaxFeedRateBase = 110,
+    AccelerationBase = 120,
+    MaxTravelBase = 130,
+    MotorCurrentBase = 140,
+}

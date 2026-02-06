@@ -471,22 +471,8 @@ namespace GrblHalSender.Controls.Render
         {
             if(IsJobLoaded)
                 ShowConeTool();
-            //model.ResponseLog.Add(string.Format("M: {0} {1} {2}", e.Delta, viewport.Camera.Position.Z, viewport.Camera.LookDirection.Z));
-            //pl = viewport.Camera.LookDirection.Length;
-
-            //if (e.Delta > 0)
-            //{
-            //    if (viewport.Camera.LookDirection.Length > 100)
-            //    {
-            //    }
-            //}
-            //else
-            //{
-            //    if (viewport.Camera.LookDirection.Length < 10)
-            //    {
-
-            //    }
-            //}
+            model.ResponseLog.Add(string.Format("M: {0} {1} {2}", e.Delta, viewport.Camera.Position.Z, viewport.Camera.LookDirection.Z));
+            
         }
 
         #endregion
@@ -771,10 +757,9 @@ namespace GrblHalSender.Controls.Render
 
             //if (isLatheMode == true)
             //    workEnvelope.BoundingBox = new Rect3D(-workPositionOffset.X, 0d, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, 0d, GrblInfo.MaxTravel.Z);
-            //else if (GrblInfo.ForceSetOrigin)
-            //    workEnvelope.BoundingBox = new Rect3D(-workPositionOffset.X, -workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z);
-            //else
-            //    workEnvelope.BoundingBox = new Rect3D(-GrblInfo.MaxTravel.X - workPositionOffset.X, -GrblInfo.MaxTravel.Y - workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z);
+             workEnvelope.BoundingBox = GrblInfo.ForceSetOrigin ?
+                 new Rect3D(-workPositionOffset.X, -workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z) 
+                 : new Rect3D(-GrblInfo.MaxTravel.X - workPositionOffset.X, -GrblInfo.MaxTravel.Y - workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z);
 
             Machine.ToolOrigin = positionPoints;
         }
@@ -989,11 +974,11 @@ namespace GrblHalSender.Controls.Render
                 grid = new GridLinesVisual3D()
                 {
                     Center = getGridAdjust(gridOffset),
-                    MinorDistance = 2.5d,
-                    MajorDistance = TickSize,
+                    MinorDistance = gridWidth/50,
+                    MajorDistance = gridWidth/10,
                     Width = gridHeight,
                     Length = gridWidth,
-                    Thickness = 0.1d,
+                    Thickness = 0.2d,
                     Fill = AxisBrush,
                     LengthDirection = lengthDirection,
                     Normal = normal

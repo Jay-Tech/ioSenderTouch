@@ -167,7 +167,7 @@ namespace GrblHalSender.ViewModels
         public ICommand SpindleOnCwCommand { get; }
         public ICommand SpindleOnCcwCommand { get; }
         public ICommand SpindleOffCommand { get; }
-
+        public ICommand MDICommand { get; private set; }
         public ICommand SpindleSpeedCommand { get; }
 
         public string AlarmConText
@@ -191,6 +191,7 @@ namespace GrblHalSender.ViewModels
                 OnPropertyChanged();
             }
         }
+
 
         public bool HasATC
         {
@@ -301,17 +302,21 @@ namespace GrblHalSender.ViewModels
                 OnPropertyChanged();
             }
         }
+        public PollGrbl Poller { get; set; }
 
 
+
+        public bool AutoReportEnabled { get; set; }
         public GrblViewModel()
         {
+            Poller = new PollGrbl(this);
             _a = _pn = _fs = _sc = _tool = string.Empty;
             Clear();
             Keyboard = new KeypressHandler(this);
             Keyboard.LoadMappings("KeyMap0");
             MDICommand = new ActionCommand<string>(ExecuteMDI);
 
-            pollThread = new Thread(new ThreadStart(Poller.Run));
+            pollThread = new Thread(Poller.Run);
             pollThread.Start();
 
             _grblState.LastAlarm = 0;
@@ -402,7 +407,7 @@ namespace GrblHalSender.ViewModels
             }
         }
 
-        
+
         private void SetResetCommand(object obj)
         {
             Grbl.Reset();
@@ -543,9 +548,9 @@ namespace GrblHalSender.ViewModels
             if (e.PropertyName == nameof(GrblHalSender.GrblCore.Position))
                 if (TloReference != Double.NaN)
                 {
-                    
+
                 }
-                OnPropertyChanged(nameof(ProbePosition));
+            OnPropertyChanged(nameof(ProbePosition));
         }
 
         private void Position_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -643,9 +648,7 @@ namespace GrblHalSender.ViewModels
             Set("Pn", string.Empty);
         }
 
-        public PollGrbl Poller { get; } = new PollGrbl();
 
-        public ICommand MDICommand { get; private set; }
 
         public void CameraProbed(Position position)
         {
@@ -1785,11 +1788,11 @@ namespace GrblHalSender.ViewModels
                     if (!double.IsNaN(TloReference))
                     {
                         var tlr = Math.Abs(TloReference);
-                         ActiveToolOffset = Math.Round(tlr + ProbePosition.Z,4);
+                        ActiveToolOffset = Math.Round(tlr + ProbePosition.Z, 4);
                     }
-                    
+
                 }
-               
+
             }
             else
                 IsProbeSuccess = false;
@@ -2055,7 +2058,8 @@ namespace GrblHalSender.ViewModels
                         {
                             Fan0 = (int.Parse(value) & 0x1) == 1;
                         }
-                        catch { };
+                        catch { }
+                        ;
                     }
                     break;
 
@@ -2210,8 +2214,8 @@ namespace GrblHalSender.ViewModels
             else if (data.First() == '[')
             {
                 int sep = data.IndexOf(':');
-                if (sep > 1) switch (data.Substring(1, sep - 1)) 
-                {
+                if (sep > 1) switch (data.Substring(1, sep - 1))
+                    {
                         case "PRB":
                             ParseProbeStatus(data);
                             break;
@@ -2327,7 +2331,7 @@ namespace GrblHalSender.ViewModels
 
                         case "TLR":
                             TloReference = dbl.Parse(data.Substring(5).TrimEnd(']'));
-                                //IsTloReferenceSet  != "0";
+                            //IsTloReferenceSet  != "0";
                             break;
 
                         case "TLO":
@@ -2452,7 +2456,7 @@ namespace GrblHalSender.ViewModels
             OnResponseReceived?.Invoke(data);
         }
 
-       
+
 
         private readonly char[] _toolTrim = ['[', 'T', ':'];
         private double _activeToolOffset;
@@ -2551,6 +2555,10 @@ namespace GrblHalSender.ViewModels
             {
                 MaxDistanceZ = z;
             }
+            if (int.TryParse(GrblSettings.Get(grblHALSetting.AutoReport).Value, out var rate))
+            {
+                AutoReportEnabled = rate != 0;
+            }
 
             foreach (var coordinate in GrblWorkParameters.CoordinateSystems)
             {
@@ -2558,6 +2566,9 @@ namespace GrblHalSender.ViewModels
             }
 
         }
+
+
+
         public void LoadComplete()
         {
             Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL);
