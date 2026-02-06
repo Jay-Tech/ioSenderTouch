@@ -115,40 +115,20 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-            </StackPanel>
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="3,50,0,0" Foreground="Red" Opacity=".9"  
-                       Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource IsVisibleConverter}}">
-                <TextBlock.Text>
-                    <MultiBinding Converter="{StaticResource ToolWithOffsetStringConverter}">
-                        <Binding Path="Tool" StringFormat="Tool:{0}" Mode="OneWay"/>
-                        <Binding Path="ActiveToolOffset"  StringFormat="Offset:{0}"  Mode="OneWay"/>
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
-            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5"  >
-                <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
-                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource IsVisibleConverter}}" FontSize="100" 
-                       HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
-                <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
-                       Visibility="{Binding IsMPGActive,  Converter={StaticResource IsVisibleConverter}}" FontSize="100"/>
-            </StackPanel>
-            <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"   HorizontalAlignment="Right" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Button x:Name="StartButton" Grid.Row="0" FontSize="20" IsEnabled="{Binding RenderVM.EnableStart}" Command="{Binding RenderVM.StartJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Start"></Button>
-                <Button x:Name="HoldButton" Grid.Row="1" FontSize="20" IsEnabled="{Binding RenderVM.EnableHold}" Command="{Binding RenderVM.HoldJobCommand}" Height="40" MaxWidth="150"    Margin="5,0" Content="Feed Hold" ></Button>
-                <Button x:Name="StopButton" Grid.Row="2" FontSize="20" IsEnabled="{Binding RenderVM.EnableStop}" Command="{Binding RenderVM.StopJobCommand}" Height="40"  MaxWidth="150" Margin="5,0"  Content="Stop" ></Button>
-                <Button x:Name="RewindButton" Grid.Row="3" FontSize="20" IsEnabled="{Binding RenderVM.EnableRewind}" Command="{Binding RenderVM.RewindJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Rewind" ></Button>
-                <materialDesign:PopupBox Grid.Row="4"   VerticalAlignment="Center" 
-                                         HorizontalAlignment="Center" Margin="0,5"
-                    PlacementMode="LeftAndAlignTopEdges"  PopupUniformCornerRadius="8" Opacity=".7" StaysOpen="False"
-                    Style="{StaticResource  MaterialDesignMultiFloatingActionPopupBox}"
-                    ToolTip="Tool Selection" >
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="3,50,0,0" Foreground="Red" Opacity=".9"  
+                           Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource IsVisibleConverter}}">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource ToolWithOffsetStringConverter}">
+                            <Binding Path="Tool" StringFormat="Tool:{0}" Mode="OneWay"/>
+                            <Binding Path="ActiveToolOffset"  StringFormat="Offset:{0}"  Mode="OneWay"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <materialDesign:PopupBox   VerticalAlignment="Top" 
+                                         HorizontalAlignment="Left" Margin="0,30"
+                                         PlacementMode="RightAndAlignTopEdges"  PopupUniformCornerRadius="8" Opacity=".7" StaysOpen="False"
+                                         Style="{StaticResource  MaterialDesignMultiFloatingActionPopupBox}"
+                                         ToolTip="Tool Selection" >
                     <materialDesign:PopupBox.ToggleContent >
                         <materialDesign:PackIcon
                             Width="36"
@@ -176,6 +156,29 @@
                         </ItemsControl>
                     </StackPanel>
                 </materialDesign:PopupBox>
+            </StackPanel>
+            
+          
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5"  >
+                <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
+                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource IsVisibleConverter}}" FontSize="100" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
+                <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
+                       Visibility="{Binding IsMPGActive,  Converter={StaticResource IsVisibleConverter}}" FontSize="100"/>
+            </StackPanel>
+            <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"   HorizontalAlignment="Right" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button x:Name="StartButton" Grid.Row="0" FontSize="20" IsEnabled="{Binding RenderVM.EnableStart}" Command="{Binding RenderVM.StartJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Start"></Button>
+                <Button x:Name="HoldButton" Grid.Row="1" FontSize="20" IsEnabled="{Binding RenderVM.EnableHold}" Command="{Binding RenderVM.HoldJobCommand}" Height="40" MaxWidth="150"    Margin="5,0" Content="Feed Hold" ></Button>
+                <Button x:Name="StopButton" Grid.Row="2" FontSize="20" IsEnabled="{Binding RenderVM.EnableStop}" Command="{Binding RenderVM.StopJobCommand}" Height="40"  MaxWidth="150" Margin="5,0"  Content="Stop" ></Button>
+                <Button x:Name="RewindButton" Grid.Row="3" FontSize="20" IsEnabled="{Binding RenderVM.EnableRewind}" Command="{Binding RenderVM.RewindJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Rewind" ></Button>
+               
             </Grid>
         </Grid>
     </DockPanel>

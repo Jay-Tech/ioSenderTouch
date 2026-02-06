@@ -471,8 +471,8 @@ namespace GrblHalSender.Controls.Render
         {
             if(IsJobLoaded)
                 ShowConeTool();
-            model.ResponseLog.Add(string.Format("M: {0} {1} {2}", e.Delta, viewport.Camera.Position.Z, viewport.Camera.LookDirection.Z));
-            
+            if (viewport.Camera != null)
+                model.ResponseLog.Add($"M: {e.Delta} {viewport.Camera.Position.Z} {viewport.Camera.LookDirection.Z}");
         }
 
         #endregion
@@ -754,14 +754,13 @@ namespace GrblHalSender.Controls.Render
                     break;
             }
 
-
-            //if (isLatheMode == true)
-            //    workEnvelope.BoundingBox = new Rect3D(-workPositionOffset.X, 0d, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, 0d, GrblInfo.MaxTravel.Z);
-             workEnvelope.BoundingBox = GrblInfo.ForceSetOrigin ?
-                 new Rect3D(-workPositionOffset.X, -workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z) 
-                 : new Rect3D(-GrblInfo.MaxTravel.X - workPositionOffset.X, -GrblInfo.MaxTravel.Y - workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z);
+            
+            //workEnvelope.BoundingBox = GrblInfo.ForceSetOrigin ?
+            //    new Rect3D(-workPositionOffset.X, -workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z) 
+            //    : new Rect3D(-GrblInfo.MaxTravel.X - workPositionOffset.X, -GrblInfo.MaxTravel.Y - workPositionOffset.Y, -GrblInfo.MaxTravel.Z - workPositionOffset.Z, GrblInfo.MaxTravel.X, GrblInfo.MaxTravel.Y, GrblInfo.MaxTravel.Z);
 
             Machine.ToolOrigin = positionPoints;
+
         }
 
         public void ShowPosition()
@@ -974,11 +973,13 @@ namespace GrblHalSender.Controls.Render
                 grid = new GridLinesVisual3D()
                 {
                     Center = getGridAdjust(gridOffset),
-                    MinorDistance = gridWidth/50,
-                    MajorDistance = gridWidth/10,
+                    //MinorDistance = gridWidth/50,
+                    //MajorDistance = gridWidth/10,
+                    MinorDistance = 2.5d,
+                    MajorDistance = TickSize,
                     Width = gridHeight,
                     Length = gridWidth,
-                    Thickness = 0.2d,
+                    Thickness = 0.1d,
                     Fill = AxisBrush,
                     LengthDirection = lengthDirection,
                     Normal = normal

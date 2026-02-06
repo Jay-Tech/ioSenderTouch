@@ -11,7 +11,17 @@ public class GrblWorkParameters
     public static LatheMode LatheMode { get; private set; }
     public static double ToolLengthOffsetReference { get; private set; } = double.NaN;
     public static ObservableCollection<CoordinateSystem> CoordinateSystems { get; private set; } = new ObservableCollection<CoordinateSystem>();
-    public static ObservableCollection<Tool> Tools { get; private set; } = new ObservableCollection<Tool>();
+    public static ObservableCollection<Tool> Tools { get; private set; } =
+    [
+        new Tool("1"),
+        new Tool("2"),
+        new Tool("3"),
+        new Tool("4"),
+        new Tool("5"),
+        new Tool("6"),
+        new Tool("7"),
+        new Tool("8")
+    ];
     public static CoordinateSystem ToolLengtOffset { get; private set; } = new CoordinateSystem("TLO", "");
     public static CoordinateSystem ProbePosition { get; private set; } = new CoordinateSystem("PRB", "");
     public static bool ProbeSuccesful { get; private set; } = false;
@@ -76,14 +86,7 @@ public class GrblWorkParameters
         model.Silent = false;
         dataReceived -= process;
 
-        if (Tools.Count == 1)
-        {
-            Tools.Add(new Tool("1"));
-            Tools.Add(new Tool("2"));
-            Tools.Add(new Tool("3"));
-            Tools.Add(new Tool("4"));
-        }
-
+        
         //            GrblParserState.Tool = GrblParserState.Tool;    // Add tool to Tools if not in list
         model.Tool = model.Tool;                        // Force UI update
         model.ToolOffset.Z = ToolLengtOffset.Z;

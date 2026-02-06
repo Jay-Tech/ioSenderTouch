@@ -177,8 +177,9 @@ namespace GrblHalSender.GrblCore
             return ok;
         }
 
-        public bool ProcessKeypress(KeyEventArgs e, bool allowJog, UserControl context = null)
+        public bool ProcessKeypress(KeyEventArgs e, bool canJog, UserControl context = null)
         {
+            if (!canJog) return false;
             bool isJogging = IsJogging, jogkeyPressed = false;
             double[] dist = new double[4] { 0d, 0d, 0d, 0d };
 
@@ -268,81 +269,56 @@ namespace GrblHalSender.GrblCore
                 }
             }
             else
-                jogkeyPressed = !(Keyboard.FocusedElement is System.Windows.Controls.TextBox) && (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.PageUp || e.Key == Key.PageDown);
+                jogkeyPressed = Keyboard.FocusedElement is not TextBox && e.Key is Key.Left or Key.Right or Key.Up or Key.Down or Key.PageUp or Key.PageDown;
 
             if (isJogging)
             {
-                string command = string.Empty;
+                var command = string.Empty;
 
-                if (GrblInfo.LatheModeEnabled)
-                {
-                    for (int i = 0; i < 2; i++) switch (axisjog[i])
-                        {
-                            case Key.Left:
-                                dist[GrblConstants.Z_AXIS] = -1d;
-                                command += "Z-{3}";
-                                break;
+                for (int i = 0; i < N_AXIS; i++) switch (axisjog[i])
+                    {
+                        case Key.PageUp:
+                            dist[GrblConstants.Z_AXIS] = 1d;
+                            command += "Z{3}";
+                            break;
 
-                            case Key.Up:
-                                dist[GrblConstants.X_AXIS] = -1d;
-                                command += "X-{1}";
-                                break;
+                        case Key.PageDown:
+                            dist[GrblConstants.Z_AXIS] = -1d;
+                            command += "Z-{3}";
+                            break;
 
-                            case Key.Right:
-                                dist[GrblConstants.Z_AXIS] = 1d;
-                                command += "Z{3}";
-                                break;
+                        case Key.Left:
+                            dist[GrblConstants.X_AXIS] = -1d;
+                            command += "X-{1}";
+                            break;
 
-                            case Key.Down:
-                                dist[GrblConstants.X_AXIS] = 1d;
-                                command += "X{1}";
-                                break;
-                        }
-                }
-                else for (int i = 0; i < N_AXIS; i++) switch (axisjog[i])
-                        {
-                            case Key.PageUp:
-                                dist[GrblConstants.Z_AXIS] = 1d;
-                                command += "Z{3}";
-                                break;
+                        case Key.Up:
+                            dist[GrblConstants.Y_AXIS] = 1d;
+                            command += "Y{2}";
+                            break;
 
-                            case Key.PageDown:
-                                dist[GrblConstants.Z_AXIS] = -1d;
-                                command += "Z-{3}";
-                                break;
+                        case Key.Right:
+                            dist[GrblConstants.X_AXIS] = 1d;
+                            command += "X{1}";
+                            break;
 
-                            case Key.Left:
-                                dist[GrblConstants.X_AXIS] = -1d;
-                                command += "X-{1}";
-                                break;
+                        case Key.Down:
+                            dist[GrblConstants.Y_AXIS] = -1d;
+                            command += "Y-{2}";
+                            break;
 
-                            case Key.Up:
-                                dist[GrblConstants.Y_AXIS] = 1d;
-                                command += "Y{2}";
-                                break;
+                        case Key.Home:
+                            dist[GrblConstants.A_AXIS] = 1d;
+                            command += "A{4}";
+                            break;
 
-                            case Key.Right:
-                                dist[GrblConstants.X_AXIS] = 1d;
-                                command += "X{1}";
-                                break;
+                        case Key.End:
+                            dist[GrblConstants.A_AXIS] = -1d;
+                            command += "A-{4}";
+                            break;
+                    }
 
-                            case Key.Down:
-                                dist[GrblConstants.Y_AXIS] = -1d;
-                                command += "Y-{2}";
-                                break;
-
-                            case Key.Home:
-                                dist[GrblConstants.A_AXIS] = 1d;
-                                command += "A{4}";
-                                break;
-
-                            case Key.End:
-                                dist[GrblConstants.A_AXIS] = -1d;
-                                command += "A-{4}";
-                                break;
-                        }
-
-                if ((isJogging = command != string.Empty))
+                if (isJogging == (command != string.Empty))
                 {
                     if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
@@ -373,9 +349,10 @@ namespace GrblHalSender.GrblCore
                         if (GrblInfo.IsGrblHAL || !SoftLimits)
                         {
                             var distance = JogDistances[(int)jogMode].ToInvariantString();
-                            SendJogCommand("$J=G91G21" + string.Format(command + "F{0}",
-                                                             JogFeedrates[(int)jogMode].ToInvariantString(),
-                                                              distance, distance, distance, distance));
+                            var jogCommand = "$J=G91G21" + string.Format(command + "F{0}",
+                                JogFeedrates[(int)jogMode].ToInvariantString(),
+                                distance, distance, distance, distance);
+                            SendJogCommand(jogCommand);
                         }
                         else
                         {
