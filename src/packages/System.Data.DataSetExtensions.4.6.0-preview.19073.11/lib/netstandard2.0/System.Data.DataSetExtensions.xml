@@ -1,0 +1,478 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>System.Data.DataSetExtensions</name>
+    </assembly>
+    <members>
+        <member name="T:System.Data.DataRowComparer">
+            <summary>
+            This class implements IEqualityComparer using value based semantics
+            when comparing DataRows.
+            </summary>
+        </member>
+        <member name="P:System.Data.DataRowComparer.Default">
+            <summary>
+            Gets the singleton instance of the data row comparer.
+            </summary>
+        </member>
+        <member name="T:System.Data.DataRowComparer`1">
+            <summary>
+            This class implements IEqualityComparer using value based semantics
+            when comparing DataRows.
+            </summary>
+        </member>
+        <member name="M:System.Data.DataRowComparer`1.#ctor">
+            <summary>
+            Private constructor to prevent initialization outside of Default singleton instance.
+            </summary>
+        </member>
+        <member name="P:System.Data.DataRowComparer`1.Default">
+            <summary>
+            Gets the singleton instance of the data row comparer.
+            </summary>
+        </member>
+        <member name="M:System.Data.DataRowComparer`1.Equals(`0,`0)">
+            <summary>
+            This method compares to DataRows by doing a column by column value based
+            comparison.
+            </summary>
+            <param name="leftRow">The first input DataRow</param>
+            <param name="rightRow">The second input DataRow</param>
+            <returns>True if rows are equal, false if not.</returns>
+        </member>
+        <member name="M:System.Data.DataRowComparer`1.GetHashCode(`0)">
+            <summary>
+            This method retrieves a hash code for the source row.
+            </summary>
+            <param name="row">The source DataRow</param>
+            <returns>HashCode for row based on values in the row.</returns>
+        </member>
+        <member name="T:System.Data.DataRowExtensions">
+            <summary>
+            This static class defines the DataRow extension methods.
+            </summary>
+        </member>
+        <member name="M:System.Data.DataRowExtensions.Field``1(System.Data.DataRow,System.String)">
+            <summary>
+            This method provides access to the values in each of the columns in a given row. 
+            This method makes casts unnecessary when accessing columns. 
+            Additionally, Field supports nullable types and maps automatically between DBNull and 
+            Nullable when the generic type is nullable. 
+            </summary>
+            <param name="row">The input DataRow</param>
+            <param name="columnName">The input column name specifying which row value to retrieve.</param>
+            <returns>The DataRow value for the column specified.</returns> 
+        </member>
+        <member name="M:System.Data.DataRowExtensions.Field``1(System.Data.DataRow,System.Data.DataColumn)">
+            <summary>
+            This method provides access to the values in each of the columns in a given row. 
+            This method makes casts unnecessary when accessing columns. 
+            Additionally, Field supports nullable types and maps automatically between DBNull and 
+            Nullable when the generic type is nullable. 
+            </summary>
+            <param name="row">The input DataRow</param>
+            <param name="column">The input DataColumn specifying which row value to retrieve.</param>
+            <returns>The DataRow value for the column specified.</returns> 
+        </member>
+        <member name="M:System.Data.DataRowExtensions.Field``1(System.Data.DataRow,System.Int32)">
+            <summary>
+            This method provides access to the values in each of the columns in a given row. 
+            This method makes casts unnecessary when accessing columns. 
+            Additionally, Field supports nullable types and maps automatically between DBNull and 
+            Nullable when the generic type is nullable. 
+            </summary>
+            <param name="row">The input DataRow</param>
+            <param name="columnIndex">The input ordinal specifying which row value to retrieve.</param>
+            <returns>The DataRow value for the column specified.</returns> 
+        </member>
+        <member name="M:System.Data.DataRowExtensions.Field``1(System.Data.DataRow,System.Int32,System.Data.DataRowVersion)">
+            <summary>
+            This method provides access to the values in each of the columns in a given row. 
+            This method makes casts unnecessary when accessing columns. 
+            Additionally, Field supports nullable types and maps automatically between DBNull and 
+            Nullable when the generic type is nullable. 
+            </summary>
+            <param name="row">The input DataRow</param>
+            <param name="columnIndex">The input ordinal specifying which row value to retrieve.</param>
+            <param name="version">The DataRow version for which row value to retrieve.</param>
+            <returns>The DataRow value for the column specified.</returns> 
+        </member>
+        <member name="M:System.Data.DataRowExtensions.Field``1(System.Data.DataRow,System.String,System.Data.DataRowVersion)">
+            <summary>
+            This method provides access to the values in each of the columns in a given row. 
+            This method makes casts unnecessary when accessing columns. 
+            Additionally, Field supports nullable types and maps automatically between DBNull and 
+            Nullable when the generic type is nullable. 
+            </summary>
+            <param name="row">The input DataRow</param>
+            <param name="columnName">The input column name specifying which row value to retrieve.</param>
+            <param name="version">The DataRow version for which row value to retrieve.</param>
+            <returns>The DataRow value for the column specified.</returns> 
+        </member>
+        <member name="M:System.Data.DataRowExtensions.Field``1(System.Data.DataRow,System.Data.DataColumn,System.Data.DataRowVersion)">
+            <summary>
+            This method provides access to the values in each of the columns in a given row. 
+            This method makes casts unnecessary when accessing columns. 
+            Additionally, Field supports nullable types and maps automatically between DBNull and 
+            Nullable when the generic type is nullable. 
+            </summary>
+            <param name="row">The input DataRow</param>
+            <param name="column">The input DataColumn specifying which row value to retrieve.</param>
+            <param name="version">The DataRow version for which row value to retrieve.</param>
+            <returns>The DataRow value for the column specified.</returns> 
+        </member>
+        <member name="M:System.Data.DataRowExtensions.SetField``1(System.Data.DataRow,System.Int32,``0)">
+            <summary>
+            This method sets a new value for the specified column for the DataRow it�s called on. 
+            </summary>
+            <param name="row">The input DataRow.</param>
+            <param name="columnIndex">The input ordinal specifying which row value to set.</param>
+            <param name="value">The new row value for the specified column.</param>
+        </member>
+        <member name="M:System.Data.DataRowExtensions.SetField``1(System.Data.DataRow,System.String,``0)">
+            <summary>
+            This method sets a new value for the specified column for the DataRow it�s called on. 
+            </summary>
+            <param name="row">The input DataRow.</param>
+            <param name="columnName">The input column name specifying which row value to retrieve.</param>
+            <param name="value">The new row value for the specified column.</param>
+        </member>
+        <member name="M:System.Data.DataRowExtensions.SetField``1(System.Data.DataRow,System.Data.DataColumn,``0)">
+            <summary>
+            This method sets a new value for the specified column for the DataRow it�s called on. 
+            </summary>
+            <param name="row">The input DataRow.</param>
+            <param name="column">The input DataColumn specifying which row value to retrieve.</param>
+            <param name="value">The new row value for the specified column.</param>
+        </member>
+        <member name="T:System.Data.DataTableExtensions">
+            <summary>
+            This static class defines the DataTable extension methods.
+            </summary>
+        </member>
+        <member name="M:System.Data.DataTableExtensions.AsEnumerable(System.Data.DataTable)">
+            <summary>
+            This method returns a IEnumerable of Datarows.
+            </summary>
+            <param name="source">The source DataTable to make enumerable.</param>
+            <returns>IEnumerable of datarows.</returns>
+        </member>
+        <member name="M:System.Data.DataTableExtensions.CopyToDataTable``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            This method takes an input sequence of DataRows and produces a DataTable object
+            with copies of the source rows.
+            Also note that this will cause the rest of the query to execute at this point in time
+            (e.g. there is no more delayed execution after this sequence operator).
+            </summary>
+            <param name="source">The input sequence of DataRows</param>
+            <returns>DataTable containing copies of the source DataRows. Properties for the DataTable table will be taken from first DataRow in the source.</returns>
+            <exception cref="T:System.ArgumentNullException">if source is null</exception>
+            <exception cref="T:System.InvalidOperationException">if source is empty</exception>
+        </member>
+        <member name="M:System.Data.DataTableExtensions.CopyToDataTable``1(System.Collections.Generic.IEnumerable{``0},System.Data.DataTable,System.Data.LoadOption)">
+            <summary>
+            Delegates to other CopyToDataTable overload with a null FillErrorEventHandler.
+            </summary>
+        </member>
+        <member name="M:System.Data.DataTableExtensions.CopyToDataTable``1(System.Collections.Generic.IEnumerable{``0},System.Data.DataTable,System.Data.LoadOption,System.Data.FillErrorEventHandler)">
+            <summary>
+            This method takes an input sequence of DataRows and produces a DataTable object
+            with copies of the source rows.
+            Also note that this will cause the rest of the query to execute at this point in time
+            (e.g. there is no more delayed execution after this sequence operator).
+            </summary>
+            <param name="source">The input sequence of DataRows. CopyToDataTable uses DataRowVersion.Default when retrieving values from source DataRow
+            which will include proposed values for DataRow being edited. Null DataRow in the sequence are skipped.</param>
+            <param name="table">The target DataTable to load.</param>
+            <param name="options">The target DataTable to load.</param>
+            <param name="errorHandler">Error handler for recoverable errors.
+            Recoverable errors include:
+              A source DataRow is in the deleted or detached state.
+              DataTable.LoadDataRow threw an exception, i.e. wrong # of columns in source row
+            Unrecoverable errors include:
+              exceptions from IEnumerator, DataTable.BeginLoadData or DataTable.EndLoadData</param>
+            <returns>DataTable containing copies of the source DataRows.</returns>
+            <exception cref="T:System.ArgumentNullException">if source is null</exception>
+            <exception cref="T:System.ArgumentNullException">if table is null</exception>
+            <exception cref="T:System.InvalidOperationException">if source DataRow is in Deleted or Detached state</exception>
+        </member>
+        <member name="T:System.Data.EnumerableRowCollection">
+            <summary>
+            Provides an entry point so that Cast operator call can be intercepted within an extension method.
+            </summary>
+        </member>
+        <member name="T:System.Data.EnumerableRowCollection`1">
+            <summary>
+            This class provides a wrapper for DataTables to allow for querying via LINQ.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Boolean,System.Data.DataTable)">
+            <summary>
+            This constructor is used when Select operator is called with output Type other than input row Type.
+            Basically fail on GetLDV(), but other LINQ operators must work.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.#ctor(System.Data.DataTable)">
+            <summary>
+            Basic Constructor
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.#ctor(System.Data.EnumerableRowCollection{`0},System.Collections.Generic.IEnumerable{`0},System.Func{`0,`0})">
+            <summary>
+            Copy Constructor that sets the input IEnumerable as enumerableRows
+            Used to maintain IEnumerable that has linq operators executed in the same order as the user
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.GetEnumerator">
+            <summary>
+            This method returns an strongly typed iterator
+            for the underlying DataRow collection.
+            </summary>
+            <returns>A strongly typed iterator.</returns>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.AddPredicate(System.Func{`0,System.Boolean})">
+            <summary>
+            Used to add a filter predicate.
+            A conjunction of all predicates are evaluated in LinqDataView
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.AddSortExpression``1(System.Func{`0,``0},System.Boolean,System.Boolean)">
+            <summary>
+            Adds a sort expression when Keyselector is provided but not Comparer
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollection`1.AddSortExpression``1(System.Func{`0,``0},System.Collections.Generic.IComparer{``0},System.Boolean,System.Boolean)">
+            <summary>
+            Adds a sort expression when Keyselector and Comparer are provided.
+            </summary>
+        </member>
+        <member name="T:System.Data.EnumerableRowCollectionExtensions">
+            <summary>
+            This static class defines the extension methods that add LINQ operator functionality
+            within IEnumerableDT and IOrderedEnumerableDT.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.Where``1(System.Data.EnumerableRowCollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            LINQ's Where operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.OrderBy``2(System.Data.EnumerableRowCollection{``0},System.Func{``0,``1})">
+            <summary>
+            LINQ's OrderBy operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.OrderBy``2(System.Data.EnumerableRowCollection{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            LINQ's OrderBy operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.OrderByDescending``2(System.Data.EnumerableRowCollection{``0},System.Func{``0,``1})">
+            <summary>
+            LINQ's OrderByDescending operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.OrderByDescending``2(System.Data.EnumerableRowCollection{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            LINQ's OrderByDescending operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.ThenBy``2(System.Data.OrderedEnumerableRowCollection{``0},System.Func{``0,``1})">
+            <summary>
+            LINQ's ThenBy operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.ThenBy``2(System.Data.OrderedEnumerableRowCollection{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            LINQ's ThenBy operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.ThenByDescending``2(System.Data.OrderedEnumerableRowCollection{``0},System.Func{``0,``1})">
+            <summary>
+            LINQ's ThenByDescending operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.ThenByDescending``2(System.Data.OrderedEnumerableRowCollection{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            LINQ's ThenByDescending operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.Select``2(System.Data.EnumerableRowCollection{``0},System.Func{``0,``1})">
+            <summary>
+            Executes a Select (Projection) on EnumerableDataTable. If the selector returns a different
+            type than the type of rows, then AsLinqDataView is disabled, and the returning EnumerableDataTable
+            represents an enumerable over the LINQ Query.
+            </summary>
+        </member>
+        <member name="M:System.Data.EnumerableRowCollectionExtensions.Cast``1(System.Data.EnumerableRowCollection)">
+            <summary>
+            Casts an EnumerableDataTable_TSource into EnumerableDataTable_TResult
+            </summary>
+        </member>
+        <member name="T:System.Data.OrderedEnumerableRowCollection`1">
+            <summary>
+            This class provides a wrapper for DataTables representing an ordered sequence.
+            </summary>
+        </member>
+        <member name="M:System.Data.OrderedEnumerableRowCollection`1.#ctor(System.Data.EnumerableRowCollection{`0},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Copy Constructor that sets enumerableRows to the one given in the input
+            </summary>
+        </member>
+        <member name="T:System.Data.SortExpressionBuilder`1">
+            <summary>
+            This class represents a combined sort expression build using multiple sort expressions.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:System.Data.SortExpressionBuilder`1._selectors">
+              This class ensures multiple orderby/thenbys are handled correctly. Its semantics is as follows:
+              
+             Query 1:
+             orderby a
+             thenby  b
+             orderby c
+             orderby d
+             thenby  e
+             
+             is equivalent to:
+             
+             Query 2:
+             orderby d
+             thenby  e
+             thenby  c
+             thenby  a
+             thenby  b
+             
+            
+        </member>
+        <member name="M:System.Data.SortExpressionBuilder`1.Add(System.Func{`0,System.Object},System.Comparison{System.Object},System.Boolean)">
+            <summary>
+            Adds a sorting selector/comparer in the correct order
+            </summary>
+        </member>
+        <member name="M:System.Data.SortExpressionBuilder`1.Select(`0)">
+            <summary>
+            Represents a Combined selector of all selectors added thus far.
+            </summary>
+            <returns>List of 'objects returned by each selector'. This list is the combined-selector</returns>
+        </member>
+        <member name="M:System.Data.SortExpressionBuilder`1.Compare(System.Collections.Generic.List{System.Object},System.Collections.Generic.List{System.Object})">
+            <summary>
+            Represents a Comparer (of IComparer) that compares two combined-selectors using
+            provided comparers for each individual selector.
+            Note: Comparison is done in the order it was Added.
+            </summary>
+            <returns>Comparison result of the combined Sort comparer expression</returns>
+        </member>
+        <member name="M:System.Data.SortExpressionBuilder`1.Clone">
+            <summary>
+            Clones the SortexpressionBuilder and returns a new object 
+            that points to same comparer and selectors (in the same order).
+            </summary>
+        </member>
+        <member name="M:System.Data.SortExpressionBuilder`1.CloneCast``1">
+            <summary>
+            Clones the SortExpressinBuilder and casts to type TResult.
+            </summary>
+        </member>
+        <member name="T:System.Data.TypedTableBase`1">
+            <summary>
+            This is the generic base class for TypedDataSet
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBase`1.#ctor">
+            <summary>
+            Default constructor for generic TypedTableBase.
+            Will be called by generated Typed DataSet classes and is not for public use.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBase`1.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor for the generic TypedTableBase with takes SerializationInfo and StreamingContext.
+            Will be called by generated Typed DataSet classes and
+            is not for public use.
+            </summary>
+            <param name="info">SerializationInfo containing data to construct the object.</param>
+            <param name="context">The streaming context for the object being deserialized.</param>
+        </member>
+        <member name="M:System.Data.TypedTableBase`1.GetEnumerator">
+            <summary>
+            This property returns an enumerator of T for the TypedTable.  Note, this could
+            execute the underlying Linq expression.
+            </summary>
+            <returns>IEnumerable of T.</returns>
+        </member>
+        <member name="M:System.Data.TypedTableBase`1.Cast``1">
+            <summary>
+            Casts an EnumerableDataTable_TSource into EnumerableDataTable_TResult
+            </summary>
+        </member>
+        <member name="T:System.Data.TypedTableBaseExtensions">
+            <summary>
+            This static class defines the extension methods that add LINQ operator functionality
+            within IEnumerableDT and IOrderedEnumerableDT.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.Where``1(System.Data.TypedTableBase{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            LINQ's Where operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.OrderBy``2(System.Data.TypedTableBase{``0},System.Func{``0,``1})">
+            <summary>
+            LINQ's OrderBy operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.OrderBy``2(System.Data.TypedTableBase{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            LINQ's OrderBy operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.OrderByDescending``2(System.Data.TypedTableBase{``0},System.Func{``0,``1})">
+            <summary>
+            LINQ's OrderByDescending operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.OrderByDescending``2(System.Data.TypedTableBase{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            LINQ's OrderByDescending operator for generic EnumerableRowCollection.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.Select``2(System.Data.TypedTableBase{``0},System.Func{``0,``1})">
+            <summary>
+            Executes a Select (Projection) on EnumerableDataTable. If the selector returns a different
+            type than the type of rows, then AsLinqDataView is disabled, and the returning EnumerableDataTable
+            represents an enumerable over the LINQ Query.
+            </summary>
+        </member>
+        <member name="M:System.Data.TypedTableBaseExtensions.AsEnumerable``1(System.Data.TypedTableBase{``0})">
+            <summary>
+            This method returns a IEnumerable of TRow.
+            </summary>
+            <param name="source">The source DataTable to make enumerable.</param>
+            <returns>IEnumerable of datarows.</returns>
+        </member>
+        <member name="P:System.SR.DataSetLinq_InvalidEnumerationValue">
+            <summary>The {0} enumeration value, {1}, is not valid.</summary>
+        </member>
+        <member name="P:System.SR.DataSetLinq_EmptyDataRowSource">
+            <summary>The source contains no DataRows.</summary>
+        </member>
+        <member name="P:System.SR.DataSetLinq_NullDataRow">
+            <summary>The source contains a DataRow reference that is null.</summary>
+        </member>
+        <member name="P:System.SR.DataSetLinq_CannotLoadDetachedRow">
+            <summary>The source contains a detached DataRow that cannot be copied to the DataTable.</summary>
+        </member>
+        <member name="P:System.SR.DataSetLinq_CannotCompareDeletedRow">
+            <summary>The DataRowComparer does not work with DataRows that have been deleted since it only compares current values.</summary>
+        </member>
+        <member name="P:System.SR.DataSetLinq_CannotLoadDeletedRow">
+            <summary>The source contains a deleted DataRow that cannot be copied to the DataTable.</summary>
+        </member>
+        <member name="P:System.SR.DataSetLinq_NonNullableCast">
+            <summary>Cannot cast DBNull. Value to type '{0}'. Please use a nullable type.</summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HelixToolkit</name>
+    </assembly>
+    <members>
+        <member name="T:HelixToolkit.Logger.DebugLogger">
+            <summary>
+            A logger that writes messages in the debug output window only when a debugger is attached.
+            </summary>
+        </member>
+        <member name="M:HelixToolkit.Logger.DebugLogger.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:HelixToolkit.Logger.DebugLogger"/> class.
+            </summary>
+            <param name="name">The name of the logger.</param>
+        </member>
+        <member name="M:HelixToolkit.Logger.DebugLogger.BeginScope``1(``0)">
+            <inheritdoc />
+        </member>
+        <member name="M:HelixToolkit.Logger.DebugLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+            <inheritdoc />
+        </member>
+        <member name="M:HelixToolkit.Logger.DebugLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <inheritdoc />
+        </member>
+        <member name="T:HelixToolkit.Logger.LogManager">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:HelixToolkit.Logger.LogManager.Factory">
+            <summary>
+            Replace factory at app start up to use custom logger.
+            </summary>
+        </member>
+        <member name="M:HelixToolkit.Logger.LogManager.Create``1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:HelixToolkit.Logger.LogManager.Create(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
