@@ -12,13 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Controls\App.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Controls\App.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <None Remove="Resources\icons\GHalSender.ico" />
+    <None Remove="Resources\Probing\GHalSender.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,17 +33,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="App.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\close.png" />
     <Resource Include="Resources\edit.png" />
     <Resource Include="Resources\icons\closeDark.png" />
     <Resource Include="Resources\icons\editDark.png" />
+    <Resource Include="Resources\icons\GHalSender.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\icons\openDark.png" />
     <Resource Include="Resources\icons\reloadDark.png" />
     <Resource Include="Resources\open.png" />
-    <Resource Include="Resources\Probing\App.ico" />
     <Resource Include="Resources\Probing\centerI.png" />
     <Resource Include="Resources\Probing\CenterO.png" />
     <Resource Include="Resources\Probing\cornerA.png" />
@@ -68,6 +62,7 @@
     <Resource Include="Resources\Probing\edgeIBC.png" />
     <Resource Include="Resources\Probing\edgeICD.png" />
     <Resource Include="Resources\Probing\edgeZ.png" />
+    <Resource Include="Resources\Probing\GHalSender.ico" />
     <Resource Include="Resources\Probing\RotaterAB.png" />
     <Resource Include="Resources\Probing\RotaterAD.png" />
     <Resource Include="Resources\Probing\RotaterCB.png" />

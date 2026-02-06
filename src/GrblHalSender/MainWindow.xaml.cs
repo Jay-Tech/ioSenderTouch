@@ -16,7 +16,7 @@ namespace GrblHalSender
     public partial class MainWindow : Window
     {
         private const string Version = "2.0.4";
-        private const string App_Name = "GrblHal Sender";
+        private const string App_Name = "GHAL Sender";
 
         private readonly GrblViewModel _viewModel;
         private readonly HomeView _homeView;

@@ -30,7 +30,11 @@
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Name="VerisonLabel"  Grid.Column="0" HorizontalContentAlignment="Left"  VerticalContentAlignment="Center"></Label>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Image Source="../Resources/icons/GHalSender.ico" HorizontalAlignment="Center" VerticalAlignment="Center" Height="28" Width="28"></Image>
+                <Label Name="VerisonLabel"   FontSize="16"  HorizontalContentAlignment="Left"  VerticalContentAlignment="Center"></Label>
+            </StackPanel>
+            
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label  Name ="ConnectionLabel" Content="{Binding IsConnected}" FontSize="20" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
                 <Ellipse Name ="ConnectionColorLabel" Fill="{Binding Path =Connected, Converter={StaticResource GrblConnectionToColorConverter}}" Width="25" Height="25" VerticalAlignment="Center"/>

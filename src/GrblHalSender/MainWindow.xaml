@@ -13,7 +13,7 @@
         WindowStartupLocation="Manual" 
         ResizeMode="NoResize"
         Loaded="Window_Load"
-        Icon="App.ico" 
+        Icon="/Resources/icons/GHalSender.ico" 
         Name ="AppMainWindow"
         WindowStyle="None"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
