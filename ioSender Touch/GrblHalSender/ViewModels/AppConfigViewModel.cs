@@ -12,9 +12,9 @@ public class AppConfigViewModel : ViewModelBase, IActiveViewModel
 
     public Config ConfigBase => GHalSenderConfig.Settings.Base;
 
-    public ICommand SaveCommand { get; }
+    public ICommand SaveCommand { get; set; }
 
-    public ICommand SaveKeyMapCommand { get; }
+    public ICommand SaveKeyMapCommand { get; set; }
     public AppConfigViewModel()
     {
         Name = nameof(AppConfigViewModel);
