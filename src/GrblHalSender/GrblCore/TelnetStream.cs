@@ -69,10 +69,8 @@ namespace GrblHalSender.GrblCore
                 PurgeQueue();
                 _ipStream?.Close(300);
                 _ipStream?.Dispose();
-                _ipStream = null;
                 _ipServer?.Close();
                 _ipServer?.Dispose();
-                _ipServer = null;
             }
         }
 

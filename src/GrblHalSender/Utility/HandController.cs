@@ -199,9 +199,9 @@ namespace GrblHalSender.Utility
 
                             var yMax = useImperial ? _grblViewModel.MaxDistanceY / 25.4 :
                                 _grblViewModel.MaxDistanceY;
-                            step = yMax - yCurrent;
+                            step = yMax - Math.Abs(yCurrent);
 
-                            command = FormattableString.Invariant($"$J = G91{mode}Y{Math.Abs(step)}F{_grblViewModel.JogRate}");
+                            command = FormattableString.Invariant($"$J = G91{mode}Y{-step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
 
