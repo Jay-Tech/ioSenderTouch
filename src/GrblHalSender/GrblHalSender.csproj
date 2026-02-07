@@ -63,7 +63,7 @@
     <Resource Include="Resources\Probing\edgeICD.png" />
     <Resource Include="Resources\Probing\edgeZ.png" />
     <Resource Include="Resources\Probing\GHalSender.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Probing\RotaterAB.png" />
     <Resource Include="Resources\Probing\RotaterAD.png" />

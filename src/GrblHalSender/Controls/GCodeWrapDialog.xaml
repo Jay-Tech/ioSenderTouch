@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Wrap parameters" Height="150" Width="200"
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" MinWidth="190"
-        Loaded="Window_Loaded" Icon="App.ico">
+        Loaded="Window_Loaded" Icon="../Resources/icons/GHalSender.ico">
     <Grid Background="#FFE5E5E5">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Height="Auto" Margin="5,5">
             <controls:NumericField x:Uid="fld_diameter" x:Name="Diameter" Label="Diameter:" Format="-##0.###" Value="{Binding Path=Diameter, Mode=TwoWay}"/>

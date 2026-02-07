@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         x:Uid="dlg_connection"
         Title="Sender connection" 
-        Height="250" Width="400" Icon="App.ico" ResizeMode="NoResize"  
+        Height="250" Width="400" Icon="..\Resources/icons/GHalSender.ico" ResizeMode="NoResize"  
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
