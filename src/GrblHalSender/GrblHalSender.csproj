@@ -87,4 +87,8 @@
     <Resource Include="Resources\Triangle.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GrblCore\Adpters\" />
+  </ItemGroup>
+
 </Project>

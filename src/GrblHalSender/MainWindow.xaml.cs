@@ -71,7 +71,7 @@ namespace GrblHalSender
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Comms.com.DataReceived -= ((GrblViewModel)DataContext).DataReceived;
-
+            _viewModel?.Poller?.SetState(0);
             using (new UIUtils.WaitCursor())
             {
                 Comms.com.Close();

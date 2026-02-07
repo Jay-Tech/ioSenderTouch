@@ -19,9 +19,9 @@ namespace GrblHalSender.Views
             DataContext = _model;
             InitializeComponent();
             Grbl.GrblViewModel = _model;
-           model.HomeViewModel  = new HomeViewModel(_model);
-           
+            _model.HomeViewModel = new HomeViewModel(_model);
         }
+
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             if (!(e.Handled = ProcessKeyPreview(e)))
@@ -50,7 +50,7 @@ namespace GrblHalSender.Views
             }
 
             return _model.EnableKeyboard && _model.Keyboard.ProcessKeypress(e, !(MdiControl.IsFocused || DRO.IsFocused || spindleControl.IsFocused || workParametersControl.IsFocused));
-          
+
         }
 
     }

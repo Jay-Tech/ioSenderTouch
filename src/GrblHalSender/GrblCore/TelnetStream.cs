@@ -1,41 +1,4 @@
-/*
- * TelnetStream.cs - part of CNC Controls library
- *
- * v0.41 / 2022-09-03 / Io Engineering (Terje Io)
- *
- */
 
-/*
-
-Copyright (c) 2018-2021, Io Engineering (Terje Io)
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-· Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.
-
-· Redistributions in binary form must reproduce the above copyright notice, this
-list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
-
-· Neither the name of the copyright holder nor the names of its contributors may
-be used to endorse or promote products derived from this software without
-specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-*/
 
 using System.Net.Sockets;
 using System.Text;
@@ -45,13 +8,19 @@ namespace GrblHalSender.GrblCore
 {
     public class TelnetStream : StreamComms
     {
-        private TcpClient ipserver = null;
-        private NetworkStream ipstream = null;
-        private byte[] buffer = new byte[512];
-        private volatile Comms.State state = Comms.State.ACK;
+        private TcpClient _ipServer = null;
+        private NetworkStream _ipStream = null;
+        private readonly byte[] _buffer = new byte[512];
+        private volatile Comms.State _state = Comms.State.ACK;
         private StringBuilder input = new StringBuilder(1024);
         private Dispatcher Dispatcher { get; set; }
-
+        public Comms.StreamType StreamType { get { return Comms.StreamType.Telnet; } }
+        public bool IsOpen { get { return _ipServer != null && _ipServer.Connected; } }
+        public int OutCount { get { return 0; } }
+        public Comms.State CommandState { get { return _state; } set { _state = value; } }
+        public string Reply { get; private set; }
+        public bool EventMode { get; set; } = true;
+        public Action<int> ByteReceived { get; set; }
         public event DataReceivedHandler DataReceived;
 
         public TelnetStream(string host, Dispatcher dispatcher)
@@ -67,10 +36,10 @@ namespace GrblHalSender.GrblCore
 
             if (parameter.Length == 2) try
                 {
-                    ipserver = new TcpClient(parameter[0], int.Parse(parameter[1]));
-                    ipserver.NoDelay = true;
-                    ipstream = ipserver.GetStream();
-                    ipstream.BeginRead(buffer, 0, buffer.Length, ReadComplete, buffer);
+                    _ipServer = new TcpClient(parameter[0], int.Parse(parameter[1]));
+                    _ipServer.NoDelay = true;
+                    _ipStream = _ipServer.GetStream();
+                    _ipStream.BeginRead(_buffer, 0, _buffer.Length, ReadComplete, _buffer);
                 }
                 catch
                 {
@@ -82,18 +51,12 @@ namespace GrblHalSender.GrblCore
             Close();
         }
 
-        public Comms.StreamType StreamType { get { return Comms.StreamType.Telnet; } }
-        public bool IsOpen { get { return ipserver != null && ipserver.Connected; } }
-        public int OutCount { get { return 0; } }
-        public Comms.State CommandState { get { return state; } set { state = value; } }
-        public string Reply { get; private set; }
-        public bool EventMode { get; set; } = true;
-        public Action<int> ByteReceived { get; set; }
+       
 
         public void PurgeQueue()
         {
-            while (ipstream.DataAvailable)
-                ipstream.ReadByte();
+            while (_ipStream.DataAvailable)
+                _ipStream.ReadByte();
             Reply = string.Empty;
             if (!EventMode)
                 input.Clear();
@@ -104,11 +67,12 @@ namespace GrblHalSender.GrblCore
             if (IsOpen)
             {
                 PurgeQueue();
-                ipstream.Close(300);
-                ipstream.Dispose();
-                ipstream = null;
-                ipserver.Close();
-                ipserver = null;
+                _ipStream?.Close(300);
+                _ipStream?.Dispose();
+                _ipStream = null;
+                _ipServer?.Close();
+                _ipServer?.Dispose();
+                _ipServer = null;
             }
         }
 
@@ -124,23 +88,23 @@ namespace GrblHalSender.GrblCore
 
         public void WriteByte(byte data)
         {
-            ipstream.WriteAsync(new byte[1] { data }, 0, 1);
+            _ipStream.WriteAsync([data], 0, 1);
         }
 
         public void WriteBytes(byte[] bytes, int len)
         {
-            ipstream.WriteAsync(bytes, 0, len);
+            _ipStream.WriteAsync(bytes, 0, len);
         }
 
         public void WriteString(string data)
         {
             byte[] bytes = Encoding.Default.GetBytes(data);
-            ipstream.WriteAsync(bytes, 0, bytes.Length);
+            _ipStream.WriteAsync(bytes, 0, bytes.Length);
         }
 
         public void WriteCommand(string command)
         {
-            state = Comms.State.AwaitAck;
+            _state = Comms.State.AwaitAck;
 
             if (command.Length == 1 && command != GrblConstants.CMD_PROGRAM_DEMARCATION)
                 WriteByte((byte)command.ToCharArray()[0]);
@@ -181,13 +145,13 @@ namespace GrblHalSender.GrblCore
             Reply = string.Empty;
             WriteCommand(command);
 
-            while (state == Comms.State.AwaitAck)
+            while (_state == Comms.State.AwaitAck)
                 EventUtils.DoEvents();
 
             return Reply;
         }
 
-        private int gp()
+        private int Gp()
         {
             int pos = 0; bool found = false;
 
@@ -204,7 +168,7 @@ namespace GrblHalSender.GrblCore
 
             try
             {
-                bytesAvailable = ipstream.EndRead(iar);
+                bytesAvailable = _ipStream.EndRead(iar);
             }
             catch
             {
@@ -219,11 +183,11 @@ namespace GrblHalSender.GrblCore
 
                 if (EventMode)
                 {
-                    while (input.Length > 0 && (pos = gp()) > 0)
+                    while (input.Length > 0 && (pos = Gp()) > 0)
                     {
                         Reply = input.ToString(0, pos - 1);
                         input.Remove(0, pos + 1);
-                        state = Reply == "ok" ? Comms.State.ACK : (Reply.StartsWith("error") ? Comms.State.NAK : Comms.State.DataReceived);
+                        _state = Reply == "ok" ? Comms.State.ACK : (Reply.StartsWith("error") ? Comms.State.NAK : Comms.State.DataReceived);
                         if (Reply.Length != 0 && DataReceived != null)
                             Dispatcher.Invoke(DataReceived, Reply);
                     }
@@ -231,8 +195,8 @@ namespace GrblHalSender.GrblCore
                 else
                     ByteReceived?.Invoke(ReadByte());
 
-                if (ipstream != null && ipserver.Connected)
-                    ipstream.BeginRead(buffer, 0, buffer.Length, ReadComplete, buffer);
+                if (_ipStream != null && _ipServer.Connected)
+                    _ipStream.BeginRead(buffer, 0, buffer.Length, ReadComplete, buffer);
             }
         }
     }

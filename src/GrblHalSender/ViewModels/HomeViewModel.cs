@@ -15,7 +15,7 @@ using GrblHalSender.Views;
 
 namespace GrblHalSender.ViewModels
 {
-    public class HomeViewModel : INotifyPropertyChanged
+    public class HomeViewModel : INotifyPropertyChanged, IDisposable
     {
 
         private GrblViewModel _model;
@@ -32,6 +32,7 @@ namespace GrblHalSender.ViewModels
         private object _view;
         private string _consoleModeText;
         private bool _showGCodeConsole;
+        private readonly HandController _gamepad;
         public ICommand SwitchConsoleCommand { get; }
         public ICommand ChangeView { get; }
         public object View
@@ -81,7 +82,7 @@ namespace GrblHalSender.ViewModels
             InitSystem();
             BuildOptionalUi();
             GCode.File.FileLoaded += File_FileLoaded;
-            var gamepad = new HandController(_model);
+            _gamepad = new HandController(_model);
             ConsoleModeText = "Console";
             View = _renderView;
             _contentManager.SetActiveUiElement(nameof(RenderView));
@@ -216,6 +217,11 @@ namespace GrblHalSender.ViewModels
             field = value;
             OnPropertyChanged(propertyName);
             return true;
+        }
+
+        public void Dispose()
+        {
+            _gamepad.Dispose();
         }
     }
 }

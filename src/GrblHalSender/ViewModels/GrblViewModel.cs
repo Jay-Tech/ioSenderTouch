@@ -399,6 +399,7 @@ namespace GrblHalSender.ViewModels
 
             try
             {
+                HomeViewModel.Dispose();
                 Application.Current.MainWindow?.Close();
             }
             catch (Exception e)

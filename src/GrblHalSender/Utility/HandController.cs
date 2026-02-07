@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace GrblHalSender.Utility
 {
-    public class HandController
+    public class HandController : IDisposable
     {
         private const string JogHeader = "$J = G91G21";
 
@@ -37,12 +37,14 @@ namespace GrblHalSender.Utility
             _grblViewModel = grblViewModel;
             _grblViewModel.GrblInitialized += _grblViewModel_GrblInitialized;
         }
-
+        ~HandController()
+        {
+            Dispose(false);
+        }
         private void _grblViewModel_GrblInitialized(object sender, EventArgs e)
         {
             SetupRates();
         }
-
 
         private void SetupRates()
         {
@@ -521,6 +523,35 @@ namespace GrblHalSender.Utility
         {
             _grblViewModel.JogStep = DistanceRate;
         }
+
+        private void ReleaseUnmanagedResources()
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
+        private void Dispose(bool disposing)
+        {
+            try
+            {
+                ReleaseUnmanagedResources();
+                if (!disposing) return;
+                _buttonPollThread?.Dispose();
+                _cancellationTokenSource?.Dispose();
+            }
+            catch (Exception e)
+            {
+                //
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
+
+
+   
 
 }

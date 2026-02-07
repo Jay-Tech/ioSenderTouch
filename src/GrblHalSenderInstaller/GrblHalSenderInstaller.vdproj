@@ -161,7 +161,7 @@
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_9708490395A84A2FA4FF276187945740"
                     {
                     "Name" = "8:config"
-                    "AlwaysCreate" = "11:FALSE"
+                    "AlwaysCreate" = "11:TRUE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
                     "Property" = "8:_4FCC954116B1427F9D8C9B55B644054B"
@@ -210,7 +210,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GrblHALSenderInstaller"
         "ProductCode" = "8:{8F1D5137-9076-4B15-BED3-76ECB465FE0D}"
-        "PackageCode" = "8:{88F73E6D-E8DB-4261-B293-F74B3DDFCF59}"
+        "PackageCode" = "8:{4948CA2D-CC95-4B73-8684-0B65710BE66A}"
         "UpgradeCode" = "8:{DE28A13E-33C0-4CA1-B722-BA884B4B0016}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -745,7 +745,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AF58C504A080459794A640D0A60FFE3F"
             {
-            "SourcePath" = "8:..\\GrblHalSender\\obj\\Debug\\net8.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\GrblHalSender\\obj\\Release\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2EEE7FED852E4018BBDE782B9099B654"
