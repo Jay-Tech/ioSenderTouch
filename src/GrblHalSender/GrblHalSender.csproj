@@ -38,7 +38,7 @@
     <Resource Include="Resources\icons\closeDark.png" />
     <Resource Include="Resources\icons\editDark.png" />
     <Resource Include="Resources\icons\GHalSender.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\icons\openDark.png" />
     <Resource Include="Resources\icons\reloadDark.png" />
@@ -62,7 +62,9 @@
     <Resource Include="Resources\Probing\edgeIBC.png" />
     <Resource Include="Resources\Probing\edgeICD.png" />
     <Resource Include="Resources\Probing\edgeZ.png" />
-    <Resource Include="Resources\Probing\GHalSender.ico" />
+    <Resource Include="Resources\Probing\GHalSender.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Probing\RotaterAB.png" />
     <Resource Include="Resources\Probing\RotaterAD.png" />
     <Resource Include="Resources\Probing\RotaterCB.png" />

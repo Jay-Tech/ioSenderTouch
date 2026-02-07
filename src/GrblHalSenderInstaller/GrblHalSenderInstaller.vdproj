@@ -13,12 +13,6 @@
 "SccProvider" = "8:"
     "Hierarchy"
     {
-        "Entry"
-        {
-        "MsmKey" = "8:_A9A3E0367F714BB2AA6208C20229DB53"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -44,6 +38,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -80,6 +82,11 @@
                     "Name" = "8:.NET Runtime 8.0.23 (x64)"
                     "ProductCode" = "8:Microsoft.NetCore.CoreRuntime.8.0.x64"
                     }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.NetCore.DesktopRuntime.8.0.x64"
+                    {
+                    "Name" = "8:.NET Desktop Runtime 8.0.23 (x64)"
+                    "ProductCode" = "8:Microsoft.NetCore.DesktopRuntime.8.0.x64"
+                    }
                 }
             }
         }
@@ -113,26 +120,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A9A3E0367F714BB2AA6208C20229DB53"
-            {
-            "SourcePath" = "8:..\\GrblHalSender\\config\\KeyMap.xml"
-            "TargetName" = "8:KeyMap.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_8FEDE9D7452D4232A41F0E392FB98F0F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -201,7 +188,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:GrblHalSenderInstaller"
         "ProductCode" = "8:{27F5A15B-FC9F-41CF-8143-3C2D2696AFEA}"
-        "PackageCode" = "8:{0A50CF3D-50D5-4A49-B764-BDE6DCE41B21}"
+        "PackageCode" = "8:{B5D2A365-D4A6-4BF5-8E41-BD475454197E}"
         "UpgradeCode" = "8:{A06466F9-C601-4F70-84D1-FB9BE24AC645}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -329,7 +316,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_3C3772A7C59C4A3EA85EA5A67B12E2F7"
+            "Target" = "8:"
             "Folder" = "8:_30C965608F8E499C8B77BA0E4891ABCE"
             "WorkingFolder" = "8:_7A60F08D8902428F9421E25FCC2EB283"
             "Icon" = "8:"
@@ -734,34 +721,6 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3C3772A7C59C4A3EA85EA5A67B12E2F7"
-            {
-            "SourcePath" = "8:..\\GrblHalSender\\obj\\Release\\net8.0-windows\\apphost.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_7A60F08D8902428F9421E25FCC2EB283"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Any CPU"
-            "OutputGroupCanonicalName" = "8:PublishItems"
-            "OutputProjectGuid" = "8:{78E0A4E3-646B-4FEB-A2F8-4A86B1DBD1F2}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
         }
     }
 }
