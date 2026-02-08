@@ -22,7 +22,7 @@
                     <ComboBox Margin="5,0,0,0" ItemsSource="{Binding AccessoryConfig.SlotNumber}"
                               Visibility="{Binding ElementName=AtcCheckBox, Path=IsChecked,
                         Converter={StaticResource BoolToVisConverter}}"
-                              SelectedItem="{Binding AccessoryConfig.SelectedS1ot, Mode=TwoWay}"/>
+                              SelectedItem="{Binding AccessoryConfig.SelectedSlot, Mode=TwoWay}"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>

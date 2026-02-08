@@ -292,14 +292,14 @@ namespace GrblHalSender.GrblCore.Config
             }
         }
 
-        public int SelectedS1ot { get; set; }
+        public int SelectedSlot { get; set; }
 
         [XmlIgnore]
         public ObservableCollection<int> SlotNumber { get; private set; } = [4,6,8];
 
         public AccessoryConfig()
         {
-            SelectedS1ot = 8;
+            SelectedSlot = 8;
         }
     }
 

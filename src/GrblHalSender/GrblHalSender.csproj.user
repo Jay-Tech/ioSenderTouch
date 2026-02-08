@@ -5,5 +5,8 @@
     <Compile Update="Controls\Config\AccessoryConfigControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\RapidAtcControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

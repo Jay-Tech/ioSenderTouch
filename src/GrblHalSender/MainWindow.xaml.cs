@@ -38,7 +38,7 @@ namespace GrblHalSender
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             _viewModel.ContentManager = new ContentManager();
             BaseWindowTitle = Title;
-            GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += GHalSenderConfig_OnConfigFileLoaded;
 
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             _screenOrientation = clsDisplaySettings.GetScreenOrientation(1);
@@ -68,7 +68,7 @@ namespace GrblHalSender
 
 
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             Comms.com.DataReceived -= ((GrblViewModel)DataContext).DataReceived;
             _viewModel?.Poller?.SetState(0);
@@ -89,7 +89,7 @@ namespace GrblHalSender
         }
 
 
-        private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
+        private void GHalSenderConfig_OnConfigFileLoaded(object? sender, EventArgs e)
         {
             _viewModel.DisplayMenuBar = GHalSenderConfig.Settings.AppUiSettings.EnableToolBar;
             CheckAndSetScale();
@@ -100,7 +100,7 @@ namespace GrblHalSender
             SetUpKeyBoard();
             GHalSenderConfig.Settings.Base.AppUISettings.PropertyChanged += AppUISettings_PropertyChanged;
         }
-        private void AppUISettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void AppUISettings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(AppUiSettingsConfig.UIColor))
             {
@@ -134,7 +134,7 @@ namespace GrblHalSender
 
             }
         }
-        private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void _viewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GrblViewModel.IsMetric))
             {

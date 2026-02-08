@@ -20,6 +20,7 @@ namespace GrblHalSender.Views
             InitializeComponent();
             Grbl.GrblViewModel = _model;
             _model.HomeViewModel = new HomeViewModel(_model);
+           
         }
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)

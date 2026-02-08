@@ -13,6 +13,9 @@
         <controls:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter"/>
         <controls:BoolToVisibleConverter x:Key="BoolToVisibleConverter" />
         <controls:LogicalNotConverter x:Key="LogicalNotConverter" />
+        <DataTemplate DataType="{x:Type viewModels:RapidAtcViewModel}">
+            <controls:RapidAtcControl />
+        </DataTemplate>
     </UserControl.Resources>
     <DockPanel Name="DockPanelMain">
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
@@ -46,16 +49,24 @@
                 
             </StackPanel>
         </Border>
-        <Border Name="MainControlBorder" Height="320"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
+        <Border Name="MainControlBorder" Height="320"  BorderBrush="Black" BorderThickness="1" 
+                DockPanel.Dock="Bottom">
             <StackPanel Name="MainStackPanel"  Orientation="Horizontal" Margin="0,0,0,0" >
-                <controls:MDIControl  x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="415" Height="Auto" Margin="5,3,0,5"/>
-                <controls:DROControl x:Name="DRO" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="3,3,0,5"  VerticalContentAlignment="Stretch"/>
+                <controls:MDIControl  x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                                      Width="415" Height="Auto" Margin="5,3,0,5"/>
+                <controls:DROControl Width="305" x:Name="DRO" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                     Margin="3,3,0,5"  VerticalContentAlignment="Stretch"/>
                 <controls:WorkParametersControl x:Name="workParametersControl"  Margin="3,3,0,5" 
-                                                     Height="Auto" Width="256" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                                     Height="Auto" Width="256" VerticalAlignment="Stretch" 
+                                                     HorizontalAlignment="Stretch"/>
 
-                <controls:FeedControl  x:Name="feedControl"  HorizontalAlignment="Center"  VerticalAlignment="Stretch"  Margin="3,3,0,5" Width="260" Height="Auto" />
-                <controls:JogControl x:Name="jogControl" Margin="3,3,0,5" Height="Auto" HorizontalAlignment="Stretch" Width="395" VerticalAlignment="Stretch" />
-                <controls:SpindleControl x:Name="spindleControl" HorizontalAlignment="Stretch" Margin="3,3,3,5" Width="262"  VerticalAlignment="Stretch"/>
+                <controls:FeedControl  x:Name="feedControl"  HorizontalAlignment="Center"  
+                                       VerticalAlignment="Stretch"  Margin="3,3,0,5" 
+                                       Width="260" Height="Auto" />
+                <controls:JogControl x:Name="jogControl" Margin="3,3,0,5" Height="Auto" 
+                                     HorizontalAlignment="Stretch" Width="395" VerticalAlignment="Stretch" />
+                <controls:SpindleControl x:Name="spindleControl" HorizontalAlignment="Stretch" 
+                                         Margin="3,3,3,5" Width="262"  VerticalAlignment="Stretch"/>
             </StackPanel>
         </Border>
 
@@ -70,27 +81,36 @@
             <StackPanel Grid.Row="0" VerticalAlignment ="Top" Height="35"  Grid.RowSpan="2" >
                 <Button  Name="btnShowConsole" Content="{Binding HomeViewModel.ConsoleModeText}"
                          Command="{Binding HomeViewModel.SwitchConsoleCommand}"  
-                         Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource BoolToVisibleConverter}}"></Button>
+                         Visibility="{Binding Path=IsFileLoaded, 
+                    Converter= {StaticResource BoolToVisibleConverter}}"></Button>
             </StackPanel>
             <controls:ConsoleControl Grid.Row="1" x:Name="ConsoleDisplayControl" 
-                                  Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource BoolToNotVisibleConverter}}"
+                                  Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, 
+                Converter= {StaticResource BoolToNotVisibleConverter}}"
                                   Margin="2,5,0,0" Grid.ColumnSpan="2" />
             <controls:GCodeListControl Grid.Row="1" x:Name ="CodeListControl" Margin="2,5,0,0" 
-                                    Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource BoolToVisibleConverter}}" 
+                                    Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole,
+                Converter= {StaticResource BoolToVisibleConverter}}" 
                                     Grid.ColumnSpan="2"/>
-            <!--<controls:MDIControl Grid.Row="2" x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Height="Auto" Margin="5,3,0,5"/>-->
+           
         </Grid>
 
-        <Border Name="RightMenuBorder" BorderBrush="Black" BorderThickness="1" Width="250" DockPanel.Dock="Right">
+        <Border Name="RightMenuBorder" BorderBrush="Black" BorderThickness="1" Width="250"
+                DockPanel.Dock="Right">
             <Grid Name ="RightStackPanel">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <!--<local:JobControl x:Name="GCodeSender" Margin="3,3,0,5" Width="244" VerticalAlignment="Top"/>-->
-                <controls:CoolantControl Grid.Row="0" x:Name="coolantControl" Margin="3,3,3,3"   VerticalAlignment="Top" Height="Auto" Width="Auto"/>
-                <controls:UtilityMacroControl Grid.Row="1" Margin="3,3,3,3" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"></controls:UtilityMacroControl>
+                <controls:CoolantControl Grid.Row="0" x:Name="coolantControl" Margin="3,3,3,3"   
+                                         VerticalAlignment="Top" Height="Auto" Width="Auto"/>
+                <controls:UtilityMacroControl Grid.Row="1" Margin="3,3,3,3" 
+                                              HorizontalAlignment="Stretch" 
+                                              VerticalAlignment="Stretch"/>
+                <ContentControl Grid.Row="2" Content="{Binding HomeViewModel.AccessoryView}"
+                                Margin="3,3,3,3" 
+                                HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
             </Grid>
         </Border>
         <Border  BorderBrush="Black" BorderThickness="1"  DockPanel.Dock="Right">

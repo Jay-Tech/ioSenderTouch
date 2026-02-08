@@ -272,6 +272,7 @@ namespace GrblHalSender.ViewModels
         public bool AutoReportEnabled { get; set; }
         public GrblViewModel()
         {
+            
             Poller = new PollGrbl(this);
             _a = _pn = _fs = _sc = _tool = string.Empty;
             Clear();
@@ -2123,6 +2124,7 @@ namespace GrblHalSender.ViewModels
 
         public bool SysCommandsAlwaysAvailable { get; set; }
         public int PollingInterval { get; set; }
+        public RapidAtcViewModel RapidAtcViewModel { get; set; }
 
         private bool DataIsEnumeration(string data)
         {

@@ -34,6 +34,7 @@ namespace GrblHalSender.ViewModels
         private string _consoleModeText;
         private bool _showGCodeConsole;
         private readonly HandController _gamepad;
+        private object _accessoryView;
         public ICommand SwitchConsoleCommand { get; }
         public ICommand ChangeView { get; }
         public object View
@@ -43,6 +44,17 @@ namespace GrblHalSender.ViewModels
             {
                 if (Equals(value, _view)) return;
                 _view = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public object AccessoryView
+        {
+            get => _accessoryView;
+            set
+            {
+                if (Equals(value, _accessoryView)) return;
+                _accessoryView = value;
                 OnPropertyChanged();
             }
         }
@@ -66,6 +78,9 @@ namespace GrblHalSender.ViewModels
                 OnPropertyChanged();
             }
         }
+
+       
+
         public HomeViewModel(GrblViewModel grblViewModel)
         {
             ChangeView = new Command(SetNewView);
@@ -112,6 +127,15 @@ namespace GrblHalSender.ViewModels
             if (GHalSenderConfig.Settings.GCodeViewer.IsEnabled)
             {
                 controls.Add(new RenderConfigControl());
+            }
+
+            if (GHalSenderConfig.Settings.AccessoryConfig.RAtcChecked)
+            {
+                _model.RapidAtcViewModel = new RapidAtcViewModel(_model);
+                AccessoryView = new RapidAtcControl
+                {
+                    DataContext = _model.RapidAtcViewModel
+                };
             }
             _grblAppSettings.Setup(controls);
         }

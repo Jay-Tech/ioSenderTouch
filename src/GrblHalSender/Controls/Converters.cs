@@ -1,5 +1,3 @@
-
-
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
@@ -9,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using GrblHalSender.GrblCore;
 using GrblHalSender.Utility;
-using LibStrings = GrblHalSender.GrblCore.Config.LibStrings;
 
 namespace GrblHalSender.Controls
 {
@@ -61,7 +58,6 @@ namespace GrblHalSender.Controls
             });
     }
 
-    // Adapted from: https://stackoverflow.com/questions/4353186/binding-observablecollection-to-a-textbox/8847910#8847910
     public class StringCollectionToTextConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
