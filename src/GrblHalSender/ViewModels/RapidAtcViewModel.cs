@@ -13,15 +13,17 @@ namespace GrblHalSender.ViewModels
 {
     public class RapidAtcViewModel : ViewModelBase
     {
-        private readonly GrblViewModel _mainViewModel;
+        public GrblViewModel GrblViewModel { get; set; }
         public ObservableCollection<AtcTool> AtcToolList { get; set; } = [];
+
+       
 
         public ICommand TlsCommand { get; }
         public ICommand UnloadTool { get; }
         public ICommand LoadTool { get; }
         public RapidAtcViewModel(GrblViewModel mainViewModel)
         {
-            _mainViewModel = mainViewModel;
+            GrblViewModel = mainViewModel;
             TlsCommand = new RelayCommand(Tls);
             UnloadTool = new RelayCommand(Unload);
             LoadTool = new RelayCommand<int>(Load);
@@ -40,18 +42,18 @@ namespace GrblHalSender.ViewModels
 
         private void Tls()
         {
-            _mainViewModel.ExecuteCommand("G65 P231");
+            GrblViewModel.ExecuteCommand("G65 P231");
         }
 
         private void Unload()
         {
-            _mainViewModel.ExecuteCommand("G65 P221");
+            GrblViewModel.ExecuteCommand("G65 P221");
         }
 
         private void Load(int tool)
         {
             if (tool == null) return;
-            _mainViewModel.ExecuteCommand($"M6T{tool}");
+            GrblViewModel.ExecuteCommand($"M6T{tool}");
         }
     }
     public class AtcTool

@@ -55,8 +55,9 @@ namespace GrblHalSender.GrblCore
 
         public void PurgeQueue()
         {
-            while (_ipStream.DataAvailable)
-                _ipStream.ReadByte();
+            _ipStream?.Flush();
+            //while (_ipStream.DataAvailable)
+            //    _ipStream.ReadByte();
             Reply = string.Empty;
             if (!EventMode)
                 input.Clear();
