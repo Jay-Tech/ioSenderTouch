@@ -1,258 +1,209 @@
 ﻿
+using System.Net.WebSockets;
 using System.Text;
 using System.Windows.Threading;
-using WebSocketSharp;
+
 
 namespace GrblHalSender.GrblCore;
 
+public class WebsocketStream : StreamComms
+{
+    public event DataReceivedHandler DataReceived;
 
+    private readonly string _basePortParams;
+    private readonly Dispatcher _dispatcher;
+    private ClientWebSocket _ws;
+    private StringBuilder input = new StringBuilder(1024);
+    private volatile Comms.State _state = Comms.State.ACK;
+    public bool IsOpen { get; }
+    public int OutCount { get; }
+    public string Reply { get; set; }
+    public Comms.StreamType StreamType { get; }
+    public Comms.State CommandState { get; set; }
+    public bool EventMode { get; set; }
+    
+    public Action<int> ByteReceived { get; set; }
+   
 
-    public class WebsocketStream : StreamComms
+    public WebsocketStream(string basePortParams, Dispatcher dispatcher)
     {
-        private WebSocket websocket = null;
-        private volatile bool _isOpen = false;
-        private volatile Comms.State state = Comms.State.ACK;
-        private StringBuilder input = new StringBuilder(1024);
-        private Dispatcher Dispatcher { get; set; }
+        _basePortParams = basePortParams;
+        _dispatcher = dispatcher;
+        var results =  BuildClient();
+    }
 
-        public event DataReceivedHandler DataReceived;
-
-        public WebsocketStream(string host, Dispatcher dispatcher)
+    public async Task<bool> BuildClient()
+    {
+        _ws = new ClientWebSocket();
+        await _ws.ConnectAsync(new Uri(_basePortParams), CancellationToken.None);
+        switch (_ws.State)
         {
-            Comms.com = this;
-            Reply = string.Empty;
-            Dispatcher = dispatcher;
-
-            try
-            {
-                websocket = new WebSocket(host);
-                websocket.OnMessage += OnMessage;
-                websocket.OnOpen += OnOpen;
-                websocket.OnClose += OnClose;
-                websocket.Connect();
-            }
-            catch
-            {
-            }
-        }
-
-        ~WebsocketStream()
-        {
-            Close();
-        }
-
-        public Comms.StreamType StreamType { get { return Comms.StreamType.Websocket; } }
-        public bool IsOpen { get { return websocket != null && _isOpen; } }
-        public int OutCount { get { return 0; } }
-        public Comms.State CommandState { get { return state; } set { state = value; } }
-        public string Reply { get; private set; }
-        public bool EventMode { get; set; } = true;
-        public Action<int> ByteReceived { get; set; }
-
-        public void PurgeQueue()
-        {
-            Reply = string.Empty;
-            if (!EventMode)
-                input.Clear();
-        }
-
-        public void Close()
-        {
-            if (IsOpen)
-            {
-                websocket.OnMessage -= OnMessage;
-                websocket.OnOpen -= OnOpen;
-                websocket.Close();
-            }
-        }
-
-        public int ReadByte()
-        {
-            int c = input.Length == 0 ? -1 : input[0];
-
-            if (c != -1)
-                input.Remove(0, 1);
-
-            return c;
-        }
-
-        public void WriteByte(byte data)
-        {
-            var m = new byte[1] { data };
-            websocket?.Send(m);
-        }
-
-        public void WriteBytes(byte[] bytes, int len)
-        {
-            websocket?.Send(bytes);
-        }
-
-        public void WriteString(string data)
-        {
-            byte[] bytes = Encoding.Default.GetBytes(data);
-
-            websocket?.Send(bytes);
-        }
-
-        public void WriteCommand(string command)
-        {
-            state = Comms.State.AwaitAck;
-
-            if (command.Length == 1 && command != GrblConstants.CMD_PROGRAM_DEMARCATION)
-                WriteByte((byte)command.ToCharArray()[0]);
-            else
-            {
-                command += "\r";
-                WriteString(command);
-            }
-        }
-
-        public void AwaitAck()
-        {
-            while (Comms.com.CommandState == Comms.State.DataReceived || Comms.com.CommandState == Comms.State.AwaitAck)
-                EventUtils.DoEvents();
-        }
-
-        public void AwaitAck(string command)
-        {
-            WriteCommand(command);
-
-            while (Comms.com.CommandState == Comms.State.DataReceived || Comms.com.CommandState == Comms.State.AwaitAck) ;
-        }
-
-        public void AwaitResponse()
-        {
-            while (Comms.com.CommandState == Comms.State.AwaitAck)
-                EventUtils.DoEvents();
-        }
-
-        public void AwaitResponse(string command)
-        {
-            WriteCommand(command);
-
-            while (Comms.com.CommandState == Comms.State.AwaitAck) ;
-        }
-
-        public string GetReply(string command)
-        {
-            Reply = string.Empty;
-            WriteCommand(command);
-
-            while (state == Comms.State.AwaitAck)
-                EventUtils.DoEvents();
-
-            return Reply;
-        }
-
-        private void OnOpen(object sender, EventArgs e)
-        {
-            _isOpen = true;
-        }
-
-        private void OnClose(object sender, CloseEventArgs e)
-        {
-            _isOpen = false;
-            websocket.OnClose -= OnClose;
-            websocket = null;
-        }
-
-        private int gp()
-        {
-            int pos = 0; bool found = false;
-
-            while (!found && pos < input.Length)
-                found = input[pos++] == '\n';
-
-            return found ? pos - 1 : 0;
-        }
-
-        private void OnMessage(object sender, MessageEventArgs e)
-        {
-            int pos = 0;
-
-            lock (input)
-            {
-                if (e.IsText)
-                    input.Append(e.Data);
-                else
-                    input.Append(Encoding.Default.GetString(e.RawData, 0, e.RawData.Length));
-
-                if (EventMode)
-                {
-                    while (input.Length > 0 && (pos = gp()) > 0)
-                    {
-                        Reply = input.ToString(0, pos - 1);
-                        input.Remove(0, pos + 1);
-                        state = Reply == "ok" ? Comms.State.ACK : (Reply.StartsWith("error") ? Comms.State.NAK : Comms.State.DataReceived);
-                        if (Reply.Length != 0 && DataReceived != null)
-                            Dispatcher.Invoke(DataReceived, Reply);
-                    }
-                }
-                else
-                    ByteReceived?.Invoke(ReadByte());
-            }
+            case WebSocketState.Open:
+                await Connect();
+                return true;
+            case WebSocketState.Closed:
+                return false;
+            case WebSocketState.None:
+            case WebSocketState.Connecting:
+            case WebSocketState.CloseSent:
+            case WebSocketState.CloseReceived:
+            case WebSocketState.Aborted:
+            default:
+                return false;
         }
     }
 
+    public async Task Connect()
+    {
+        var receiveTask = Task.Run( async () =>
+        {
+            var buffer = new byte[1024];
+            while (true)
+            {
+                var result = _ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                if (result.Result.MessageType == WebSocketMessageType.Close)
+                {
+                    break;
+                }
+                var message = Encoding.UTF8.GetString(buffer, 0, result.Result.Count);
 
-//public class WebSocketClient
-//{
-//    private ClientWebSocket _ws;
+                Console.WriteLine($"{message}\r\n");
+                _dispatcher.Invoke(DataReceived, Reply);
+            }
 
-//    public WebSocketClient()
-//    {
+            return Task.CompletedTask;
+        });
+        await receiveTask;
+    }
+
+    public  async Task CloseWebSocketAsync(ClientWebSocket ws)
+    {
+        if (ws.State == WebSocketState.Open)
+        {
+            try
+            {
+                // Initiate the close handshake
+                await ws.CloseAsync(
+                    WebSocketCloseStatus.NormalClosure, // Status code
+                    "Client closed the connection normally.", // Description
+                    CancellationToken.None); // Cancellation token
+
+                Console.WriteLine("WebSocket connection closed gracefully.");
+            }
+            catch (WebSocketException ex)
+            {
+                // Handle exceptions that might occur during the close handshake
+                Console.WriteLine($"WebSocket exception during close: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Handle other potential exceptions
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Cannot close: WebSocket is in state {ws.State}");
+        }
+    }
+
+    public void Send(byte[] message)
+    {
+        _ws.SendAsync(new ArraySegment<byte>(message), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+    public void Send(string message)
+    {
+        byte[] bytes = Encoding.Default.GetBytes(message);
+        _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
+    }
+
+   
+    public void Close()
+    {
+        try
+        {
+            var c = CloseWebSocketAsync(_ws);
+            _ws.Dispose();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    public int ReadByte()
+    {
+        int c = input.Length == 0 ? -1 : input[0];
+
+        if (c != -1)
+            input.Remove(0, 1);
+
+        return c;
+    }
+
+    public void WriteByte(byte data)
+    {
+        var d = new byte[1] { data };
+        Send(d);
+    }
+
+    public void WriteBytes(byte[] bytes, int len)
+    {
+        Send(bytes);
+    }
+
+    public void WriteString(string data)
+    {
+        byte[] bytes = Encoding.Default.GetBytes(data);
+        Send(bytes);
+    }
+
+    public void WriteCommand(string command)
+    {
         
-//    }
+        if (command.Length == 1 && command != GrblConstants.CMD_PROGRAM_DEMARCATION)
+            WriteByte((byte)command.ToCharArray()[0]);
+        else
+        {
+            command += "\r";
+            WriteString(command);
+        }
+    }
 
-//    public async Task<bool> BuildClient()
-//    {
-//        _ws = new ClientWebSocket();
-//        await _ws.ConnectAsync(new Uri("ws://192.168.5.1:80/ws"), CancellationToken.None);
-//        switch (_ws.State)
-//        {
-//            case WebSocketState.Open:
-//                await Connect();
-//                return true;
-//            case WebSocketState.Closed:
-//                return false;
-//            case WebSocketState.None:
-//            case WebSocketState.Connecting:
-//            case WebSocketState.CloseSent:
-//            case WebSocketState.CloseReceived:
-//            case WebSocketState.Aborted:
-//            default:
-//                return false;
-//        }
-//    }
+    public string GetReply(string command)
+    {
+        Reply = string.Empty;
+        WriteCommand(command);
 
-//    public async Task Connect()
-//    {
-//        var  receiveTask =  Task.Run(async () =>
-//        {
-//            var buffer = new byte[1024];
-//            while (true)
-//            {
-//                var result = _ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-//                if (result.Result.MessageType == WebSocketMessageType.Close)
-//                {
-//                    break;
-//                }
-//                var message = Encoding.UTF8.GetString(buffer, 0, result.Result.Count);
-//                Console.WriteLine($"{message}\r\n");
-//            }
-            
-//        });
-//        await receiveTask;
-//    }
+        return Reply;
+    }
 
-//    public void Send(byte [] message)
-//    {
-//        _ws.SendAsync(new ArraySegment<byte>(message), WebSocketMessageType.Text, true, CancellationToken.None);
-//    }
-//    public void Send(string message)
-//    {
-//        byte[] bytes = Encoding.Default.GetBytes(message);
-//        _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text,true, CancellationToken.None );
-//    }
-    
-//}
+    public void AwaitAck()
+    {
+        
+    }
+
+    public void AwaitAck(string command)
+    {
+        WriteCommand(command);
+
+      
+    }
+
+    public void AwaitResponse(string command)
+    {
+        WriteCommand(command);
+       
+    }
+
+    public void AwaitResponse()
+    {
+       
+    }
+
+    public void PurgeQueue()
+    {
+       
+    }
+
+}

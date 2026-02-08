@@ -34,21 +34,31 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" >
             <!--<Label  Name ="ConnectionLabel" Content="{Binding IsConnected}" FontSize="20" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>-->
             <!--<Label Name ="ConnectionColorLabel" Background="{Binding ConnectionColor}" Width="25" Height="25" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>-->
-            <Label  Name = "StateLabel" Content="{Binding GrblCurentState}" ContentStringFormat="GRBL State: {0}" FontSize=" 16" HorizontalContentAlignment="Center" VerticalAlignment="Center" />
-            <Ellipse  Name ="StateColorLabel" Fill="{Binding Path =GrblState, Converter={StaticResource StateColorConverter}}" Width="22" Height="22" VerticalAlignment="Center" />
-            <Label  Name="JogDistance" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Distance {0}:" FontSize="16"  VerticalAlignment="Center"  Margin="5,0,0,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
-            <Label  Name="JogDistanceUnit" Content="{Binding JogStep}" FontSize="16"  VerticalAlignment="Center" HorizontalAlignment="Left"  HorizontalContentAlignment="Left"/>
-            <Label  Name="JogFeed" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:"  BorderThickness="1" FontSize="16" Margin="5,0,0,0"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
-            <Label  Name="JogFeedUnit" Content="{Binding JogRate}" FontSize="16"  VerticalAlignment="Center" HorizontalAlignment="Left"  HorizontalContentAlignment="Left"/>
-            <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  ContentStringFormat="WCS:{0}"  Margin="5,0,0,0" BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  HorizontalContentAlignment="Left"/>
+            <Label  Name = "StateLabel" Content="{Binding GrblCurentState}" ContentStringFormat="GRBL State: {0}" FontSize=" 16" 
+                    HorizontalContentAlignment="Center" VerticalAlignment="Center" />
+            <Ellipse  Name ="StateColorLabel" Fill="{Binding GrblState, Converter={StaticResource StateColorConverter}}" 
+                      Width="22" Height="22" VerticalAlignment="Center" />
+            <Label  Name="JogDistance" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Distance {0}:" FontSize="16"  
+                    VerticalAlignment="Center"  Margin="5,0,0,0" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
+            <Label  Name="JogDistanceUnit" Content="{Binding JogStep}" FontSize="16"  VerticalAlignment="Center" 
+                    HorizontalAlignment="Left"  HorizontalContentAlignment="Left"/>
+            <Label  Name="JogFeed" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:"  
+                    BorderThickness="1" FontSize="16" Margin="5,0,0,0"  VerticalAlignment="Center" 
+                    HorizontalContentAlignment="Center"/>
+            <Label  Name="JogFeedUnit" Content="{Binding JogRate}" FontSize="16"  VerticalAlignment="Center" 
+                    HorizontalAlignment="Left"  HorizontalContentAlignment="Left"/>
+            <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  ContentStringFormat="WCS:{0}"  Margin="5,0,0,0" 
+                    BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  HorizontalContentAlignment="Left"/>
             <controls:SignalsControl VerticalAlignment="Center"  Margin="5,0,0,0" ></controls:SignalsControl>
-            <Label  Name="ToolNumber" Content="{Binding Tool}" ContentStringFormat="Tool: {0}" VerticalAlignment="Center"  BorderThickness="1" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Center"/>
+            <Label  Name="ToolNumber" Content="{Binding Tool}" ContentStringFormat="Tool: {0}" VerticalAlignment="Center"  
+                    BorderThickness="1" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Center"/>
 
         </StackPanel>
         <Button Grid.Column="2"  FontSize="12" VerticalContentAlignment="Center" 
                         materialDesign:ButtonProgressAssist.IsIndeterminate="True"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                        materialDesign:ButtonProgressAssist.Value="-1" Width="Auto" Height="40" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" 
+                        materialDesign:ButtonProgressAssist.Value="-1" Width="Auto" Height="40" HorizontalAlignment="Center"
+                        HorizontalContentAlignment="Center" VerticalAlignment="Center" 
                         BorderBrush="Red"
                         Content="{Binding AlarmConText}"
                         Background="Red" Command="{ Binding ClearAlarmCommand}"
@@ -56,13 +66,20 @@
                         Style="{StaticResource MaterialDesignRaisedButton}" />
 
         <StackPanel  Grid.Column="3"  Margin="0,0,0,0" VerticalAlignment="Center" Width="130"
-                      Visibility="{Binding DisplayMenuBar, Converter = {StaticResource BoolVisibleConverter}}" Orientation="Horizontal" HorizontalAlignment="Stretch">
-            <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" Click="MinimizeWindow" KeyboardNavigation.IsTabStop="False" />
-            <Button x:Name="MaximizeButton" Style="{StaticResource RestoreButtonStyle}" Click="MaximizeClick" KeyboardNavigation.IsTabStop="False" />
-            <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}"  Command="{Binding ShutDownCommand }"  KeyboardNavigation.IsTabStop="False" />
+                      Visibility="{Binding DisplayMenuBar, Converter = {StaticResource BoolVisibleConverter}}" 
+                      Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" 
+                    Click="MinimizeWindow" KeyboardNavigation.IsTabStop="False" />
+            <Button x:Name="MaximizeButton" Style="{StaticResource RestoreButtonStyle}" 
+                    Click="MaximizeClick" KeyboardNavigation.IsTabStop="False" />
+            <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}"  
+                    Command="{Binding ShutDownCommand }"  
+                    KeyboardNavigation.IsTabStop="False" />
         </StackPanel>
-        <Button  Visibility="{Binding Path=DisplayMenuBar, Converter= {StaticResource BoolNotVisibleConverter }}" Grid.Column="3" Content="Shut Down" 
+        <Button  Visibility="{Binding Path=DisplayMenuBar, Converter= {StaticResource BoolNotVisibleConverter }}" 
+                 Grid.Column="3" Content="Shut Down" 
                  VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Center" 
-                 VerticalContentAlignment="Center" Height="40" Width="110" Command="{Binding ShutDownCommand}" ></Button>
+                 VerticalContentAlignment="Center" Height="40" Width="110" 
+                 Command="{Binding ShutDownCommand}" ></Button>
     </Grid>
 </UserControl>

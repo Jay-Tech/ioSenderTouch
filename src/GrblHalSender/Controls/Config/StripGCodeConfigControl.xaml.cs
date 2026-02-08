@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Controls;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
     /// Interaction logic for StripGCodeConfigControl.xaml
