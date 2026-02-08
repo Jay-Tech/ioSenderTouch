@@ -343,6 +343,11 @@ namespace GrblHalSender.ViewModels
         private void ToolFloat(object tool)
         {
             var t = tool.ToString();
+            if(string.IsNullOrEmpty(t))return;
+            if (t.Equals( "NONE", StringComparison.OrdinalIgnoreCase))
+            {
+                t = 0.ToString();
+            }
             var command = _isJobRunning ? $"T{t}M6" : $"M61Q{t}";
             ExecuteCommand(command);
         }

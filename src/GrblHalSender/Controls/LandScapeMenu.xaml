@@ -27,7 +27,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
@@ -35,7 +35,7 @@
                 <Label Name="VerisonLabel"   FontSize="16"  HorizontalContentAlignment="Left"  VerticalContentAlignment="Center"></Label>
             </StackPanel>
             
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center">
                 <Label  Name ="ConnectionLabel" Content="{Binding IsConnected}" FontSize="20" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
                 <Ellipse Name ="ConnectionColorLabel" Fill="{Binding Path =Connected, Converter={StaticResource GrblConnectionToColorConverter}}" Width="25" Height="25" VerticalAlignment="Center"/>
                
