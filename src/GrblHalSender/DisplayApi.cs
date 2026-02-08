@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System;
-using System.Runtime.InteropServices;
-using GrblHalSender;
+
 
 namespace GrblHalSender
 {
     public class DisplayApi
     {
-
-
-
-
         [DllImport("user32.dll")]
         internal static extern DISP_CHANGE ChangeDisplaySettingsEx
         (string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd,
@@ -29,8 +19,6 @@ namespace GrblHalSender
         [DllImport("user32.dll", CharSet = CharSet.Ansi)]
         internal static extern int EnumDisplaySettings
             (string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
-
-
 
         public const int DMDO_DEFAULT = 0;
         public const int DMDO_90 = 1;
@@ -194,7 +182,6 @@ namespace GrblHalSender
         }
     }
 
-
     public static class clsDisplaySettings
     {
         public enum Orientation
@@ -273,14 +260,10 @@ namespace GrblHalSender
             }
 
             return bResult;
-
         }
-
-
 
         public static Orientation GetScreenOrientation(uint uDisplay)
         {
-
             bool bResult = false;
             DisplayApi.DISPLAY_DEVICE dDevice = new DisplayApi.DISPLAY_DEVICE();
             DisplayApi.DEVMODE dmMode = new DisplayApi.DEVMODE();
@@ -293,16 +276,6 @@ namespace GrblHalSender
 
             if (0 != DisplayApi.EnumDisplaySettings(dDevice.DeviceName, DisplayApi.ENUM_CURRENT_SETTINGS, ref dmMode))
             {
-                //if ((dmMode.dmDisplayOrientation + (int)oOrientation)
-                //    % 2 == 1)
-                //{
-
-                //    int tmp = dmMode.dmPelsHeight;
-
-                //    dmMode.dmPelsHeight = dmMode.dmPelsWidth;
-                //    dmMode.dmPelsWidth = tmp;
-
-                //}
                 return dmMode.dmDisplayOrientation switch
                 {
                     0 => Orientation.DEGREES_CW_0,
@@ -319,21 +292,15 @@ namespace GrblHalSender
 
         public static void Reset()
         {
-
             try
             {
-
                 uint i = 0;
 
                 while (++i <= 64)
                 {
-
                     Rotate(i, Orientation.DEGREES_CW_0);
-
                 }
-
             }
-
             catch (ArgumentOutOfRangeException ex)
             {
 

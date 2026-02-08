@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using GrblHalSender.GrblCore;
 using GrblHalSender.ViewModels;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Views
 {
     public partial class AppConfigView : UserControl
     {

@@ -1,12 +1,7 @@
 ﻿
-
-
 using GrblHalSender.GrblCore;
-using GrblHalSender.GrblCore.Config;
 using GrblHalSender.ViewModels.Probing;
 using RP.Math;
-using Action = GrblHalSender.GrblCore.Action;
-using Plane = GrblHalSender.GrblCore.Plane;
 
 namespace GrblHalSender.Controls.Probing
 {
@@ -31,131 +26,6 @@ namespace GrblHalSender.Controls.Probing
 
             return p;
         }
-
-//        public void ApplyHeightMap(ProbingViewModel model)
-//        {
-//            //HeightMap map = model.HeightMap.Map;
-//            double segmentLength = Math.Min(map.GridX, map.GridY);
-//            int precision = model.Grbl.Precision;
-
-//            GCPlane plane = new GCPlane(GrblParserState.Plane == Plane.XY ? Commands.G17 : Commands.G18, 0);
-//            DistanceMode distanceMode = GrblParserState.DistanceMode;
-//            Position position = new Position(model.Grbl.Position, model.Grbl.UnitFactor);
-//            Vector3 pos = new Vector3(position.X, position.Y, position.Z);
-
-//            List<GCodeToken> newToolPath = new List<GCodeToken>();
-
-//            uint lnr = 1;
-
-//            foreach (var token in GCode.File.Tokens)
-//            {
-//                switch (token.Command)
-//                {
-//                    case Commands.G0:
-//                    case Commands.G1:
-//                        {
-//                            var motion = token as GCLinearMotion;
-////                            GCLinearMotion last_segment = null;
-
-//                            var m = new Line(motion.AxisFlags);
-//                            m.Start = pos;
-//                            m.End = pos = ToAbsolute(pos, motion.Values, distanceMode == DistanceMode.Incremental);
-//                            m.Rapid = token.Command == Commands.G0;
-
-//                            foreach (Motion subMotion in m.Split(segmentLength))
-//                            {
-//                                Vector3 target = new Vector3(Math.Round(subMotion.End.X, precision), Math.Round(subMotion.End.Y, precision), Math.Round(subMotion.End.Z + map.InterpolateZ(subMotion.End.X, subMotion.End.Y), precision));
-
-//                                newToolPath.Add(/*last_segment = */new GCLinearMotion(motion.Command, lnr++, target.Array, motion.AxisFlags | AxisFlags.Z));
-//                            }
-////                            if(last_segment != null)
-////                                pos = ToAbsolute(pos, last_segment.Values);
-//                        }
-//                        break;
-
-//                    case Commands.G2:
-//                    case Commands.G3:
-//                        {
-//                            if (plane.Plane != Plane.XY)
-//                                throw new Exception(LibStrings.FindResource("HasRadiusArcs"));
-
-//                            var arc = token as GCArc;
-//                            GCArc last_segment = null;
-//                            double[] center = arc.GetCenter(plane, pos.Array);
-//                            double[] ijk = new double[3];
-
-//                            Array.Copy(arc.IJKvalues, ijk, 3);
-
-//                            var m = new Arc();
-//                            m.Start = pos;
-//                            m.End = pos = ToAbsolute(pos, arc.Values, distanceMode == DistanceMode.Incremental);
-//                            m.Direction = token.Command == Commands.G2 ? ArcDirection.CW : ArcDirection.CCW;
-//                            m.U = center[0];
-//                            m.V = center[1];
-//                            m.Plane = ArcPlane.XY;
-
-//                            foreach (Motion subMotion in m.Split(segmentLength))
-//                            {
-//                                if (!arc.IsRadiusMode)
-//                                {
-//                                    ijk[0] = Math.Round(center[0] - subMotion.Start.X, precision);
-//                                    ijk[1] = Math.Round(center[1] - subMotion.Start.Y, precision);
-//                                }
-
-////                                Vector3 target = new Vector3(Math.Round(subMotion.End.X, precision), Math.Round(subMotion.End.Y, precision), Math.Round(subMotion.End.Z + map.InterpolateZ(subMotion.End.X, subMotion.End.Y), precision));
-//                                Vector3 target = new Vector3(subMotion.End.X, subMotion.End.Y, subMotion.End.Z + map.InterpolateZ(subMotion.End.X, subMotion.End.Y));
-
-//                                target = new Vector3(Math.Round(target.X, precision), Math.Round(target.Y, precision), Math.Round(target.Z, precision));
-
-//                                AxisFlags axisFlags = AxisFlags.XYZ;
-//                                if(last_segment != null)
-//                                {
-//                                    if (last_segment.X == target.X)
-//                                        axisFlags &= ~AxisFlags.X;
-//                                    if (last_segment.Y == target.Y)
-//                                        axisFlags &= ~AxisFlags.Y;
-//                                    if (last_segment.Z == target.Z)
-//                                        axisFlags &= ~AxisFlags.Z;
-//                                }
-
-//                                newToolPath.Add(last_segment = new GCArc(arc.Command, lnr++, target.Array, axisFlags, ijk, arc.IjkFlags, arc.R, arc.P, arc.IJKMode));
-//                            }
-////                            if (last_segment != null)
-////                                pos = ToAbsolute(pos, last_segment.Values);
-//                        }
-//                        break;
-
-//                    case Commands.G17:
-//                    case Commands.G18:
-//                    case Commands.G19:
-//                        plane = token as GCPlane;
-//                        newToolPath.Add(token);
-//                        break;
-
-//                    case Commands.G90:
-//                    case Commands.G91:
-//                        distanceMode = (token as GCDistanceMode).DistanceMode;
-//                        newToolPath.Add(token);
-//                        break;
-
-//                    default:
-//                        newToolPath.Add(token);
-//                        break;
-//                }
-//            }
-
-//            List<string> gc = GCodeParser.TokensToGCode(newToolPath, GHalSenderConfig.Settings.Base.AutoCompress);
-
-
-//            GCode.File.AddBlock(string.Format("Heightmap applied: {0}", model.Grbl.FileName), Action.New);
-
-//            foreach (string block in gc)
-//                GCode.File.AddBlock(block, Action.Add);
-
-//            GCode.File.AddBlock("", Action.End);
-
-//            //model.HeightMapApplied = true;
-//        }
    }
 
     public static class V3Ex

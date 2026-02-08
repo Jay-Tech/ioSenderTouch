@@ -120,7 +120,7 @@ namespace GrblHalSender.Utility
 
                     // Nothing pressed we can jump to the next loop.
                     if (state is null) continue;
-                 
+
 
                     double step = 0;
                     var zCurrent = Math.Abs(_grblViewModel.MachinePosition.Z);
@@ -154,7 +154,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}Z{step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-                        
+
                         case GameInputGamepadButtons.A:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
@@ -162,7 +162,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}Z-{Math.Abs(step)}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-                        
+
                         case GameInputGamepadButtons.DPadLeft:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
@@ -170,7 +170,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}X-{Math.Abs(step)}F{_grblViewModel.JogRate}"); ;
                             ProcessJogCommand(command);
                             break;
-                       
+
                         case GameInputGamepadButtons.DPadRight:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
@@ -180,7 +180,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}X{step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-                        
+
                         case GameInputGamepadButtons.DPadUp:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
@@ -191,7 +191,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-                       
+
                         case GameInputGamepadButtons.DPadDown:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
@@ -237,7 +237,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}Y-{Math.Abs(step)}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-                       
+
                         // step z Mode Down
                         case GameInputGamepadButtons.LeftTriggerButton | GameInputGamepadButtons.A:
                             _stepMode = true;
@@ -245,7 +245,7 @@ namespace GrblHalSender.Utility
                             command = FormattableString.Invariant($"$J = G91{mode}Z-{Math.Abs(step)}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-                       
+
                         // step Z Mode Down
                         case GameInputGamepadButtons.LeftTriggerButton | GameInputGamepadButtons.B:
                             _stepMode = true;
@@ -291,7 +291,7 @@ namespace GrblHalSender.Utility
                         _stepMode = true;
 
                     }
-          
+
                     if (state.Buttons == GameInputGamepadButtons.None
                         && _previousDown != GameInputGamepadButtons.None
                         && !_stepMode)
@@ -304,14 +304,80 @@ namespace GrblHalSender.Utility
                     //var x = Math.Round(input.LeftThumbstickX, 1);
                     //var y = Math.Round(input.LeftThumbstickY, 1);
                     // ProcessJoyStick(x, y);
-                   // Debug.WriteLine($"Previous Down {_previousDown}");
+                    // Debug.WriteLine($"Previous Down {_previousDown}");
                     _previousDown = state.Buttons;
-                    
+
                 }
             }
-
+        }
+        private void ProcessJogCommand(string command)
+        {
+            //Send(command);
+            if (!_stepMode)
+            {
+                Send(command);
+            }
+            else
+            {
+                if (_jogProcessed) return;
+                Debug.WriteLine(command);
+                Send(command);
+                _jogProcessed = true;
+            }
         }
 
+        private void ProcessSinglePressCommand(string command)
+        {
+            if (_singleActionPress) return;
+            {
+                Send(command);
+            }
+            _singleActionPress = true;
+        }
+
+        private void ProcessJogDistance()
+        {
+            if (_singleActionPress) return;
+            if (JogStepRate != JogStep.Step3)
+            {
+                JogStepRate += 1;
+            }
+            else
+            {
+                JogStepRate = JogStep.Step0;
+            }
+            SetJogDistance();
+            _singleActionPress = true;
+        }
+        private void ProcessJogFeedRate()
+        {
+            if (_singleActionPress) return;
+            if (JogFeedRate != JogFeed.Feed3)
+            {
+                JogFeedRate += 1;
+            }
+            else
+            {
+                JogFeedRate = JogFeed.Feed0;
+            }
+            SetJogRate();
+            _singleActionPress = true;
+        }
+        private void SetJogRate()
+        {
+            _grblViewModel.JogRate = FeedRate;
+        }
+        private void SetJogDistance()
+        {
+            _grblViewModel.JogStep = DistanceRate;
+        }
+
+        private void Send(string command)
+        {
+            Comms.com.WriteCommand(command);
+        }
+
+        //Joystick movement
         private void ProcessJoyStick(double x, double y)
         {
             if ((x + y) == 0 && !_joystickJogging) return;
@@ -369,7 +435,6 @@ namespace GrblHalSender.Utility
             {
                 step = 1.5;
                 _pollRate = 110;
-
             }
             else
             {
@@ -419,6 +484,7 @@ namespace GrblHalSender.Utility
                 Send(c);
             }
         }
+
         // Single Axis Joystick movement 
         // For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency
         private void ProcessY(double movement)
@@ -432,6 +498,7 @@ namespace GrblHalSender.Utility
                 Send(command);
             }
         }
+
         //// Single Axis Joystick movement 
         private string ProcessVelocity(double velocity, string command)
         {
@@ -458,72 +525,6 @@ namespace GrblHalSender.Utility
             return command;
         }
 
-        private void ProcessJogCommand(string command)
-        {
-            //Send(command);
-            if (!_stepMode)
-            {
-                Send(command);
-            }
-            else
-            {
-                if (_jogProcessed) return;
-                Debug.WriteLine(command);
-                Send(command);
-                _jogProcessed = true;
-            }
-        }
-        private void Send(string command)
-        {
-            Comms.com.WriteCommand(command);
-        }
-
-        private void ProcessSinglePressCommand(string command)
-        {
-            if (_singleActionPress) return;
-            {
-                Send(command);
-            }
-            _singleActionPress = true;
-        }
-
-        private void ProcessJogDistance()
-        {
-            if (_singleActionPress) return;
-            if (JogStepRate != JogStep.Step3)
-            {
-                JogStepRate += 1;
-            }
-            else
-            {
-                JogStepRate = JogStep.Step0;
-            }
-            SetJogDistance();
-            _singleActionPress = true;
-        }
-        private void ProcessJogFeedRate()
-        {
-            if (_singleActionPress) return;
-            if (JogFeedRate != JogFeed.Feed3)
-            {
-                JogFeedRate += 1;
-            }
-            else
-            {
-                JogFeedRate = JogFeed.Feed0;
-            }
-            SetJogRate();
-            _singleActionPress = true;
-        }
-        private void SetJogRate()
-        {
-            _grblViewModel.JogRate = FeedRate;
-        }
-        private void SetJogDistance()
-        {
-            _grblViewModel.JogStep = DistanceRate;
-        }
-
         private void ReleaseUnmanagedResources()
         {
             _cancellationTokenSource.Cancel();
@@ -535,11 +536,11 @@ namespace GrblHalSender.Utility
             {
                 ReleaseUnmanagedResources();
                 if (!disposing) return;
-                if (_buttonPollThread.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled )
+                if (_buttonPollThread.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled)
                 {
                     _buttonPollThread?.Dispose();
                 }
-              
+
                 _cancellationTokenSource?.Dispose();
             }
             catch (Exception e)
@@ -554,8 +555,4 @@ namespace GrblHalSender.Utility
             GC.SuppressFinalize(this);
         }
     }
-
-
-   
-
 }

@@ -191,8 +191,8 @@ namespace GrblHalSender
 
         private void Window_Load(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(50);
-            Comms.com.PurgeQueue();
+            //System.Threading.Thread.Sleep(50);
+            //Comms.com.PurgeQueue();
             if (!string.IsNullOrEmpty(GHalSenderConfig.Settings.FileName))
             {
                 // Delay loading until app is ready
