@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using CommunityToolkit.Mvvm.Input;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Comands;
 using GrblHalSender.Views;
@@ -299,7 +300,7 @@ namespace GrblHalSender.ViewModels
 
             //TODO new command linking  
 
-            ShutDownCommand = new Command(SetShutDown);
+            ShutDownCommand = new RelayCommand(SetShutDown);
             FloatToolCommand = new Command(ToolFloat);
             ClearAlarmCommand = new Command(_ => { ClearAlarm(); });
             SpindleOverRide = new Command(SetSpindleOverRideSpeed);
@@ -363,12 +364,12 @@ namespace GrblHalSender.ViewModels
 
         }
 
-        public void SetShutDown(object obj)
+        public void SetShutDown()
         {
 
             try
             {
-                HomeViewModel.Dispose();
+                HomeViewModel?.Dispose();
                 Application.Current.MainWindow?.Close();
             }
             catch (Exception e)

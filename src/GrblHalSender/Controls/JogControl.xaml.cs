@@ -165,6 +165,31 @@ namespace GrblHalSender.Controls
             _holdTimer.Tick += HoldTimer_Tick;
             GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
         }
+
+        private void UIElement_OnPreviewTouchDown(object? sender, TouchEventArgs e)
+        {
+            _holdTimer.Start();
+            if (sender is not Button button) return;
+            _holdButtonContent = button.Content.ToString() ?? string.Empty;
+            e.Handled = true;
+        }
+
+        private void UIElement_OnPreviewTouchUp(object? sender, TouchEventArgs e)
+        {
+            _holdTimer.Stop();
+
+            if (_contiousJogActive)
+            {
+                _grblViewModel?.ExecuteCommand($"{(char)GrblConstants.CMD_JOG_CANCEL}");
+            }
+            else
+            {
+                JogCommand(_holdButtonContent);
+                e.Handled = true;
+            }
+            _holdButtonContent = string.Empty;
+            _contiousJogActive = false;
+        }
         private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _holdTimer.Start();
@@ -358,7 +383,6 @@ namespace GrblHalSender.Controls
             OnPropertyChanged(propertyName);
             return true;
         }
+
     }
-
-
 }

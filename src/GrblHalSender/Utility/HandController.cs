@@ -145,21 +145,22 @@ namespace GrblHalSender.Utility
                                 _stepMode = false;
                             }
                             break;
-
+                            //Z up
                         case GameInputGamepadButtons.B:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
-                            var zMax = useImperial ? _grblViewModel.MaxDistanceZ / 25.4 : _grblViewModel.MaxDistanceX;
-                            step = zMax - zCurrent;
+                            step = zCurrent;
                             command = FormattableString.Invariant($"$J = G91{mode}Z{step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
-
+                            // Z Down
                         case GameInputGamepadButtons.A:
                             if (_continuousJogActive) continue;
                             _continuousJogActive = true;
-                            step = zCurrent;
-                            command = FormattableString.Invariant($"$J = G91{mode}Z-{Math.Abs(step)}F{_grblViewModel.JogRate}");
+                            
+                            var zMax = useImperial ? _grblViewModel.MaxDistanceZ / 25.4 : _grblViewModel.MaxDistanceZ;
+                            step = zMax - zCurrent;
+                            command = FormattableString.Invariant($"$J = G91{mode}Z{(-step)}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
 
@@ -188,7 +189,7 @@ namespace GrblHalSender.Utility
                             //    _grblViewModel.MaxDistanceY;
                             //step = yMax - yCurrent;
                             step = yCurrent;
-                            command = FormattableString.Invariant($"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}");
+                            command = FormattableString.Invariant($"$J = G91{mode}Y{step}F{_grblViewModel.JogRate}");
                             ProcessJogCommand(command);
                             break;
 

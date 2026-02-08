@@ -17,10 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GameInput.Net" Version="1.0.3" />
+    <PackageReference Include="GameInput.Net" Version="1.2.2" />
     <PackageReference Include="HelixToolkit.Wpf" Version="3.1.2" />
     <PackageReference Include="MaterialDesignColors" Version="5.3.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
+    <PackageReference Include="Microsoft.GameInput" Version="3.2.135" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.IO.Ports" Version="10.0.1" />
   </ItemGroup>

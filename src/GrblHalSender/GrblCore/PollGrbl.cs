@@ -21,7 +21,8 @@ public class PollGrbl
     internal static void Suspend()
     {
         suspend = true;
-        Comms.com.PurgeQueue();
+        if(Comms.com != null)
+            Comms.com.PurgeQueue();
     }
 
     internal static void Resume()

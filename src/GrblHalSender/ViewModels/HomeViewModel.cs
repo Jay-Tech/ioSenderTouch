@@ -94,7 +94,12 @@ namespace GrblHalSender.ViewModels
             _utilityView = new UtilityView(_model, _contentManager);
             GHalSenderConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
             _controller = new Controller(_model, GHalSenderConfig.Settings);
-            _controller.SetupAndOpen(Application.Current.Dispatcher);
+            var code = _controller.SetupAndOpen(Application.Current.Dispatcher);
+            if (code == 10)
+            {
+                _model.SetShutDown();
+                return;
+            }
             InitSystem();
             BuildOptionalUi();
             GCode.File.FileLoaded += File_FileLoaded;
