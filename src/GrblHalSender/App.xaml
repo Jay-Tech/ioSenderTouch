@@ -9,7 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Grey" SecondaryColor="LightBlue" ColorAdjustment="{materialDesign:ColorAdjustment}" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesign2.defaults.xaml"  />
-                <ResourceDictionary Source="pack://application:,,,/stlye/IOTStyles.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/stlye/GrblHALLSenderStyles.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#989994"/>

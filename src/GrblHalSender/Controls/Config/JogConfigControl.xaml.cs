@@ -1,7 +1,7 @@
 ﻿/*
- * BasicConfigControl.xaml.cs - part of CNC Controls library
+ * JogConfigControl.xaml.cs - part of CNC Controls library
  *
- * v0.09 / 2020-02-28 / Io Engineering (Terje Io)
+ * v0.15 / 2020-04-05 / Io Engineering (Terje Io)
  *
  */
 
@@ -38,17 +38,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Windows.Controls;
+using GrblHalSender.ViewModels;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
-    /// Interaction logic for BasicConfigControl.xaml
+    /// Interaction logic for JogSetupControl.xaml
     /// </summary>
-    public partial class BasicConfigControl : UserControl
+    public partial class JogConfigControl : UserControl
     {
-        public BasicConfigControl()
+        public JogConfigControl(GrblViewModel grblViewModel)
         {
             InitializeComponent();
+            DataContext = new JogConfigControlViewModel(grblViewModel);
         }
+
     }
+    
 }

@@ -127,7 +127,7 @@ public class SdCardViewModel : ViewModelBase, IActiveViewModel
 
     private void DownLoadRun(object x)
     {
-        if (SelectedFile != null && MessageBox.Show($"Download and run {SelectedFile.FileName}?", "IOT",
+        if (SelectedFile != null && MessageBox.Show($"Download and run {SelectedFile.FileName}?", "GrblHALSender",
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
         {
             using (new UIUtils.WaitCursor())
@@ -252,7 +252,7 @@ public class SdCardViewModel : ViewModelBase, IActiveViewModel
         if (SelectedFile == null) return;
         var selectedFile = SelectedFile.FileName;
         if (string.IsNullOrEmpty(selectedFile)) return;
-        if (MessageBox.Show($"Delete {SelectedFile.FileName}?", "IOT", MessageBoxButton.YesNo,
+        if (MessageBox.Show($"Delete {SelectedFile.FileName}?", "GrblHALSender", MessageBoxButton.YesNo,
                 MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
         {
                 
@@ -275,7 +275,7 @@ public class SdCardViewModel : ViewModelBase, IActiveViewModel
             {
                 MessageBox.Show(
                     $"File:{SelectedFile.FileName}!,?,~ and SPACE is not supported in filenames, please rename ",
-                    "IOT",
+                    "GrblHALSender",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else

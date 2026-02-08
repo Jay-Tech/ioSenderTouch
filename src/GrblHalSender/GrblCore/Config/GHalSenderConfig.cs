@@ -45,6 +45,14 @@ using System.Xml.Serialization;
 
 namespace GrblHalSender.GrblCore.Config
 {
+    public enum HomingPosition
+    {
+        BackLeft = 0,
+        BackRight = 1,
+        FrontLeft = 2,
+        FrontRight = 3
+    }
+
     public class LibStrings
     {
         static ResourceDictionary resource = new ResourceDictionary();
@@ -312,6 +320,9 @@ namespace GrblHalSender.GrblCore.Config
         private bool _useBuffering = false, _keepMdiFocus = true, _filterOkResponse = false, _saveWindowSize = false, _autoCompress = false;
         private GCodeParser.CommandIgnoreState _ignoreM6 = GCodeParser.CommandIgnoreState.No, _ignoreM7 = GCodeParser.CommandIgnoreState.No, _ignoreM8 = GCodeParser.CommandIgnoreState.No, _ignoreG61G64 = GCodeParser.CommandIgnoreState.Strip;
         private string _theme = "default";
+        
+       
+        public HomingPosition HomePositionSetting { get; set; } = HomingPosition.BackLeft;
 
 
         public int PollInterval { get { return _pollInterval < 100 ? 100 : _pollInterval; } set { _pollInterval = value; OnPropertyChanged(); } }

@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using GameInputDotNet;
+﻿using GameInputDotNet;
 using GameInputDotNet.Interop.Enums;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Config;
 using GrblHalSender.ViewModels;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace GrblHalSender.Utility
@@ -535,7 +535,11 @@ namespace GrblHalSender.Utility
             {
                 ReleaseUnmanagedResources();
                 if (!disposing) return;
-                _buttonPollThread?.Dispose();
+                if (_buttonPollThread.Status is TaskStatus.RanToCompletion or TaskStatus.Canceled )
+                {
+                    _buttonPollThread?.Dispose();
+                }
+              
                 _cancellationTokenSource?.Dispose();
             }
             catch (Exception e)

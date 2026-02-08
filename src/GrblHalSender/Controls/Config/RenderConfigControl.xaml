@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:GrblHalSender.Controls"
              xmlns:render="clr-namespace:GrblHalSender.Controls.Render"
-             x:Class="GrblHalSender.Controls.Render.RenderConfigControl"
+             xmlns:config="clr-namespace:GrblHalSender.Controls.Config"
+             x:Class="GrblHalSender.Controls.Config.RenderConfigControl"
              mc:Ignorable="d"
              d:DesignHeight="370" d:DesignWidth="300">
     <GroupBox x:Uid="grp_gcodeViewer" x:Name="grpGCodeViewer" Header="GCode Viewer" HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="300">
@@ -17,23 +18,23 @@
 
             <StackPanel Orientation="Horizontal" Height="Auto">
                 <Label x:Uid="lbl_cutColor" Content="Cut color:" Width="160" HorizontalContentAlignment="Right"/>
-                <render:ColorPicker x:Name="_colorPicker" SelectedColor="{Binding Path=GCodeViewer.CutMotionColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
+                <config:ColorPicker x:Name="_colorPicker" SelectedColor="{Binding Path=GCodeViewer.CutMotionColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="Auto">
                 <Label x:Uid="lbl_rapidsColor" Content="Rapids color:" Width="160" HorizontalContentAlignment="Right"/>
-                <render:ColorPicker x:Name="_colorPicker1" SelectedColor="{Binding Path=GCodeViewer.RapidMotionColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
+                <config:ColorPicker x:Name="_colorPicker1" SelectedColor="{Binding Path=GCodeViewer.RapidMotionColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="Auto">
                 <Label x:Uid="lbl_retractColor" Content="Retract color:" Width="160" HorizontalContentAlignment="Right"/>
-                <render:ColorPicker x:Name="_colorPicker2" SelectedColor="{Binding Path=GCodeViewer.RetractMotionColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
+                <config:ColorPicker x:Name="_colorPicker2" SelectedColor="{Binding Path=GCodeViewer.RetractMotionColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="Auto">
                 <Label x:Uid="lbl_highlightColor" Content="Highlight color:" Width="160" HorizontalContentAlignment="Right"/>
-                <render:ColorPicker x:Name="_colorPicker4" SelectedColor="{Binding Path=GCodeViewer.HighlightColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
+                <config:ColorPicker x:Name="_colorPicker4" SelectedColor="{Binding Path=GCodeViewer.HighlightColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="Auto">
                 <Label x:Uid="lbl_gridColor" Content="Grid color:" Width="160" HorizontalContentAlignment="Right"/>
-                <render:ColorPicker x:Name="_colorPicker3" SelectedColor="{Binding Path=GCodeViewer.GridColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
+                <config:ColorPicker x:Name="_colorPicker3" SelectedColor="{Binding Path=GCodeViewer.GridColor, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}" VerticalAlignment="Center"/>
             </StackPanel>
             <CheckBox x:Uid="lbl_blackBackgroud" Content="Black background" Margin="5,2,0,0" IsChecked="{Binding Path=GCodeViewer.BlackBackground, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}"/>
             <CheckBox x:Uid="lbl_showGrid" Content="Show grid" Margin="5,2,0,0" IsChecked="{Binding Path=GCodeViewer.ShowGrid, Mode=TwoWay}" IsEnabled="{Binding Path=GCodeViewer.IsEnabled, Mode=OneWay}"/>

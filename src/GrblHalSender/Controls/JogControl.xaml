@@ -88,23 +88,61 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 25 25,25" 
-                                    Visibility="{Binding AAxisEnabled, Converter={StaticResource IsVisibleConverter}}" VerticalAlignment="Stretch" Content="A-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                            <Button Grid.Column="1" Grid.Row="0" Content="Y+"  materialDesign:ButtonAssist.CornerRadius="25 25 0 0" 
-                                    Style="{StaticResource JogButtonStyle}" Click="Button_Click" ></Button>
-                            <Button Grid.Column="2" Grid.Row="0"  HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 25 25,25" VerticalAlignment="Stretch" Content="A+" Visibility="{Binding AAxisEnabled, Converter={StaticResource IsVisibleConverter}}"  Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                            <Button Grid.Column="3" Grid.Row="0" materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Content="Z+" 
-                                    Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Click="Button_Click"/>
-                            <Button Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 0 0 25" VerticalAlignment="Stretch" Content="X-" 
+                            <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" 
+                                    materialDesign:ButtonAssist.CornerRadius="25 25 25,25" 
+                                    Visibility="{Binding AAxisEnabled, Converter={StaticResource IsVisibleConverter}}" 
+                                    VerticalAlignment="Stretch" Content="A-" 
                                     Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                            <Button  Grid.Column="1" Grid.Row="1"  Tag="stop" Style="{StaticResource JogButtonStyle}"  Margin="0,5" Click="Button_Click">
+                            <Button Grid.Column="1" Grid.Row="0" Content="Y+" 
+                                    materialDesign:ButtonAssist.CornerRadius="25 25 0 0" 
+                                    PreviewMouseDown="Button_PreviewMouseDown" 
+                                    PreviewMouseUp="Button_PreviewMouseUp"
+                                    Style="{StaticResource JogButtonStyle}" 
+                                    Click="Button_Click" ></Button>
+                            <Button Grid.Column="2" Grid.Row="0"  
+                                    HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 25 25,25" 
+                                    VerticalAlignment="Stretch" Content="A+" 
+                                    Visibility="{Binding AAxisEnabled, Converter={StaticResource IsVisibleConverter}}" 
+                                    Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="3" Grid.Row="0" 
+                                    materialDesign:ButtonAssist.CornerRadius="25 25 0 0" 
+                                    Content="Z+" 
+                                    PreviewMouseDown="Button_PreviewMouseDown" 
+                                    PreviewMouseUp="Button_PreviewMouseUp"
+                                    Style="{StaticResource JogButtonStyle}"
+                                    HorizontalAlignment="Center" Click="Button_Click"/>
+                            <Button Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Right" 
+                                    PreviewMouseDown="Button_PreviewMouseDown" 
+                                    PreviewMouseUp="Button_PreviewMouseUp"
+                                    materialDesign:ButtonAssist.CornerRadius="25 0 0 25" 
+                                    VerticalAlignment="Stretch" Content="X-" 
+                                    Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button  Grid.Column="1" Grid.Row="1"  Tag="stop" 
+                                     PreviewMouseDown="Button_PreviewMouseDown" 
+                                     PreviewMouseUp="Button_PreviewMouseUp"
+                                     Style="{StaticResource JogButtonStyle}" 
+                                     Margin="0,5" Click="Button_Click">
                                 <Button.Content>
                                     <materialDesign:PackIcon Height="28"  Width="40" Kind="StopCircle" HorizontalAlignment="Center" VerticalAlignment="Center"  />
                                 </Button.Content>
                             </Button>
-                            <Button Grid.Column="2" Grid.Row="1"  materialDesign:ButtonAssist.CornerRadius="0 25 25 0" Content="X+" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                            <Button Grid.Column="1" Grid.Row="2" materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Y-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                            <Button Grid.Column="3" Grid.Row="2" materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Z-" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" Click="Button_Click"/> 
+                            <Button Grid.Column="2" Grid.Row="1"  
+                                    materialDesign:ButtonAssist.CornerRadius="0 25 25 0" 
+                                    Content="X+" 
+                                    PreviewMouseDown="Button_PreviewMouseDown" 
+                                    PreviewMouseUp="Button_PreviewMouseUp"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="1" Grid.Row="2" 
+                                    materialDesign:ButtonAssist.CornerRadius="0 0 25 25" 
+                                    Content="Y-" 
+                                    PreviewMouseDown="Button_PreviewMouseDown" 
+                                    PreviewMouseUp="Button_PreviewMouseUp"
+                                    Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="3" Grid.Row="2" materialDesign:ButtonAssist.CornerRadius="0 0 25 25" 
+                                    PreviewMouseDown="Button_PreviewMouseDown" 
+                                    PreviewMouseUp="Button_PreviewMouseUp"
+                                    Content="Z-" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Margin="0,0,0,0" 
+                                    VerticalAlignment="Top" Click="Button_Click"/> 
                         </Grid>
                     </Grid>
                     <Border Grid.Column="1" x:Uid="grp_jogFeedrate"  Margin="5,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto"  Width="Auto">

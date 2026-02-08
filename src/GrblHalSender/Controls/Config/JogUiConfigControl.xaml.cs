@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Windows.Controls;
 using GrblHalSender.ViewModels;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
     /// Interaction logic for JogUiConfigControl.xaml

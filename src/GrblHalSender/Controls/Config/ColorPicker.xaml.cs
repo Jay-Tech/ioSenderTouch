@@ -41,7 +41,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace GrblHalSender.Controls.Render
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
     /// Interaction logic for ColorPicker.xaml

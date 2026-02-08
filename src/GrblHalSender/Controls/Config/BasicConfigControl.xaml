@@ -1,11 +1,24 @@
-﻿<UserControl x:Class="GrblHalSender.Controls.BasicConfigControl"
+﻿<UserControl x:Class="GrblHalSender.Controls.Config.BasicConfigControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:GrblHalSender.Controls"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
-             d:DesignHeight="210" d:DesignWidth="310">
+             xmlns:local="clr-namespace:GrblHalSender.GrblCore.Config"
+             d:DesignHeight="320" d:DesignWidth="310">
+    <UserControl.Resources>
+
+        <ObjectDataProvider x:Key="EnumSource"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:HomingPosition" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    
     <GroupBox x:Uid="grb_mainConfig" x:Name="grpBasic" Header="Main" HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="300">
         <StackPanel HorizontalAlignment="Left">
             <Grid x:Name="grid">
@@ -21,6 +34,12 @@
             <CheckBox x:Uid="lbl_keepMdiFocus" Content="Keep MDI focus" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="5,0,0,0" IsChecked="{Binding Path=KeepMdiFocus, Mode=TwoWay}" ToolTip="Buffers more than one GCode block in controller for smoother execution. For grblHAL only!"/>
             <CheckBox x:Uid="lbl_FilterOk" Content='Filter "ok" response' HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="5,0,0,0" IsChecked="{Binding Path=FilterOkResponse, Mode=TwoWay}" ToolTip="Enable if ok responses overwhelm console logging, typically happens when sending lots of short commands."/>
             <CheckBox x:Uid="lbl_autoCompressGcode" Content='Auto-compress gcode on transforms' HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="5,0,0,0" IsChecked="{Binding Path=AutoCompress, Mode=TwoWay}" ToolTip="Removes superfluous gcode command elements."/>
+             <StackPanel Margin="10,0,0,0"  Orientation="Horizontal">
+                 <Label Height="29" Content="Homing Position:"></Label>
+                <ComboBox Height="29" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Center" 
+                          ItemsSource="{Binding Source={StaticResource EnumSource}}" 
+                          SelectedItem="{Binding  Path= HomePositionSetting, Mode=TwoWay}" ></ComboBox>
+             </StackPanel>
         </StackPanel>
     </GroupBox>
 </UserControl>

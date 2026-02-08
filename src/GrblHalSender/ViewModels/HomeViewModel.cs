@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using GrblHalSender.Controls;
+using GrblHalSender.Controls.Config;
 using GrblHalSender.Controls.Probing;
 using GrblHalSender.Controls.Render;
 using GrblHalSender.GrblCore;

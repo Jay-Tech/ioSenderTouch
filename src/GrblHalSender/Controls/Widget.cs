@@ -40,6 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using GrblHalSender.Controls.Config;
 using GrblHalSender.GrblCore;
 
 namespace GrblHalSender.Controls

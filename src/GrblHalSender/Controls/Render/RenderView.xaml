@@ -16,7 +16,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.SplitButton.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/stlye/IOTStyles.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/stlye/GrblHALLSenderStyles.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <controls:PositionToStringConverter x:Key="PositionConverter" />
             <controls:FeedSpeedToStringConverter x:Key="FeedSpeedConverter" />

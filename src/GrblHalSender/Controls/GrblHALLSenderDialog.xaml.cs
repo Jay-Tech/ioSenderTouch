@@ -3,11 +3,11 @@
 namespace GrblHalSender.Controls
 {
     /// <summary>
-    /// Interaction logic for IotDialog.xaml
+    /// Interaction logic for GrblHALLSenderDialog.xaml
     /// </summary>
-    public partial class IotDialog : Window
+    public partial class GrblHALLSenderDialog : Window
     {
-        public IotDialog()
+        public GrblHALLSenderDialog()
         {
             InitializeComponent();
         }

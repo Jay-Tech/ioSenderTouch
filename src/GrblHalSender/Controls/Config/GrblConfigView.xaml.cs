@@ -44,7 +44,7 @@ using GrblHalSender.GrblCore;
 using GrblHalSender.ViewModels;
 using Microsoft.Win32;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     public partial class GrblConfigView : UserControl
     {

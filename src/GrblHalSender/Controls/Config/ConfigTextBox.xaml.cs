@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using GrblHalSender.Views;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
     /// Interaction logic for ConfigTextBox.xaml

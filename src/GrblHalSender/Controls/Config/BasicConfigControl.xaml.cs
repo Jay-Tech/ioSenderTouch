@@ -1,13 +1,13 @@
 ﻿/*
- * THCMonitorControl.xaml.cs - part of CNC Controls library
+ * BasicConfigControl.xaml.cs - part of CNC Controls library
  *
- * v0.36 / 2021-11-01 / Io Engineering (Terje Io)
+ * v0.09 / 2020-02-28 / Io Engineering (Terje Io)
  *
  */
 
 /*
 
-Copyright (c) 2020-2021, Io Engineering (Terje Io)
+Copyright (c) 2020, Io Engineering (Terje Io)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -37,25 +37,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-using System.Windows;
 using System.Windows.Controls;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
-    /// Interaction logic for THCMonitorControl.xaml
+    /// Interaction logic for BasicConfigControl.xaml
     /// </summary>
-    public partial class THCMonitorControl : UserControl, ISidebarControl
+    public partial class BasicConfigControl : UserControl
     {
-        public THCMonitorControl()
+        public BasicConfigControl()
         {
             InitializeComponent();
-        }
-        public string MenuLabel { get { return (string)FindResource("MenuLabel"); } }
-
-        private void btn_Close(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
         }
     }
 }

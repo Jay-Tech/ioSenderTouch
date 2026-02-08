@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Windows.Controls;
 
-namespace GrblHalSender.Controls.Render
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
     /// Interaction logic for ConfigControl.xaml

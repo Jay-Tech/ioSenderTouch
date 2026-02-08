@@ -91,7 +91,7 @@ namespace GrblHalSender.Utility
             if (!_config.Load(Resources.IniFile))
             {
 
-                var dialog = new IotDialog
+                var dialog = new GrblHALLSenderDialog
                 {
                     ResponseText = "Config file not found or invalid, create new one?"
                 };

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using GrblHalSender.GrblCore.Config;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Controls.Config
 {
     /// <summary>
     /// Interaction logic for AppUiSettings.xaml
