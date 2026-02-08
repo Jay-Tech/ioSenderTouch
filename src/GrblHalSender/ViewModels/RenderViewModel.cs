@@ -7,6 +7,7 @@ using GrblHalSender.Controls;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Comands;
 using GrblHalSender.GrblCore.Config;
+using GrblHalSender.Views;
 
 namespace GrblHalSender.ViewModels
 {

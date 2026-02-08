@@ -1,4 +1,4 @@
-﻿namespace GrblHalSender.GrblCore;
+﻿namespace GrblHalSender.Views;
 
 public class ContentManager
 {

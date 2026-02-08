@@ -277,6 +277,33 @@ namespace GrblHalSender.GrblCore.Config
     }
 
     [Serializable]
+    public class AccessoryConfig : ViewModelBase
+    {
+        private bool _rAtcChecked;
+
+        public bool RAtcChecked
+        {
+            get => _rAtcChecked;
+            set
+            {
+                if (value == _rAtcChecked) return;
+                _rAtcChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedS1ot { get; set; }
+
+        [XmlIgnore]
+        public ObservableCollection<int> SlotNumber { get; private set; } = [4,6,8];
+
+        public AccessoryConfig()
+        {
+            SelectedS1ot = 8;
+        }
+    }
+
+    [Serializable]
     public class Config : ViewModelBase
     {
         private int _pollInterval = 200, /* ms*/  _maxBufferSize = 300;
@@ -319,6 +346,8 @@ namespace GrblHalSender.GrblCore.Config
         public SurfaceConfig Surface { get; set; } = new SurfaceConfig();
 
         public AppUiSettingsConfig AppUISettings { get; set; } = new AppUiSettingsConfig();
+
+        public AccessoryConfig AccessoryConfig { get; set; } = new AccessoryConfig();
     }
 
     public class GHalSenderConfig : ViewModelBase
@@ -392,6 +421,11 @@ namespace GrblHalSender.GrblCore.Config
         public AppUiSettingsConfig AppUiSettings
         {
             get { return Base == null ? null : Base.AppUISettings; }
+        }
+
+        public AccessoryConfig AccessoryConfig
+        {
+            get { return Base == null ? null : Base.AccessoryConfig; }
         }
 
         public bool Save(string filename)

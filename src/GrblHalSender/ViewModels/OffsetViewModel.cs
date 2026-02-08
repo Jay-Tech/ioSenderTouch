@@ -4,6 +4,7 @@ using System.Windows.Input;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Comands;
 using GrblHalSender.Utility;
+using GrblHalSender.Views;
 using Newtonsoft.Json;
 
 namespace GrblHalSender.ViewModels;

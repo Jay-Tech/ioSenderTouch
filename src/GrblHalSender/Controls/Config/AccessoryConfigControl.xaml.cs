@@ -5,9 +5,9 @@ namespace GrblHalSender.Controls.Config
     /// <summary>
     /// Interaction logic for AccessoryConfig.xaml
     /// </summary>
-    public partial class AccessoryConfig : UserControl
+    public partial class AccessoryConfigControl : UserControl
     {
-        public AccessoryConfig()
+        public AccessoryConfigControl()
         {
             InitializeComponent();
         }

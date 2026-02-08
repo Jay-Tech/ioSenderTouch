@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="Controls\Config\AccessoryConfig.xaml.cs">
+    <Compile Update="Controls\Config\AccessoryConfigControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

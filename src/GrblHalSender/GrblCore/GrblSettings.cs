@@ -8,9 +8,9 @@ namespace GrblHalSender.GrblCore;
 
 public static class GrblSettings
 {
-    private static List<string> responses = new List<string>();
+    private static List<string> responses = [];
 
-    public static ObservableCollection<GrblSettingDetails> Settings { get; private set; } = new ObservableCollection<GrblSettingDetails>();
+    public static ObservableCollection<GrblSettingDetails> Settings { get; } = [];
 
     public static bool IsLoaded { get { return Settings.Count > 0; } }
     public static bool ReportProbeCoordinates { get; private set; }
@@ -34,14 +34,14 @@ public static class GrblSettings
 
     public static string GetString(grblHALSetting key)
     {
-        var setting = Settings.Where(x => x.Id == ((int)key)).FirstOrDefault();
+        var setting = Settings.FirstOrDefault(x => x.Id == ((int)key));
 
         return setting != null ? setting.Value : null;
     }
 
     public static string GetString(GrblSetting key)
     {
-        var setting = Settings.Where(x => x.Id == ((int)key)).FirstOrDefault();
+        var setting = Settings.FirstOrDefault(x => x.Id == ((int)key));
 
         return setting != null ? setting.Value : null;
     }
@@ -157,7 +157,7 @@ public static class GrblSettings
 
                             if (values.Length >= 6)
                             {
-                                var setting = Settings.Where(x => x.Id == int.Parse(values[0])).FirstOrDefault();
+                                var setting = Settings.FirstOrDefault(x => x.Id == int.Parse(values[0]));
 
                                 if (setting != null)
                                 {
@@ -228,11 +228,9 @@ public static class GrblSettings
         return changed != null && changed.Count() > 0;
     }
 
-#if USE_ASYNC
-        public static async void Save()
-#else
+
     public static bool Save()
-#endif
+
     {
         bool ok = true;
         var changed = Settings.Where(x => x.IsDirty);
@@ -241,13 +239,9 @@ public static class GrblSettings
         {
             foreach (var setting in changed)
             {
-#if USE_ASYNC
-                    var task = Task.Run(() => Comms.com.AwaitAck(string.Format("${0}={1}", Setting.Id, Setting.Value)));
-                    await await Task.WhenAny(task, Task.Delay(2500));
-#else
-                Comms.com.WriteCommand(string.Format("${0}={1}", setting.Id, setting.Value));
+
+                Comms.com.WriteCommand($"${setting.Id}={setting.Value}");
                 Comms.com.AwaitAck();
-#endif
                 setting.ClearErrors();
                 if (Comms.com.Reply.StartsWith("error:"))
                 {
@@ -282,22 +276,22 @@ public static class GrblSettings
         exp.Add(";");
 
         if (GrblInfo.Identity != string.Empty)
-            exp.Add(string.Format("{0}={1}", GrblConstants.CMD_GETINFO, GrblInfo.Identity));
+            exp.Add($"{GrblConstants.CMD_GETINFO}={GrblInfo.Identity}");
 
         if (GrblStartupLines.Get())
         {
             int id = 0;
             foreach (var line in GrblStartupLines.Lines)
             {
-                exp.Add(string.Format("{0}{1}={2}", GrblConstants.CMD_GETSTARTUPLINES, id++, line));
+                exp.Add($"{GrblConstants.CMD_GETSTARTUPLINES}{id++}={line}");
             }
         }
 
         foreach (GrblSettingDetails setting in Settings)
         {
             if (!string.IsNullOrEmpty(setting.Name))
-                exp.Add(string.Format("; {0} - {1}", setting.Id, setting.Name));
-            exp.Add(string.Format("${0}={1}", setting.Id, setting.Value));
+                exp.Add($"; {setting.Id} - {setting.Name}");
+            exp.Add($"${setting.Id}={setting.Value}");
         }
 
         if (GrblInfo.IsGrblHAL)
@@ -392,7 +386,7 @@ public static class GrblSettings
                         break;
                 }
 
-                var setting = Settings.Where(x => x.Id == id).FirstOrDefault();
+                var setting = Settings.FirstOrDefault(x => x.Id == id);
 
                 if (setting == null)
                 {

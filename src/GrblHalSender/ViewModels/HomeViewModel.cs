@@ -94,7 +94,8 @@ namespace GrblHalSender.ViewModels
             var controls = new ObservableCollection<UserControl>
             {
                 new BasicConfigControl(),
-                new ProbingConfigControl()
+                new ProbingConfigControl(),
+                new AccessoryConfigControl()
             };
 
             if (GHalSenderConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)

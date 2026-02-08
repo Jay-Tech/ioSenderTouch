@@ -1,8 +1,7 @@
 using System.Windows.Controls;
-using GrblHalSender.GrblCore;
 using GrblHalSender.ViewModels;
 
-namespace GrblHalSender.Controls
+namespace GrblHalSender.Views
 {
     /// <summary>
     /// Interaction logic for SDCardView.xaml

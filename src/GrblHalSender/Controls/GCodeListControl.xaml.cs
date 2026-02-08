@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using GrblHalSender.ViewModels;
+using GrblHalSender.Views;
 
 namespace GrblHalSender.Controls
 {

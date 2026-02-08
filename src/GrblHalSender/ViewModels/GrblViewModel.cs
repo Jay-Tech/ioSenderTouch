@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Comands;
+using GrblHalSender.Views;
 using Color = System.Windows.Media.Color;
 
 namespace GrblHalSender.ViewModels

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GrblHalSender.GrblCore;
 using GrblHalSender.ViewModels;
+using GrblHalSender.Views;
 using Microsoft.Win32;
 
 namespace GrblHalSender.Controls.Config

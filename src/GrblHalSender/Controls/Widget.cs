@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using GrblHalSender.Controls.Config;
 using GrblHalSender.GrblCore;
+using GrblHalSender.Views;
 
 namespace GrblHalSender.Controls
 {

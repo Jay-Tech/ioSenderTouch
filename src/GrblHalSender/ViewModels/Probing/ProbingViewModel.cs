@@ -6,6 +6,7 @@ using GrblHalSender.Controls;
 using GrblHalSender.Controls.Probing;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Config;
+using GrblHalSender.Views;
 using LibStrings = GrblHalSender.Controls.Probing.LibStrings;
 
 

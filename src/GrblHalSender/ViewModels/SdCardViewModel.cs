@@ -5,6 +5,7 @@ using System.Windows.Input;
 using GrblHalSender.Controls;
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Comands;
+using GrblHalSender.Views;
 using Microsoft.Win32;
 using Action = GrblHalSender.GrblCore.Action;
 
