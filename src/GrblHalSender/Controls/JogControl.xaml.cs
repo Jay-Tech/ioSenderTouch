@@ -1,11 +1,9 @@
 ﻿
-
 using GrblHalSender.GrblCore;
 using GrblHalSender.GrblCore.Config;
 using GrblHalSender.Utility;
 using GrblHalSender.ViewModels;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;

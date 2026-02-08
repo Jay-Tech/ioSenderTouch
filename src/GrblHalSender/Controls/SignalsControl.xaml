@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="SharedStyles.xaml"/>
+                <ResourceDictionary Source="/stlye/SharedStyles.xaml"/>
                 <ResourceDictionary>
                     <Style TargetType="controls:SignalControl">
                         <Setter Property="VerticalAlignment" Value="Center"/>

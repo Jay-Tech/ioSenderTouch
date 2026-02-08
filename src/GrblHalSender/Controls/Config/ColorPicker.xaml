@@ -55,7 +55,7 @@
                 </Setter>
             </Style>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Controls/SharedStyles.xaml"/>
+                <ResourceDictionary Source="/stlye/SharedStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>

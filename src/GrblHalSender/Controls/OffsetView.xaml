@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="SharedStyles.xaml"/>
+                <ResourceDictionary Source="/stlye/SharedStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <system:String x:Uid="lbl_axis" x:Key="AxisLabel">{0} axis:</system:String>
             <controls:LogicalNotConverter x:Key="IsNotPredefined" />

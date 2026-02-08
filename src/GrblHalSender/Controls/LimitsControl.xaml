@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignWidth="216">
     <UserControl.Resources>
-        <ResourceDictionary Source="SharedStyles.xaml"/>
+        <ResourceDictionary Source="/stlye/SharedStyles.xaml"/>
     </UserControl.Resources>
     <GroupBox x:Uid="grp_programLimits" x:Name="grpLimits" Header="Program limits" HorizontalAlignment="Center" VerticalAlignment="Top" Width="216">
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,5,0,5">

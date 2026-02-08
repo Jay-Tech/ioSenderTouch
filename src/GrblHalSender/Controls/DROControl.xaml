@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="SharedStyles.xaml"/>
+                <ResourceDictionary Source="/stlye/SharedStyles.xaml"/>
                 <ResourceDictionary>
                     <controls:HomedStateToColorConverter x:Key="HomedStateConverter" />
                     <controls:LatheModeToStringConverter x:Key="LatheModeConverter" />

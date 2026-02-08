@@ -79,13 +79,6 @@ public partial class DROControl : UserControl
             keyboard.AddHandler(Key.X, ModifierKeys.Control | ModifierKeys.Shift, ZeroX);
             keyboard.AddHandler(Key.Y, ModifierKeys.Control | ModifierKeys.Shift, ZeroY);
             keyboard.AddHandler(Key.Z, ModifierKeys.Control | ModifierKeys.Shift, ZeroZ);
-            //if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
-            //    keyboard.AddHandler(Key.A, ModifierKeys.Control | ModifierKeys.Shift, ZeroA);
-            //if (GrblInfo.AxisFlags.HasFlag(AxisFlags.B))
-            //    keyboard.AddHandler(Key.B, ModifierKeys.Control | ModifierKeys.Shift, ZeroB);
-            //if (GrblInfo.AxisFlags.HasFlag(AxisFlags.C))
-            //    keyboard.AddHandler(Key.C, ModifierKeys.Control | ModifierKeys.Shift, ZeroC);
-            //keyboard.AddHandler(Key.D0, ModifierKeys.Control | ModifierKeys.Shift, ZeroAxes);
         }
 
 

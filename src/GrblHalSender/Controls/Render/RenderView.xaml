@@ -124,11 +124,14 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+               
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Left" Margin="10,75,0,0">
                 <materialDesign:PopupBox   VerticalAlignment="Top" 
-                                         HorizontalAlignment="Left" Margin="0,30"
-                                         PlacementMode="RightAndAlignTopEdges"  PopupUniformCornerRadius="8" Opacity=".7" StaysOpen="False"
-                                         Style="{StaticResource  MaterialDesignMultiFloatingActionPopupBox}"
-                                         ToolTip="Tool Selection" >
+                                           HorizontalAlignment="Left" 
+                                           PlacementMode="RightAndAlignTopEdges"  PopupUniformCornerRadius="8" Opacity=".7" StaysOpen="False"
+                                           Style="{StaticResource  MaterialDesignMultiFloatingActionPopupBox}"
+                                           ToolTip="Tool Selection" >
                     <materialDesign:PopupBox.ToggleContent >
                         <materialDesign:PackIcon
                             Width="36"
@@ -157,7 +160,6 @@
                     </StackPanel>
                 </materialDesign:PopupBox>
             </StackPanel>
-            
           
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5"  >
                 <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
