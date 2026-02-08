@@ -30,6 +30,10 @@ namespace GrblHalSender.Controls
         private GrblViewModel _grblViewModel;
         private double[] _distance = new double[4];
         private int[] _feedRate = new int[4];
+        private DispatcherTimer _holdTimer;
+        private string _holdButtonContent = string.Empty;
+        private bool _contiousJogActive;
+
 
         private int _feedRate0;
         private int _feedRate1;
@@ -43,6 +47,7 @@ namespace GrblHalSender.Controls
 
         private JogFeed _jogFeed;
         private JogStep _jogStep;
+        private HomingPosition _homingPosition;
         public double Distance { get { return _distance[(int)JogStep]; } }
         public double FeedRate
         {
@@ -152,29 +157,22 @@ namespace GrblHalSender.Controls
             }
         }
 
-        private DispatcherTimer _holdTimer;
-        private string _holdButtonContent = string.Empty;
-        private bool _contiousJogActive;
-        private HomingPosition _homingPosition;
-
         public JogControl()
         {
             InitializeComponent();
-            _holdTimer = new DispatcherTimer();
-            _holdTimer.Interval = TimeSpan.FromMilliseconds(500); // Set the required hold duration (e.g., 1 second)
+            _holdTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(300)
+            };
             _holdTimer.Tick += HoldTimer_Tick;
             GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
         }
         private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _holdTimer.Start();
-            if (sender is Button button)
-            {
-                _holdButtonContent = button.Content.ToString() ?? string.Empty;
-                e.Handled = true;
-            }
-
-
+            if (sender is not Button button) return;
+            _holdButtonContent = button.Content.ToString() ?? string.Empty;
+            e.Handled = true;
         }
 
         private void HoldTimer_Tick(object? sender, EventArgs e)
@@ -220,13 +218,13 @@ namespace GrblHalSender.Controls
         {
             _homingPosition = GHalSenderConfig.Settings.Base.HomePositionSetting;
             _grblViewModel = Grbl.GrblViewModel;
-            _grblViewModel.GrblUnitChanged += GrblViewModelGrblUnitChanged;
+            _grblViewModel.GrblUnitChanged += GrblViewModelUnitChanged;
             JogStep = JogStep.Step3;
             JogFeed = JogFeed.Feed3;
             SetUpControl();
         }
 
-        private void GrblViewModelGrblUnitChanged(object? sender, Measurement e)
+        private void GrblViewModelUnitChanged(object? sender, Measurement e)
         {
             SetUpControl();
         }
@@ -268,7 +266,7 @@ namespace GrblHalSender.Controls
             }
 
         }
-        private void feedrate_Click(object sender, RoutedEventArgs e)
+        private void feedRate_Click(object sender, RoutedEventArgs e)
         {
             if (!(sender is Button button)) return;
             if (Enum.TryParse(button.Tag.ToString(), true, out JogFeed feed))
@@ -293,7 +291,7 @@ namespace GrblHalSender.Controls
                 var jogDataDistance = cmd[1] == '-' ? -Distance : Distance;
                 if (softLimits)
                 {
-                    int axis = GrblInfo.AxisLetterToIndex(cmd[0]);
+                    var axis = GrblInfo.AxisLetterToIndex(cmd[0]);
 
                     if (jogAxis != -1 && axis != jogAxis)
                         return;
@@ -337,11 +335,11 @@ namespace GrblHalSender.Controls
                     jogAxis = axis;
 
                     cmd =
-                        $"$J=G53{mode}{cmd.Substring(0, 1)}{position.ToInvariantString()}F{Math.Ceiling(FeedRate).ToInvariantString()}";
+                        $"$J=G53{mode}{cmd[..1]}{position.ToInvariantString()}F{Math.Ceiling(FeedRate).ToInvariantString()}";
                 }
                 else
                     cmd =
-                        $"$J=G91{mode}{cmd.Substring(0, 1)}{jogDataDistance.ToInvariantString()}F{Math.Ceiling(FeedRate).ToInvariantString()}";
+                        $"$J=G91{mode}{cmd[..1]}{jogDataDistance.ToInvariantString()}F{Math.Ceiling(FeedRate).ToInvariantString()}";
             }
 
             _grblViewModel?.ExecuteCommand(cmd);
