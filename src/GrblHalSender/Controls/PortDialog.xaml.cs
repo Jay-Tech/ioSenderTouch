@@ -162,7 +162,7 @@ namespace GrblHalSender.Controls
                 }
             }
 
-            ShowDialog();
+            //ShowDialog();
 
             return port;
         }
