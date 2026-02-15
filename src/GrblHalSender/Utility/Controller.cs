@@ -97,30 +97,21 @@ namespace GrblHalSender.Utility
                 };
                 if (dialog.ShowDialog() == true)
                 {
+                    if (!Directory.Exists(Resources.Path))
+                    {
+                        Directory.CreateDirectory(Resources.Path);
+                    }
                     if (!_config.Save(Resources.IniFile))
                     {
                         dialog.ResponseText = "Could not save config file";
-                        dialog.ShowDialog();
                         status = 1;
                     }
                    
                 }
                 else
                 {
-                    return 1;
+                    return 10;
                 }
-
-                //if (MessageBox.Show("Config file not found or invalid, create new?", "IoT", MessageBoxButton.YesNo,
-                //        MessageBoxImage.Question) == MessageBoxResult.Yes)
-                //{
-                //    if (!_config.Save(Resources.IniFile))
-                //    {
-                //        MessageBox.Show("Could not save config file", "IoT");
-                //        status = 1;
-                //    }
-                //}
-                //else
-                //    return 1;
             }
 
             if (jogMode != -1)
@@ -141,12 +132,9 @@ namespace GrblHalSender.Utility
                 if (char.IsDigit(_config.Base.PortParams[0])) // We have an IP address
                     new TelnetStream(_config.Base.PortParams, dispatcher);
                 else
-#if USEELTIMA
-                    new EltimaStream(Config.PortParams, Config.ResetDelay, dispatcher);
-#else
+
                     new SerialStream(_config.Base.PortParams, _config.Base.ResetDelay,
                         dispatcher);
-#endif
             }
 
             if ((Comms.com == null || !Comms.com.IsOpen) && string.IsNullOrEmpty(port))
@@ -168,12 +156,8 @@ namespace GrblHalSender.Utility
                     if (char.IsDigit(port[0])) // We have an IP address
                         new TelnetStream(_config.Base.PortParams, dispatcher);
                     else
-#if USEELTIMA
-                        new EltimaStream(Config.PortParams, Config.ResetDelay, dispatcher);
-#else
                         new SerialStream(_config.Base.PortParams, _config.Base.ResetDelay,
                             dispatcher);
-#endif
                     _config.Save(Resources.IniFile);
                     _config.CallFileLoaded();
                 }

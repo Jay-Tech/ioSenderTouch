@@ -160,11 +160,12 @@ namespace GrblHalSender.Controls
             InitializeComponent();
             _holdTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(300)
+                Interval = TimeSpan.FromMilliseconds(250)
             };
             _holdTimer.Tick += HoldTimer_Tick;
             GHalSenderConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
         }
+
         private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _holdTimer.Start();
@@ -280,7 +281,7 @@ namespace GrblHalSender.Controls
 
         private void JogCommand(string cmd)
         {
-
+            if(string.IsNullOrEmpty(cmd))return;
             if (cmd == "stop")
                 cmd = ((char)GrblConstants.CMD_JOG_CANCEL).ToString();
             else
@@ -358,7 +359,6 @@ namespace GrblHalSender.Controls
             OnPropertyChanged(propertyName);
             return true;
         }
+
     }
-
-
 }
