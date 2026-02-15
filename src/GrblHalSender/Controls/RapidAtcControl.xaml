@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="GrblHalSender.Controls.RapidAtcControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GrblHalSender.Controls"
+             xmlns:core="clr-namespace:GrblHalSender.GrblCore"
+             xmlns:viewModels="clr-namespace:GrblHalSender.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewModels:RapidAtcViewModel, IsDesignTimeCreatable=False}" 
+             d:DesignHeight="450" d:DesignWidth="450">
+    <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="IsEnabled" Value="False"/>
+                <!-- Default state -->
+                <Style.Triggers>
+                    <!-- When CurrentStatus equals Status.Editable, set IsEnabled to True -->
+                    <DataTrigger Binding="{Binding GrblViewModel.HomedState   }"
+                                 Value="{x:Static core:HomedState.Homed}">
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+        <GroupBox Header="Rapid ATC" IsEnabled="{Binding HomedState}">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ItemsControl  Grid.Row="0" ItemsSource="{Binding  Path= AtcToolList}">
+                    <!-- Define how each item looks -->
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+
+                            <Button Content="{Binding  ToolName }"  
+                                    Command="{Binding DataContext.LoadTool, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                    CommandParameter="{Binding ToolNumber}"
+                                           HorizontalAlignment="Stretch" 
+                                           VerticalAlignment="Stretch" 
+                                             Margin="3"/>
+                            
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                    <!-- Define the panel that hosts the items -->
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <!-- UniformGrid with 3 columns, automatically calculates rows -->
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <Button Grid.Row="1"  Height="40" Margin="3" Content="TLS" Command="{Binding TlsCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
+                <Button Grid.Row="2" Height="40" Margin="3" Command="{Binding UnloadTool}" Content="Unload Tool" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Button>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

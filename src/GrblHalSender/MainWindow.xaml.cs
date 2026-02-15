@@ -1,0 +1,272 @@
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using GrblHalSender.Controls;
+using GrblHalSender.GrblCore;
+using GrblHalSender.GrblCore.Config;
+using GrblHalSender.ViewModels;
+using GrblHalSender.Views;
+using MaterialDesignThemes.Wpf;
+
+
+namespace GrblHalSender
+{
+    public partial class MainWindow : Window
+    {
+        private const string Version = "2.0.4";
+        private const string App_Name = "GHAL Sender";
+
+        private readonly GrblViewModel _viewModel;
+        private readonly HomeView _homeView;
+        private readonly HomeViewPortrait _homeViewPortrait;
+        private bool _shown;
+        private bool _windowStyle;
+        private JogConfig _jogConfig;
+        private readonly clsDisplaySettings.Orientation _screenOrientation;
+        public string BaseWindowTitle { get; set; }
+
+
+        public MainWindow()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
+            GrblCore.Resources.Path = path;
+            InitializeComponent();
+
+            Title = string.Format(Title, Version);
+            _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
+            _viewModel.ContentManager = new ContentManager();
+            BaseWindowTitle = Title;
+            GHalSenderConfig.Settings.OnConfigFileLoaded += GHalSenderConfig_OnConfigFileLoaded;
+
+            _viewModel.PropertyChanged += _viewModel_PropertyChanged;
+            _screenOrientation = clsDisplaySettings.GetScreenOrientation(1);
+            if (_screenOrientation is clsDisplaySettings.Orientation.DEGREES_CW_90 or clsDisplaySettings.Orientation.DEGREES_CW_270)
+            {
+                _homeViewPortrait = new HomeViewPortrait(_viewModel);
+                BorderLeft.Child = _homeViewPortrait; 
+                MenuBorder.Child = new PortraitMenu();
+            }
+            else
+            {
+                _homeView = new HomeView(_viewModel);
+                BorderLeft.Child = _homeView;
+                var menu = new LandScapeMenu
+                {
+                    VerisonLabel =
+                    {
+                        Content = $"{App_Name} {Version}"
+                    }
+                };
+                MenuBorder.Child = menu;
+            }
+
+            MenuBorder.DataContext = _viewModel;
+            this.Closing += MainWindow_Closing;
+        }
+
+
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Comms.com.DataReceived -= ((GrblViewModel)DataContext).DataReceived;
+            _viewModel?.Poller?.SetState(0);
+            using (new UIUtils.WaitCursor())
+            {
+                Comms.com.Close();
+                GHalSenderConfig.Settings.Shutdown();
+            }
+        }
+
+        protected override void OnContentRendered(EventArgs e)
+        {
+            base.OnContentRendered(e);
+            if (_shown)
+                return;
+            _shown = true;
+            _viewModel.LoadComplete();
+        }
+
+
+        private void GHalSenderConfig_OnConfigFileLoaded(object? sender, EventArgs e)
+        {
+            _viewModel.DisplayMenuBar = GHalSenderConfig.Settings.AppUiSettings.EnableToolBar;
+            CheckAndSetScale();
+            var color = GHalSenderConfig.Settings.AppUiSettings.UIColor;
+            SetPrimaryColor(color);
+            Left = 0;
+            Top = 0;
+            SetUpKeyBoard();
+            GHalSenderConfig.Settings.Base.AppUISettings.PropertyChanged += AppUISettings_PropertyChanged;
+        }
+        private void AppUISettings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AppUiSettingsConfig.UIColor))
+            {
+                SetPrimaryColor(GHalSenderConfig.Settings.Base.AppUISettings.UIColor);
+            }
+            if (e.PropertyName == nameof(AppUiSettingsConfig.EnableLightTheme))
+            {
+                SetTheme(GHalSenderConfig.Settings.Base.AppUISettings.EnableLightTheme);
+            }
+        }
+
+        private void SetTheme(bool lightTheme)
+        {
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+            theme.SetBaseTheme(lightTheme ? BaseTheme.Light : BaseTheme.Dark);
+            paletteHelper.SetTheme(theme);
+        }
+        private void SetPrimaryColor(Color primaryColor)
+        {
+            try
+            {
+                PaletteHelper paletteHelper = new PaletteHelper();
+                var theme = paletteHelper.GetTheme();
+                theme.SetPrimaryColor(primaryColor);
+                theme.SetBaseTheme(GHalSenderConfig.Settings.Base.AppUISettings.EnableLightTheme ? BaseTheme.Light : BaseTheme.Dark);
+                paletteHelper.SetTheme(theme);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        private void _viewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GrblViewModel.IsMetric))
+            {
+                SetUpKeyBoard();
+            }
+        }
+        private void SetUpKeyBoard()
+        {
+            if (_jogConfig != null)
+            {
+                _jogConfig.PropertyChanged -= JogConfig_PropertyChanged;
+            }
+            _jogConfig = _viewModel.IsMetric ? GHalSenderConfig.Settings.JogMetric : GHalSenderConfig.Settings.JogImperial;
+            _jogConfig.PropertyChanged += JogConfig_PropertyChanged;
+            ApplyKeyboardJogging();
+        }
+        private void ApplyKeyboardJogging()
+        {
+            _viewModel.Keyboard.JogStepDistance = GHalSenderConfig.Settings.JogMetric.LinkStepJogToUI ? GHalSenderConfig.Settings.JogUiMetric.Distance0 : _jogConfig.StepDistance;
+            _viewModel.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Slow] = _jogConfig.SlowDistance;
+            _viewModel.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Fast] = _jogConfig.FastDistance;
+            _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Step] = _jogConfig.StepFeedrate;
+            _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Slow] = _jogConfig.SlowFeedrate;
+            _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Fast] = _jogConfig.FastFeedrate;
+            _viewModel.Keyboard.IsJoggingEnabled = _jogConfig.Mode != JogConfig.JogMode.UI;
+        }
+
+        private void JogConfig_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            ApplyKeyboardJogging();
+        }
+
+        private void CheckAndSetScale()
+        {
+
+            _windowStyle = !GHalSenderConfig.Settings.AppUiSettings.EnableToolBar;
+            var width = GHalSenderConfig.Settings.AppUiSettings.Width;
+            var height = GHalSenderConfig.Settings.AppUiSettings.Height;
+            var  dpiScale = VisualTreeHelper.GetDpi(this); 
+            var h = height / dpiScale.DpiScaleX;
+            var w = width / dpiScale.DpiScaleY;
+            if (_screenOrientation is clsDisplaySettings.Orientation.DEGREES_CW_90 or clsDisplaySettings.Orientation.DEGREES_CW_270)
+            {
+                Width = h;
+                Height = w;
+            }
+            else
+            {
+                Width = w;
+                Height = h;
+            }
+
+        }
+
+        private void Window_Load(object sender, EventArgs e)
+        {
+            //System.Threading.Thread.Sleep(50);
+            //Comms.com.PurgeQueue();
+            if (!string.IsNullOrEmpty(GHalSenderConfig.Settings.FileName))
+            {
+                // Delay loading until app is ready
+                Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new System.Action(() =>
+                {
+                    GCode.File.Load(GHalSenderConfig.Settings.FileName);
+                }));
+            }
+        }
+        private void MenuBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_windowStyle) return;
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+        // Dynamic Resize
+
+        public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register(nameof(ScaleValue), typeof(double),
+            typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
+
+        private static object OnCoerceScaleValue(DependencyObject o, object value)
+        {
+            if (o is MainWindow mainWindow)
+                return mainWindow.OnCoerceScaleValue((double)value);
+            return value;
+        }
+        protected virtual void OnScaleValueChanged(double oldValue, double newValue) { }
+        private static void OnScaleValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            if (o is MainWindow mainWindow)
+                mainWindow.OnScaleValueChanged((double)e.OldValue, (double)e.NewValue);
+        }
+
+        protected virtual double OnCoerceScaleValue(double value)
+        {
+            if (double.IsNaN(value))
+                return 1.0f;
+
+            value = Math.Max(0.1, value);
+            return value;
+        }
+
+        public double ScaleValue
+        {
+            get => (double)GetValue(ScaleValueProperty);
+            set => SetValue(ScaleValueProperty, value);
+        }
+
+        private void MainGrid_SizeChanged(object sender, EventArgs e) => CalculateScale();
+
+        private void CalculateScale()
+        {
+            double yScale;
+            double xScale;
+            var screenOrientation = clsDisplaySettings.GetScreenOrientation(1);
+            if (screenOrientation is clsDisplaySettings.Orientation.DEGREES_CW_90 or clsDisplaySettings.Orientation.DEGREES_CW_270)
+            {
+                yScale = ActualHeight / 1920;
+                xScale = ActualWidth / 1080;
+            }
+            else
+            {
+                yScale = ActualHeight / 1080;
+                xScale = ActualWidth / 1920;
+            }
+
+            double value = Math.Min(xScale, yScale);
+            ScaleValue = (double)OnCoerceScaleValue(AppMainWindow, value);
+        }
+    }
+}

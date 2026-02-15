@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="GrblHalSender.Controls.WorkParametersControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:GrblHalSender.Controls"
+             mc:Ignorable="d" 
+             d:DesignWidth="265">
+    <UserControl.Resources>
+        <controls:LogicalNotConverter x:Key="BooleanConverter" />
+        <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+    </UserControl.Resources>
+    <GroupBox x:Uid="grp_workparams" x:Name="grpWorkParams" Header="Work Parameters" 
+              IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Name="Main" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label  x:Uid="lbl_offset" x:Name="lblOffset" Content="Offset:" HorizontalContentAlignment="Center" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" 
+                             Margin="0,6,1,2" Width="52" />
+                <ComboBox x:Name="cbxOffset"  DisplayMemberPath="Code" SelectedValuePath="Code" 
+                               ItemsSource="{Binding Path=CoordinateSystems}" 
+                               SelectedValue="{Binding Path=WorkCoordinateSystem, Mode=OneWay}" 
+                               HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="80"
+                               MinHeight="28" SelectionChanged="cbxOffset_SelectionChanged" 
+                               Margin="4,6,0,6"/>
+            </StackPanel>
+               
+                <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" Rows="3" Margin="3,0,3,0" VerticalAlignment="Stretch" Height="Auto">
+                    <Button Name="G54" Content="G54" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G55" Content="G55" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G56" Content="G56" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G57" Content="G57" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}"  CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G58" Content="G58" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G59" Content="G59" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                </UniformGrid>
+            </Grid>
+    </GroupBox>
+</UserControl>

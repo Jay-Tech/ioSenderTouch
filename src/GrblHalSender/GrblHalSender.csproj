@@ -1,0 +1,94 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>True</UseWPF>
+    <TargetPlatform>10.0</TargetPlatform>
+    <EnableWindowsRuntimeImport>true</EnableWindowsRuntimeImport>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputPath>..\..\stage\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\icons\GHalSender.ico" />
+    <None Remove="Resources\Probing\GHalSender.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GameInput.Net" Version="1.2.2" />
+    <PackageReference Include="HelixToolkit.Wpf" Version="3.1.2" />
+    <PackageReference Include="MaterialDesignColors" Version="5.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
+    <PackageReference Include="Microsoft.GameInput" Version="3.2.135" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="System.IO.Ports" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RP.Math.Vector3">
+      <HintPath>..\Lib\RP.Math.Vector3.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\edit.png" />
+    <Resource Include="Resources\icons\closeDark.png" />
+    <Resource Include="Resources\icons\editDark.png" />
+    <Resource Include="Resources\icons\GHalSender.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\openDark.png" />
+    <Resource Include="Resources\icons\reloadDark.png" />
+    <Resource Include="Resources\open.png" />
+    <Resource Include="Resources\Probing\centerI.png" />
+    <Resource Include="Resources\Probing\CenterO.png" />
+    <Resource Include="Resources\Probing\cornerA.png" />
+    <Resource Include="Resources\Probing\cornerB.png" />
+    <Resource Include="Resources\Probing\cornerC.png" />
+    <Resource Include="Resources\Probing\cornerD.png" />
+    <Resource Include="Resources\Probing\cornerIA.png" />
+    <Resource Include="Resources\Probing\cornerIB.png" />
+    <Resource Include="Resources\Probing\cornerIC.png" />
+    <Resource Include="Resources\Probing\CornerID.png" />
+    <Resource Include="Resources\Probing\edgeAB.png" />
+    <Resource Include="Resources\Probing\edgeAD.png" />
+    <Resource Include="Resources\Probing\edgeBC.png" />
+    <Resource Include="Resources\Probing\edgeCD.png" />
+    <Resource Include="Resources\Probing\edgeIAB.png" />
+    <Resource Include="Resources\Probing\edgeIAD.png" />
+    <Resource Include="Resources\Probing\edgeIBC.png" />
+    <Resource Include="Resources\Probing\edgeICD.png" />
+    <Resource Include="Resources\Probing\edgeZ.png" />
+    <Resource Include="Resources\Probing\GHalSender.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Probing\RotaterAB.png" />
+    <Resource Include="Resources\Probing\RotaterAD.png" />
+    <Resource Include="Resources\Probing\RotaterCB.png" />
+    <Resource Include="Resources\Probing\RotaterCD.png" />
+    <Resource Include="Resources\reload.png" />
+    <Resource Include="Resources\Render\GridOff.png" />
+    <Resource Include="Resources\Render\GridOn.png" />
+    <Resource Include="Resources\Render\JobBoxOff.png" />
+    <Resource Include="Resources\Render\JobBoxOn.png" />
+    <Resource Include="Resources\Render\ResetView.png" />
+    <Resource Include="Resources\Render\RestoreView.png" />
+    <Resource Include="Resources\Render\SaveView.png" />
+    <Resource Include="Resources\Render\WorkBoxOff.png" />
+    <Resource Include="Resources\Render\WorkBoxOn.png" />
+    <Resource Include="Resources\Render\XYZOff.png" />
+    <Resource Include="Resources\Render\XYZOn.png" />
+    <Resource Include="Resources\StatusAnnotations_Warning_16xLG_color.png" />
+    <Resource Include="Resources\surface1.jpg" />
+    <Resource Include="Resources\Symbols_Stop_32xLG.png" />
+    <Resource Include="Resources\Triangle.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GrblCore\Adpters\" />
+  </ItemGroup>
+
+</Project>

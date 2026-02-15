@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="GrblHalSender.Controls.SignalsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:GrblHalSender.Controls"
+             xmlns:grblCore="clr-namespace:GrblHalSender.GrblCore"
+             mc:Ignorable="d" d:DesignWidth="Auto" Height="50">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/stlye/SharedStyles.xaml"/>
+                <ResourceDictionary>
+                    <Style TargetType="controls:SignalControl">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                    <controls:IsSignalVisibleConverter x:Key="IsSignalVisibleConverter" />
+                    <Style x:Key="DoorOpenVisibleStyle">
+                        <Setter Property="Control.Visibility">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource IsSignalVisibleConverter}">
+                                    <Binding Path="OptionalSignals" />
+                                    <Binding>
+                                        <Binding.Source>
+                                            <grblCore:Signals>SafetyDoor</grblCore:Signals>
+                                        </Binding.Source>
+                                    </Binding>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="EStopVisibleStyle">
+                        <Setter Property="Control.Visibility">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource IsSignalVisibleConverter}">
+                                    <Binding Path="OptionalSignals" />
+                                    <Binding>
+                                        <Binding.Source>
+                                            <grblCore:Signals>EStop</grblCore:Signals>
+                                        </Binding.Source>
+                                    </Binding>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style x:Key="OptionalStopVisibleStyle">
+                        <Setter Property="Control.Visibility">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource IsSignalVisibleConverter}">
+                                    <Binding Path="OptionalSignals" />
+                                    <Binding>
+                                        <Binding.Source>
+                                            <grblCore:Signals>OptionalStop</grblCore:Signals>
+                                        </Binding.Source>
+                                    </Binding>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="1,0,1,0" VerticalAlignment="Center" Width="Auto">
+            <controls:SignalControl Label="X" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitX], Mode=OneWay}"/>
+            <controls:SignalControl Label="Y" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitY], Mode=OneWay}" Style="{StaticResource YAxisVisibleStyle}"/>
+            <controls:SignalControl Label="Z" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitZ], Mode=OneWay}" Style="{StaticResource ZAxisVisibleStyle}"/>
+            <controls:SignalControl Label="{Binding Path=AxisLetter.A, Mode=OneWay}" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitA], Mode=OneWay}" Style="{StaticResource AAxisVisibleStyle}"/>
+            <controls:SignalControl x:Uid="lbl_signalFeedHold" Label="H" ToolTip="Feed hold" IsSet="{Binding Path=Signals[(grblCore:Signals)Hold], Mode=OneWay}"  Margin="10,0,0,0"/>
+            <controls:SignalControl x:Uid="lbl_signalCycleStart" Label="S" ToolTip="Cycle start" IsSet="{Binding Path=Signals[(grblCore:Signals)CycleStart], Mode=OneWay}"/>
+            <controls:SignalControl x:Uid="lbl_signalReset" Label="R" ToolTip="Reset" IsSet="{Binding Path=Signals[(grblCore:Signals)Reset], Mode=OneWay}"/>
+            <controls:SignalControl x:Uid="lbl_signalEStop" Label="E" ToolTip="E-Stop" IsSet="{Binding Path=Signals[(grblCore:Signals)EStop], Mode=OneWay}" Style="{StaticResource EStopVisibleStyle}"/>
+            <controls:SignalControl x:Uid="lbl_signalSafetyDoor" Label="D" ToolTip="Safety door" IsSet="{Binding Path=Signals[(grblCore:Signals)SafetyDoor], Mode=OneWay}" Style="{StaticResource DoorOpenVisibleStyle}"/>
+            <controls:SignalControl x:Uid="lbl_signalProbe" Label="P" ToolTip="Probe" IsSet="{Binding Path=Signals[(grblCore:Signals)Probe], Mode=OneWay}" />
+            <!--<controls:SignalControl x:Uid="lbl_signalOptionalStop" Label="O" ToolTip="Optional stop" IsSet="{Binding Path=Signals[(grblCore:Signals)OptionalStop], Mode=OneWay}" Style="{StaticResource OptionalStopVisibleStyle}"/>-->
+    </StackPanel>
+</UserControl>
